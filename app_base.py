@@ -1,23 +1,21 @@
 import cgi
-import uwsgi_hello
-import env_test
 
-def application(environ, start_response):
-    path = environ['PATH_INFO']
+class AppBase(object):
+    def __init__(self, environ, start_response):
+        self.environ = environ
+        self.start_response = start_response
 
-    path_parts = path.split('/')
+        self.log = environ['wsgi.errors']
+        self.qs = cgi.parse_qs(environ['QUERY_STRING'])
+    
 
-    if 'hello_world' in path_parts:
-        return uwsgi_hello.application(environ, start_response)
-    if 'env_test' in path_parts:
-        return env_test.application(environ, start_response)
+    def log(self, s):
+        print >> self.log, s
 
-    # Sorting and stringifying the environment key, value pairs
-    response_body = 'You wanted to get to ' + cgi.escape(path) + ' That is an unknown application'
+    def application(self):
+        log('Not implemented. Should be overriden in subclass')
+        start_response("501 not implemented", [("Content-Type", "text/html")])
+        return ["Not implemented. Should be overriden in subclass"] 
 
-    status = '200 OK'
-    response_headers = [('Content-Type', 'text/plain'),
-                    ('Content-Length', str(len(response_body)))]
-    start_response(status, response_headers)
 
-    return [response_body]
+
