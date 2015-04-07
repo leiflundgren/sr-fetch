@@ -1,10 +1,12 @@
 import cgi
 import uwsgi_hello
 import env_test 
+import sr_redirect
 
 known_apps = { 
     'hello_world': uwsgi_hello.UwsgiHello,
     'env_test': env_test.EnvTest,
+    'sr_redirect' : sr_redirect.SrRedirect,
 }
 
 
@@ -19,13 +21,6 @@ def application(environ, start_response):
         if k in path_parts:
             print >> log, 'Running requested app ' + k
             return v(environ, start_response).application()
-
-    #if 'hello_world' in path_parts:
-    #    print >> log, "Running requested app hello_world"
-    #    return uwsgi_hello.application(environ, start_response)
-    #if 'env_test' in path_parts:
-    #    print >> log, "Running requested app env_test"
-    #    return env_test.application(environ, start_response)
 
     # Sorting and stringifying the environment key, value pairs
     response_body = 'You wanted to get to ' + cgi.escape(path) + ' That is an unknown application'
