@@ -9,8 +9,8 @@ class SrRedirect(AppBase):
         
     def application(self):
 
-        avsnitt = self.qs.get('avsnitt', [])[0]
-        programid = self.qs.get('programid', [])[0]
+        avsnitt = self.qs.get('avsnitt', [None])[0]
+        programid = self.qs.get('programid', [None])[0] 
         if not avsnitt or not programid:
             self.start_response("500", [("Content-Type", "text/plain")])
             return ['parameters avsnitt and programid is required!']
