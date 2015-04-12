@@ -12,8 +12,10 @@ class AppBase(object):
         try:
             common.log_handle = self.log_handle
             common.tracelevel = int(self.qs.get('tracelevel'))
-        except:
-            pass
+            self.log(4, 'tracelevel is ' + str(common.tracelevel))
+        except Exception, ex:
+            self.log(1, 'while looking at logging, fail, fail, fail' + str(ex))
+        pass
 
     def log(self, level, *args):
         # print >> self.log_handle, s
