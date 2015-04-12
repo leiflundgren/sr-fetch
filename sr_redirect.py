@@ -19,8 +19,8 @@ class SrRedirect(AppBase):
         url_finder=SrUrlFinder(programid, avsnitt)
 
         m4a_url =  url_finder.find()
-        message = self.qs.get('message', 'unknown')[0]
-        self.log('raw message:' + str(message))
-        self.start_response("200 OK", [("Content-Type", "text/plain")])
-        return ["hello there. You said &quot;" + cgi.escape(message) + "&quot;"]
+        self.log(5, 'Result ', m4a_url, ' ', type(m4a_url))
+        self.start_response("301 moved permanently", [("Location", m4a_url)])
+        #return [cgi.escape(m4a_url)]
+        return []
 

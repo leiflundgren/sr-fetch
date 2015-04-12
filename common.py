@@ -34,6 +34,9 @@ def trace(level, *args):
             for count, thing in enumerate(args):
                 msg += mystr(thing)                
         mywrite(msg)
+        return msg
+
+    return 'not logged'
 
 def pretty(value,htchar="\t",lfchar="\n",indent=0):
   if type(value) in [dict]:

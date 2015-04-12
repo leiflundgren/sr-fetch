@@ -26,10 +26,10 @@ class SrUrlFinder:
     def find(self):
         url = "http://sverigesradio.se/sida/avsnitt/" + str(self.avsnitt) + '?programid=' + str(self.progid)
         self.trace(5, "looking at URL " + url)
-        return self.handle_url(url)
+        return self.handle_url_check_result(url)
 
     def trace(self, level, *args):
-        common.trace(level, args)
+        return common.trace(level, args)
 
     
     def make_hidef(self, url):
@@ -49,10 +49,11 @@ class SrUrlFinder:
         return url.endswith('.m4a')
 
     def looks_like_sr_program_page(self, url):
-        self.trace(9, 'looks_like_sr_program_page(' + url + ')')
+        res = not re.match('^http://sverigesradio.se/sida/[\.\w]+/*\?programid=\d+', url) is None
+        self.trace(9, 'looks_like_sr_program_page(' + url + ') -->', res)
         # http://sverigesradio.se/sida/avsnitt?programid=4490
         # http://sverigesradio.se/sida/default.aspx?programid=4432
-        return not re.match('^http://sverigesradio.se/sida/[\.\w]+/*\?programid=\d+', url) is None
+        return res
 
     def looks_like_sr_episode(self, url):
         # http://sverigesradio.se/sida/avsnitt/412431?programid=4490
@@ -69,6 +70,14 @@ class SrUrlFinder:
     # Sometimes the URL is to a html-page
     def looks_like_html_page(self, url):
         return url.find('radio.aspx') > 0 and url.find('metafile=asx') > 0
+
+    def handle_url_check_result(self, url):
+        res = self.handle_url(url)
+        if res is None:
+            raise self.trace(1, 'res-type is ', type(res).__name__)
+        self.trace(7, 'handle ', url, ' gave ', res)
+        return res
+
     
     def handle_url(self, url):
         self.trace(9, 'handle_url(' + url + ')')
@@ -95,7 +104,7 @@ class SrUrlFinder:
             return self.handle_m4a_url(url)
                    
         self.trace(1, 'URL format was not matched! ' + url)
-        return None
+        raise 'URL format was not matched! ' + url + " Cannot handle this!"
 
     def handle_m3u_url(self, url):
         self.trace(8, 'Processing m3u ' + url)
@@ -106,9 +115,14 @@ class SrUrlFinder:
         if content_type != 'audio/x-mpegurl':
             self.trace(2, 'Content-type is "' + content_type + '". That was not expected!')
 
-        for s in u_thing.read().split('\n'):
+        body=u_thing.read()
+        for s in body.split('\n'):
             if s.startswith('http'):
-                self.handle_m4a_url( self.make_hidef( s.strip()) )            
+                res = self.handle_m4a_url( self.make_hidef( s.strip()) )
+                if not res is None:
+                    return res
+        raise self.trace(1, 'Could not find any http-url in body: \n', body)
+
 
     def handle_html_url(self, url):
     
@@ -142,11 +156,16 @@ class SrUrlFinder:
         asx_refs = find_child_nodes(xml, ['asx', 'entry', 'ref'])
         self.trace(7, 'Found %d ref-nodes in asx-data' % len(asx_refs))
         for r in asx_refs:
-            self.handle_url( r.attributes['href'].value )
+            res = self.handle_url_check_result( r.attributes['href'].value )
+            if not res is None:
+                return res
+        raise self.trace(1, 'Could not find any http-url in asx-body: \n', asx)
         
                 
     def handle_m4a_url(self, m4a_url):
         self.trace(6, 'Processing m4a url ' + m4a_url + " That is the end result of this program. Returning")
+        self.trace(8, 'url-type is ', type(m4a_url).__name__)
+        #raise m4a_url
         return m4a_url
 
     def handle_sr_program_page(self, url):
@@ -182,7 +201,7 @@ class SrUrlFinder:
         
         # raise 'abort!!!!'
         
-        self.handle_url(url)
+        return self.handle_url_check_result(url)
         
         #self.trace(0, 'we dont actualy do anything with the program page yet. We should find latest episode or something...')
         #exit()
@@ -200,7 +219,7 @@ class SrUrlFinder:
             url = url.rstrip('&') + '&playepisode=' + m.group(1)
             self.trace(7, 'deduced episodeid to be ' + m.group(1) + '  url: ' + url)
             
-            return self.handle_sr_episode(url)
+            return self.handle_url_check_result(url)
 
         response = urllib2.urlopen(url)
         html = response.read()
@@ -216,15 +235,7 @@ class SrUrlFinder:
             stream = 'http://sverigesradio.se' + stream
             self.trace(5, 'modified stream url to ' + stream)
             
-        #if not self.filename:
-        #    self.filename = self.filename_from_html_content(html)
-        #    self.trace(4, 'filename: ' + self.filename)
-        #    self.assertTargetDoesntExistOrOverwrite()
-
-
-
-
-        self.handle_url(stream)
+        return self.handle_url_check_result(stream)
 
     def filename_from_html_content(self, html):
         self.trace(8, 'Trying to deduce filename from html-content.')
@@ -303,7 +314,7 @@ class SrUrlFinder:
             raise "response "+ str(response.status_code) + "\nHad expected a 302 redirect to lyssnaigen.se.se"
 
         self.trace(6, 'Rediration to ' + redirect_url)
-        return self.handle_url(redirect_url)
+        return self.handle_url_check_result(redirect_url)
         
 
 
@@ -321,9 +332,6 @@ class SrUrlFinder:
         if url.endswith(key):
             url = url[:-len(key)] + '_a192.m4a'
             self.trace(7, 'Changed to 192kbit: ' + url)
-        if os.path.splitext(self.filename)[1] != '.m4a':
-            self.trace(5, 'Filename ' + self.filename + ' doesn\'t end with .m4a  SR files should do that, changing!')
-            self.filename = os.path. os.path.splitext(self.filename)[0] + '.m4a'
         return self.handle_m4a_url(url)
         
     @staticmethod
