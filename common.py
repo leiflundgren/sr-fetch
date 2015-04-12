@@ -26,14 +26,14 @@ def trace(level, *args):
             return unicode(thing).encode('ascii', 'ignore')
 
     if tracelevel >= level:
-        mywrite( datetime.datetime.now().strftime("%H:%M:%S: ") )
+        msg = datetime.datetime.now().strftime("%H:%M:%S: ")
         if isinstance(args[0], (list, tuple)):
             for s in args[0]:
-                mywrite(s)
+                msg += mystr(s)
         else:
             for count, thing in enumerate(args):
-                mywrite(thing)                
-        print '' # newline
+                msg += mystr(thing)                
+        mywrite(msg)
 
 def pretty(value,htchar="\t",lfchar="\n",indent=0):
   if type(value) in [dict]:

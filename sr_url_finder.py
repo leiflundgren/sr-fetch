@@ -294,28 +294,18 @@ class SrUrlFinder:
         self.trace(5, "looking at SR laddaner " + url)
          
 
-        u_thing = urllib2.urlopen(urllib2.Request(url))
-        content_type = u_thing.headers['content-type']
-        if content_type.find(';') > 0:
-            content_type = content_type[0:content_type.find(';')].strip()
-        if content_type != 'audio/x-mpegurl':
-            self.trace(2, 'Content-type is "' + content_type + '". That was not expected!')
+        rsp = urllib2.urlopen(urllib2.Request(url))
+        redirect_url = rsp.geturl()
+        if redirect_url == url:
+            redirect_url = rsp.info().getheader('Location')
 
-        for s in u_thing.read().split('\n'):
-            if s.startswith('http'):
-                self.handle_m4a_url( self.make_hidef( s.strip()) )            
+        if redirect_url == url:
+            raise "response "+ str(response.status_code) + "\nHad expected a 302 redirect to lyssnaigen.se.se"
 
-
-        u_thing = urllib2.urlopen(urllib2.Request(url))
-        if u_thing.geturl() != url:
-        
-        response = requests.get(url, allow_redirects=False)
-        if  response.status_code == 302 or response.headers['Location'] != '':
-            self.trace(6, "response "+ str(response.status_code) + ' Location: ' + response.headers['Location'])
-            return self.handle_url(response.headers['Location'])
+        self.trace(6, 'Rediration to ' + redirect_url)
+        return self.handle_url(redirect_url)
         
 
-        raise "response "+ str(response.status_code) + "\nHad expected a 302 redirect to lyssnaigen.se.se"
 
     def handle_sr_lyssnaigen(self, url):
         """

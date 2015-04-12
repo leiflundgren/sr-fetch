@@ -11,11 +11,13 @@ class AppBase(object):
         self.qs = cgi.parse_qs(environ['QUERY_STRING'])
         try:
             common.log_handle = self.log_handle
-            common.tracelevel = int(self.qs.get('tracelevel'))
-            self.log(4, 'tracelevel is ' + str(common.tracelevel))
         except Exception, ex:
-            self.log(1, 'while looking at logging, fail, fail, fail' + str(ex))
-        pass
+            self.log(1, 'while looking at logging, fail, fail, fail: ' + str(ex))
+        try:
+            common.tracelevel = int(self.qs.get('tracelevel', [None])[0])
+        except Exception, ex:
+            pass
+        self.log(4, 'tracelevel is ' + str(common.tracelevel))
 
     def log(self, level, *args):
         # print >> self.log_handle, s

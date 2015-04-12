@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "sr_things", "sr_things.pyproj", "{722FE784-6F26-4A7F-A483-0DCA37683482}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "sr-rss", "C:\Users\leif\Google Drive\dev\home_repo\trunk\sr-fetch\sr-rss.pyproj", "{449A748E-059D-4614-8E22-2C084A888C32}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "sr-rss", "%USERPROFILE%\Google Drive\dev\home_repo\trunk\sr-fetch\sr-rss.pyproj", "{449A748E-059D-4614-8E22-2C084A888C32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
