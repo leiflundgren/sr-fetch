@@ -5,14 +5,17 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{722fe784-6f26-4a7f-a483-0dca37683482}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>hello_world.py</StartupFile>
+    <StartupFile>sr-feed.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <InterpreterId>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</InterpreterId>
+    <InterpreterId>{fcc291aa-427c-498c-a4d7-4502d6449b8c}</InterpreterId>
     <InterpreterVersion>2.7</InterpreterVersion>
+    <IsWindowsApplication>False</IsWindowsApplication>
+    <CommandLineArguments>4430</CommandLineArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
@@ -35,6 +38,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="hello_world.py" />
+    <Compile Include="sr-feed.py" />
     <Compile Include="sr_url_finder.py" />
     <Compile Include="sr_redirect.py">
       <SubType>Code</SubType>
@@ -43,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\2.7" />
+    <InterpreterReference Include="{fcc291aa-427c-498c-a4d7-4502d6449b8c}\2.7" />
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
