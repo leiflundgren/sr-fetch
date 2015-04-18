@@ -11,13 +11,18 @@ import datetime
 import re
 import urllib2
 import urllib
-import xml.dom.minidom
+
+import XmlHandler
+
+#import xml.etree
+import xml.sax.saxutils
 #import feedparser
 # from feedformatter import Feed
 # import PyRSS2Gen as RSS2
 #from Config import Config
 #import xpath
-#from lxml import etree
+#import lxml.etree
+from XmlHandler import XmlHandler
 
 import common
 
@@ -27,13 +32,102 @@ class SrFeed:
     def __init__(self, feed_url, tracelevel):
         self.tracelevel = tracelevel
         self.feed_url = feed_url
+        self.trace(7, 'init looking at ' + feed_url)
 
     def trace(self, level, *args):
         common.trace(level, args)
 
     def get_feed(self):
-        pass
+        return self.handle_url(self.feed_url)
     
+    def handle_url(self, url, u_thing=None):
+        self.trace(4, 'Handling url ' + url)
+        if u_thing == None:
+            self.trace(7, 'Fetching content from url')
+            u_thing = urllib2.urlopen(urllib2.Request(url))
+        if url != u_thing.geturl():
+            self.trace(5, 'Urllib automatically redirected to ' + u_thing.geturl())
+            return self.handle_url(self, u_thing.geturl(), u_thing)
+
+        raw_content_type = u_thing.headers['content-type']
+        self.trace(7, 'Got response ' + str(u_thing.getcode()) + ' Content-type: ' + raw_content_type)
+
+
+        colon = raw_content_type.find(';')
+        self.content_type = raw_content_type[0:colon].strip()        
+        if self.content_type.find('application/atom') < 0 and self.content_type.find('application/rss') < 0:
+            raise Exception('Content-type of feed is ' + content_type + '. Not handled!')
+
+        self.trace(5, 'Retreiving content from ' + url)
+        self.body = u_thing.read()
+        if len(self.body) == 0:
+            raise Exception('Got empty body from url Unexpected!')
+
+        charset = None
+        if colon > 0:
+            p = raw_content_type.find('charset', colon)
+            if p > 0:
+                p = raw_content_type.find('=', p)
+                if p > 0:
+                    p = p+1
+                    e = raw_content_type.find(';', p)
+                    charset = raw_content_type[p:]  if e < 0 else raw_content_type[p:e]
+                
+        if not charset is None:
+            self.body = self.body.decode(charset)
+
+        if self.body[0] == '&' or self.body[0] == u'&':
+            self.body = xml.sax.saxutils.unescape(self.body)
+
+        self.trace(7, self.body)
+
+
+        self.xml = XmlHandler().load_from_string(self.body)
+        #self.xml_body = xml.dom.minidom.parseString(self.body)
+        self.trace(3, 'xml type ' + str(type(self.xml)))
+        
+        
+        if self.content_type.find('application/atom') >= 0:
+            self.parse_atom_feed(self.body)
+        elif self.content_type.find('application/rss') >= 0:
+            self.parse_rss_feed(self.body)
+        else:
+            raise Exception('Content-type of feed is ' + content_type + '. Not handled!')
+
+    @staticmethod
+    def find_child_nodes(el, node_names):
+        """
+            el 
+        """
+        if len(node_names) == 0:
+            return [el]
+        name = node_names[0]
+        # if name[0] == '@':
+
+
+        res = []
+        #sub = el.
+        for c in el.childNodes:
+            #print c
+            #print c._get_localName()
+            if c._get_localName() == name:
+                res = res + find_child_nodes(c, node_names[1:] )
+        return res
+
+    @staticmethod
+    def parse_atom_feed(self, body):
+        xml = minidom.parseString(body)
+        raise 'xml type ' + str(type(xml))
+        entries = find_child_nodes(xml, ['feed', 'entry'])
+        self.trace(7, 'Found %d ref-nodes in asx-data' % len(asx_refs))
+        for r in asx_refs:
+            self.handle_url( r.attributes['href'].value )
+   
+        pass
+
+    @staticmethod
+    def parse_rss_feed(self, body):
+        pass
               
 
     def handle_html_url(self, url):
@@ -349,58 +443,7 @@ class SrFeed:
     def source_is_http(self, x):
         return x.startswith('http')
 
-    def add_http_rss(self, url):
-        rss = urllib2.urlopen(url).read()
-        feed = feedparser.parse(rss)
-        title = common.unescape_html(feed.feed.title)
-        try:
-            self.config.feed(title)
-            self.trace(3, "Feed " + title + ' / ' + url + " is already added")
-            return
-        except:
-            pass
 
-        # do add work
-        self.config.add_feed(title, url)
-        rss_file = open(title+'.rss', 'w')
-        rss_file.write(rss)
-        rss_file.close()
-        pass
-
-    def add_program(self, program_feed):
-        self.trace(3, "Looking to add " + str(program_feed))
-
-        if self.source_is_show_number(program_feed):
-            return self.add_program( 'http://sverigesradio.se/sida/avsnitt?programid=' + str(program_feed) )
-
-        if self.source_is_sr_show(program_feed):
-            return self.add_sr_show(program_feed)
-
-        if self.source_is_http(program_feed):
-            return self.add_http_rss(program_feed)
-        
-        pass
-
-    def read_ini_file(self):
-        self.config = Config(self.args.inifile)
-        pass
-
-    def update_feeds(self):
-        pass
-
-    def update_feed(self, feed_name):
-        pass
-
-    def main(self):
-        self.trace(4, 'sr-rss starting')
-
-        self.read_ini_file()
-
-        if not self.args.add_program_feed is None:
-            self.add_program(self.args.add_program_feed)
-        else:
-            self.update_feeds()
-        
 
 class TestSrFetch(unittest.TestCase):
     pass
