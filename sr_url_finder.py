@@ -244,9 +244,15 @@ class SrUrlFinder:
         self.trace(7, 'response ' + content_type + ' len=' + str(len(html)))
         stream = self.find_html_meta_argument(html, 'twitter:player:stream')
         
+        if not stream and url.find('artikel.aspx') > 0:
+            url = self.find_html_link_argument(html)
+            if url:
+                self.trace(5, 'Extracted avsnitt-url from artikel-url. Exploring that.')
+                return self.handle_url(url)
+
         if not stream:
-            self.trace(2, "Failed to find twitter:player:stream-meta-header!\n" + html[0:2300] + '...')
-            raise ValueError("Failed to find twitter:player:stream-meta-header!")
+            self.trace(2, "Failed to find twitter:player:stream-meta-header and <link rel=canonical href /> !\n" + html[0:2300] + '...')
+            raise ValueError("Failed to find twitter:player:stream-meta-header  and <link rel=canonical href />")
         
         if not stream.startswith('http'):
             stream = 'http://sverigesradio.se' + stream
@@ -431,34 +437,62 @@ class SrUrlFinder:
         return val
 
     def find_html_link_argument(self, html, rel_type="canonical", pos = 0):
-        html=''
-        idx = html.find('<link ', pos)
-        if idx < 0:
-            idx = html.find('<meta property="' + argname + '"')
-        if idx < 0:
-            self.trace(6, "Failed to find meta-argument " + argname)
-            return None
-        
-        # self.trace(8, 'found ' + html[idx:idx+200])
-        
-        idx = html.find('content=', idx)
-        if idx < 0:
-            self.trace(6, "Failed to find content-tag for meta-argument " + argname)
-            return None
-        
-        begin = html.find('"', idx)
-        if begin < 0:
-            raise "Failed to find content-tag start quote"
-            
-        begin = begin+1
-        end = html.find('"', begin)
-        if end < 0:
-            raise "Failed to find content-tag end quote"
-            
-        val = html[begin:end]
-        self.trace(7, "value of "+ argname + " is '" + val + "'")
-        return val
+        while True:
+            pos = html.find('<link ', pos)
+            if pos < 0:
+                self.trace(6, "Failed to find link element start pos ", str(pos))
+                return None
 
+            pos += 5
+            endp = SrUrlFinder.find_html_endtag(html, 'link', pos)
+
+            (rel_attrib, a_endp) = SrUrlFinder.find_html_attribute(html, 'rel', pos, endp)
+            if rel_attrib != rel_type:
+                self.trace(5, 'Failed to find <link rel="' + rel_type + '" in range ' + str(pos) + '--' + str(endp) )
+                continue
+
+            (href_attrib, a_endp) = SrUrlFinder.find_html_attribute(html, 'href', pos, endp)
+            if rel_attrib is None:
+                self.trace(5, 'Failed to find <link rel="' + rel_type + '" href="..." in range ' + str(pos) + '--' + str(endp) )
+                continue
+
+            return href_attrib
+
+    @staticmethod
+    def find_html_endtag(html, tag_name, start_pos):
+        p1 = html.find('/>', start_pos)
+        p2 = html.find('</'+tag_name, start_pos)
+        if p1<0 and p2<0:
+            return -1
+        if p1 < 0:
+            return p2
+        if p2 < 0:
+            return p1
+        else:
+            return min(p1,p2)
+        
+    @staticmethod
+    def find_html_attribute(html, attrib_name, start_pos, end_pos = -1): # --> (attrib-value, endpos)
+         pos = start_pos
+         while True:
+            attr_pos = html.find(attrib_name + '=', pos, end_pos)
+            if attr_pos < 0 or attr_pos > end_pos:
+                return (None, -1)
+
+            q = '"'
+            begin = html.find(q, attr_pos)
+            if begin < 0:
+                q = "'"
+                begin = html.find(q, attr_pos)
+            if begin < 0:
+                raise ValueError("Failed to find link-tag start quote")
+            
+            begin = begin+1
+            end = html.find(q, begin)
+            if end < 0:
+                raise ValueError("Failed to find link-tag end quote")
+
+            return (html[begin:end], end+1)
 
     def assertTargetDoesntExistOrOverwrite(self):
         if self.overwrite:
