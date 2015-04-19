@@ -27,6 +27,8 @@ class SrFeed:
     def get_feed(self):
         et = self.handle_feed_url(self.feed_url)
         xmlstr = ET.tostring(et, encoding='utf-8', method='xml')
+        if self.content_type.find('charset') < 0:
+            self.content_type = self.content_type + '; charset=utf-8'
         # ElementTree thinks it has to explicitly state namespace on all nodes. Some readers might have problem with that.
         # This is a hack to remove the namespace
         xmlstr = xmlstr.replace('<ns0:', '<').replace('</ns0:', '</').replace('xmlns:ns0="','xmlns="')

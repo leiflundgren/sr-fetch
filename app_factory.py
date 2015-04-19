@@ -7,6 +7,7 @@ known_apps = {
     'hello_world': uwsgi_hello.UwsgiHello,
     'env_test': env_test.EnvTest,
     'sr_redirect' : sr_redirect.SrRedirect,
+    'sr_feed': sr_feed_app.SrFeedApp,
 }
 
 
