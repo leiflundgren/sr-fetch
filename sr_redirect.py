@@ -43,7 +43,10 @@ class SrRedirect(AppBase):
 
         m4a_url =  url_finder.find()
         self.log(5, 'Result ', m4a_url, ' ', type(m4a_url))
-        self.start_response("301 moved permanently", [("Location", m4a_url)])
+        if not m4a_url is None:
+            self.start_response("301 moved permanently", [("Location", m4a_url)])
+        else:
+            self.start_response("503 Media not available yet", [])
         #return [cgi.escape(m4a_url)]
         return []
 

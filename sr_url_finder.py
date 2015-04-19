@@ -84,8 +84,8 @@ class SrUrlFinder:
 
     def handle_url_check_result(self, url):
         res = self.handle_url(url)
-        if res is None:
-            raise ValueError(self.trace(1, 'res-type is ', type(res).__name__))
+        #if res is None:
+        #    raise ValueError(self.trace(1, 'res-type is ', type(res).__name__))
         self.trace(7, 'handle ', url, ' gave ', res)
         return res
 
@@ -243,16 +243,20 @@ class SrUrlFinder:
         
         self.trace(7, 'response ' + content_type + ' len=' + str(len(html)))
         stream = self.find_html_meta_argument(html, 'twitter:player:stream')
-        
-        if not stream and url.find('artikel.aspx') > 0:
-            url = self.find_html_link_argument(html)
-            if url:
-                self.trace(5, 'Extracted avsnitt-url from artikel-url. Exploring that.')
-                return self.handle_url(url)
+
+        # sometimes artikel.aspx does not contains the stream as expected
+        # this seems only to handle when feed contains un-aired episodes
+        # for which there is no media yet. 
+        # So no need to do a re-fetch the avsnitt-url
+        #if not stream and url.find('artikel.aspx') > 0:
+        #    url = self.find_html_link_argument(html)
+        #    if url:
+        #        self.trace(5, 'Extracted avsnitt-url from artikel-url. Exploring that.')
+        #        return self.handle_url(url)
 
         if not stream:
             self.trace(2, "Failed to find twitter:player:stream-meta-header and <link rel=canonical href /> !\n" + html[0:2300] + '...')
-            raise ValueError("Failed to find twitter:player:stream-meta-header  and <link rel=canonical href />")
+            return None
         
         if not stream.startswith('http'):
             stream = 'http://sverigesradio.se' + stream
@@ -529,5 +533,5 @@ if __name__ == '__main__':
 
 
     redirect_url = SrUrlFinder(r.progid, r.avsnitt, r.artikel).find()
-    common.trace(3, 'result "' + redirect_url + '"')
+    common.trace(3, 'result "', redirect_url, '"')
              
