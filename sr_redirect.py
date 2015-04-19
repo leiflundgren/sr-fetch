@@ -28,7 +28,7 @@ class SrRedirect(AppBase):
             self.log(3, 'query-string: ', self.qs)
             self.start_response("500", [("Content-Type", "text/plain")])
             return ['parameters avsnitt and programid is required!']
-        if not avsnitt.isnumeric() or not programid.isnumeric:
+        if not avsnitt.isdigit() or not programid.isdigit():
             self.start_response("500", [("Content-Type", "text/plain")])
             return ['parameters avsnitt and programid must be numbers!']
 

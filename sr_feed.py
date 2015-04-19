@@ -130,7 +130,7 @@ class SrFeed:
         
         media_url = self.fetch_media_url_for_entry(url)
 
-        media_link_el = xml.etree.ElementTree.Element('link', { 'rel':"self", 'href': media_url, 'type': 'audio/mp4' })
+        media_link_el = xml.etree.ElementTree.Element('link', { 'rel':"enclosure", 'href': media_url, 'type': 'audio/mp4' })
         entryEl.append(media_link_el)
         return entryEl
 
