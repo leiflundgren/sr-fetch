@@ -11,7 +11,21 @@ class SrRedirect(AppBase):
 
         avsnitt = self.qs.get('avsnitt', [None])[0]
         programid = self.qs.get('programid', [None])[0] 
+
+        if not avsnitt:
+            path = 'string'
+            path = environ['PATH_INFO']
+            key = 'avsnitt/'
+            pos = path.index(key)
+            if pos > 0:
+                pos += len(key)
+                qmark = path.index('?', pos)
+                if qmark > 0:
+                    avsnitt = path[pos:qmark]
+                    self.log(5, 'Extracted avsnitt from query URL ', avsnitt)
+
         if not avsnitt or not programid:
+            self.log(3, 'query-string: ', self.qs)
             self.start_response("500", [("Content-Type", "text/plain")])
             return ['parameters avsnitt and programid is required!']
 
