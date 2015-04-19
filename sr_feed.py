@@ -34,12 +34,15 @@ class SrFeed:
         xmlstr = xmlstr.replace('<ns0:', '<').replace('</ns0:', '</').replace('xmlns:ns0="','xmlns="')
         return xmlstr
     
+    def urllib_open_feed(self, url):
+        u_request = urllib2.Request(url, headers={"Accept" : "application/atom+xml, application/rss+xml, application/xml"})
+        return urllib2.urlopen( u_request )
 
     def handle_feed_url(self, url, u_thing=None):
         self.trace(4, 'Handling url ' + url)
         if u_thing == None:
             self.trace(7, 'Fetching content from url')
-            u_thing = urllib2.urlopen(urllib2.Request(url))
+            u_thing = self.urllib_open_feed(url)
         if url != u_thing.geturl():
             self.trace(5, 'Urllib automatically redirected to ' + u_thing.geturl())
             return self.handle_url(self, u_thing.geturl(), u_thing)
@@ -53,12 +56,6 @@ class SrFeed:
         if self.content_type.find('application/atom') < 0 and self.content_type.find('application/rss') < 0:
             raise Exception('Content-type of feed is ' + content_type + '. Not handled!')
 
-        self.trace(5, 'Retreiving content from ' + url)
-
-        self.body = u_thing.read()
-        if len(self.body) == 0:
-            raise Exception('Got empty body from url Unexpected!')
-
         charset = None
         if colon > 0:
             p = raw_content_type.find('charset', colon)
@@ -69,12 +66,24 @@ class SrFeed:
                     e = raw_content_type.find(';', p)
                     charset = raw_content_type[p:]  if e < 0 else raw_content_type[p:e]
                 
-        if not charset is None:
-            self.body = self.body.decode(charset)
+        self.trace(5, 'Retreiving content from ' + url)
+        try:
+            self.xml = xml.etree.ElementTree.parse(u_thing).getroot()
+            self.trace(6, 'Successfully parsed urllib-response directly to xml')
+        except Exception, ex:
+            self.trace(3, 'Failed to parse urllib directly, caught ' + str(ex))
 
-        self.trace(7, "Beginning of body:\n" + self.body[0:100])
+            self.body = u_thing.read()
+            if len(self.body) == 0:
+                raise Exception('Got empty body from url Unexpected!')
 
-        self.xml = xml.etree.ElementTree.fromstring(self.body)
+            if not charset is None:
+                self.body = self.body.decode(charset)
+
+            self.trace(7, "Beginning of body:\n" + self.body[0:100])
+
+            self.xml = xml.etree.ElementTree.fromstring(self.body)
+
         self.trace(3, 'xml type ' + str(type(self.xml)))
         
         
