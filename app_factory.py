@@ -2,6 +2,7 @@ import cgi
 import uwsgi_hello
 import env_test 
 import sr_redirect
+import sr_feed_app
 
 known_apps = { 
     'hello_world': uwsgi_hello.UwsgiHello,

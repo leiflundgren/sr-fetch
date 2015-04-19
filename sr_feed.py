@@ -457,10 +457,10 @@ if __name__ == '__main__':
     else:
         common.tracelevel = 8
 
-    sr_feed = SrFeed(feed_url, common.tracelevel)
+    feeder = SrFeed(feed_url, common.tracelevel)
 
 
-    feed = sr_feed.get_feed()
+    feed = feeder.get_feed()
     
     print(feed)
              

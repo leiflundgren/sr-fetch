@@ -17,6 +17,7 @@ class AppBase(object):
             common.tracelevel = int(self.qs.get('tracelevel', [None])[0])
         except Exception, ex:
             pass
+        self.tracelevel = common.tracelevel
         self.log(4, 'tracelevel is ' + str(common.tracelevel))
 
     def log(self, level, *args):

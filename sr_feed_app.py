@@ -13,12 +13,13 @@ class SrFeedApp(AppBase):
         if not programid:
             self.start_response("500", [("Content-Type", "text/plain")])
             return ['parameter programid is required!']
-        if not programid.isnumeric:
+        if not programid.isdigit():
             self.start_response("500", [("Content-Type", "text/plain")])
             return ['parameter programid must be numbers!']
 
         self.log(4, 'Attempt to find prog=' + str(programid))
-        feed = sr_feed.SrFeed('http://api.sr.se/api/rss/program/' + str(programid), self.tracelevel)
+        feeder = sr_feed.SrFeed('http://api.sr.se/api/rss/program/' + str(programid), self.tracelevel)
+        feed = feeder.get_feed()
         #self.log(5, 'Result ', m4a_url, ' ', type(m4a_url))
      
         self.start_response("200 OK", [("Content-Type", feed.content_type)])
