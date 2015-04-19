@@ -11,12 +11,12 @@ class SrRedirect(AppBase):
 
         avsnitt = self.qs.get('avsnitt', [None])[0]
         programid = self.qs.get('programid', [None])[0] 
-
-        if not avsnitt:
+        artikel = self.qs.get('artikel', [None])[0]
+        if not avsnitt and not artikel :
             path = 'string'
-            path = environ['PATH_INFO']
+            path = self.environ['PATH_INFO']
             key = 'avsnitt/'
-            pos = path.index(key)
+            pos = path.find(key)
             if pos > 0:
                 pos += len(key)
                 qmark = path.index('?', pos)
@@ -24,16 +24,22 @@ class SrRedirect(AppBase):
                     avsnitt = path[pos:qmark]
                     self.log(5, 'Extracted avsnitt from query URL ', avsnitt)
 
-        if not avsnitt or not programid:
+        if (not avsnitt or not programid) and not artikel:
             self.log(3, 'query-string: ', self.qs)
             self.start_response("500", [("Content-Type", "text/plain")])
-            return ['parameters avsnitt and programid is required!']
-        if not avsnitt.isdigit() or not programid.isdigit():
+            return ['parameters avsnitt and programid or artikel is required!']
+        if avsnitt and not avsnitt.isdigit():
             self.start_response("500", [("Content-Type", "text/plain")])
-            return ['parameters avsnitt and programid must be numbers!']
+            return ['parameters avsnitt must be numbers!']
+        if programid and not programid.isdigit():
+            self.start_response("500", [("Content-Type", "text/plain")])
+            return ['parameters programid must be numbers!']
+        if artikel and not artikel.isdigit():
+            self.start_response("500", [("Content-Type", "text/plain")])
+            return ['parameters artikel must be numbers!']
 
-        self.log(4, 'Attempt to find prog=' + str(programid) + ' and avsnitt=' + str(avsnitt))
-        url_finder=SrUrlFinder(programid, avsnitt)
+        self.log(4, 'Attempt to find prog="' + str(programid) + '", avsnitt="' + str(avsnitt) + '" and artikel="' + artikel + '"')
+        url_finder=SrUrlFinder(programid, avsnitt, artikel)
 
         m4a_url =  url_finder.find()
         self.log(5, 'Result ', m4a_url, ' ', type(m4a_url))

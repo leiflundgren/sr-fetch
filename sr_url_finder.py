@@ -20,7 +20,7 @@ import common
 class SrUrlFinder:
     
     def __init__(self, progid=None, avsnitt=None, artikel=None):
-        if artikel == 0 and (progid == 0 or avsnitt == 0):
+        if artikel is None and (progid is None or avsnitt is None):
             raise Exception('artikel or progid+avsnitt must be specified')
 
         self.progid = progid
@@ -28,7 +28,7 @@ class SrUrlFinder:
         self.artikel = artikel
 
     def find(self):
-        if self.progid != 0 and self.avsnitt != 0:
+        if self.progid and self.avsnitt :
             url = "http://sverigesradio.se/sida/avsnitt/" + str(self.avsnitt) + '?programid=' + str(self.progid)
         else:
             url = 'http://sverigesradio.se/sida/artikel.aspx?artikel=' + str(self.artikel)
@@ -236,14 +236,17 @@ class SrUrlFinder:
             return self.handle_url_check_result(url)
 
         response = urllib2.urlopen(url)
+        content_type = response.headers['content-type']
         html = response.read()
 
         # look for <meta name="twitter:player:stream" content="http://sverigesradio.se/topsy/ljudfil/5032268" />
         
+        self.trace(7, 'response ' + content_type + ' len=' + str(len(html)))
         stream = self.find_html_meta_argument(html, 'twitter:player:stream')
         
         if not stream:
-            raise "Failed to find twitter:player:stream-meta-header!"
+            self.trace(2, "Failed to find twitter:player:stream-meta-header!\n" + html[0:2300] + '...')
+            raise ValueError("Failed to find twitter:player:stream-meta-header!")
         
         if not stream.startswith('http'):
             stream = 'http://sverigesradio.se' + stream
@@ -427,6 +430,35 @@ class SrUrlFinder:
         self.trace(7, "value of "+ argname + " is '" + val + "'")
         return val
 
+    def find_html_link_argument(self, html, rel_type="canonical", pos = 0):
+        html=''
+        idx = html.find('<link ', pos)
+        if idx < 0:
+            idx = html.find('<meta property="' + argname + '"')
+        if idx < 0:
+            self.trace(6, "Failed to find meta-argument " + argname)
+            return None
+        
+        # self.trace(8, 'found ' + html[idx:idx+200])
+        
+        idx = html.find('content=', idx)
+        if idx < 0:
+            self.trace(6, "Failed to find content-tag for meta-argument " + argname)
+            return None
+        
+        begin = html.find('"', idx)
+        if begin < 0:
+            raise "Failed to find content-tag start quote"
+            
+        begin = begin+1
+        end = html.find('"', begin)
+        if end < 0:
+            raise "Failed to find content-tag end quote"
+            
+        val = html[begin:end]
+        self.trace(7, "value of "+ argname + " is '" + val + "'")
+        return val
+
 
     def assertTargetDoesntExistOrOverwrite(self):
         if self.overwrite:
@@ -453,9 +485,9 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='My favorite argparser.')
     parser.add_argument('-l', '--tracelevel', help='Verbosity level 1 is important like error, 9 is unneeded debuginfo', default=4, type=int)
-    parser.add_argument('--avsnitt', help='avsnitt', default=0, type=int, required=False)
-    parser.add_argument('--progid', help='progid', default=0, type=int, required=False)
-    parser.add_argument('--artikel', help='artikel', default=0, type=int, required=False)
+    parser.add_argument('--avsnitt', help='avsnitt', default=None, type=int, required=False)
+    parser.add_argument('--progid', help='progid', default=None, type=int, required=False)
+    parser.add_argument('--artikel', help='artikel', default=None, type=int, required=False)
 
     r = parser.parse_args(None)
 
