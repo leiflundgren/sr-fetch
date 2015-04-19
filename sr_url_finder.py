@@ -19,12 +19,19 @@ import common
 
 class SrUrlFinder:
     
-    def __init__(self, progid, avsnitt):
+    def __init__(self, progid=None, avsnitt=None, artikel=None):
+        if artikel == 0 and (progid == 0 or avsnitt == 0):
+            raise Exception('artikel or progid+avsnitt must be specified')
+
         self.progid = progid
         self.avsnitt = avsnitt
+        self.artikel = artikel
 
     def find(self):
-        url = "http://sverigesradio.se/sida/avsnitt/" + str(self.avsnitt) + '?programid=' + str(self.progid)
+        if self.progid != 0 and self.avsnitt != 0:
+            url = "http://sverigesradio.se/sida/avsnitt/" + str(self.avsnitt) + '?programid=' + str(self.progid)
+        else:
+            url = 'http://sverigesradio.se/sida/artikel.aspx?artikel=' + str(self.artikel)
         self.trace(5, "looking at URL " + url)
         return self.handle_url_check_result(url)
 
@@ -59,6 +66,10 @@ class SrUrlFinder:
         # http://sverigesradio.se/sida/avsnitt/412431?programid=4490
         return not re.match('^http://sverigesradio.se/sida/avsnitt/\d+', url) is None
 
+    def looks_like_sr_artikel(self, url):
+        # sverigesradio.se/sida/artikel.aspx?programid=4427&artikel=6143755
+        return not re.match('^http://sverigesradio.se/sida/artikel.asp.*artikel=\d+', url) is None
+
     def looks_like_sr_laddaner(self, url):
         # http://sverigesradio.se/topsy/ljudfil/5032268
         return not re.match('http://sverigesradio.se/topsy/ljudfil/\d+', url) is None
@@ -74,7 +85,7 @@ class SrUrlFinder:
     def handle_url_check_result(self, url):
         res = self.handle_url(url)
         if res is None:
-            raise self.trace(1, 'res-type is ', type(res).__name__)
+            raise ValueError(self.trace(1, 'res-type is ', type(res).__name__))
         self.trace(7, 'handle ', url, ' gave ', res)
         return res
 
@@ -82,7 +93,7 @@ class SrUrlFinder:
     def handle_url(self, url):
         self.trace(9, 'handle_url(' + url + ')')
         
-        if self.looks_like_sr_episode(url):
+        if self.looks_like_sr_episode(url) or self.looks_like_sr_artikel(url):
             return self.handle_sr_episode(url)
 
         if self.looks_like_sr_program_page(url):
@@ -104,7 +115,7 @@ class SrUrlFinder:
             return self.handle_m4a_url(url)
                    
         self.trace(1, 'URL format was not matched! ' + url)
-        raise 'URL format was not matched! ' + url + " Cannot handle this!"
+        raise ValueError('URL format was not matched! ' + url + " Cannot handle this!")
 
     def handle_m3u_url(self, url):
         self.trace(8, 'Processing m3u ' + url)
@@ -211,7 +222,10 @@ class SrUrlFinder:
     def handle_sr_episode(self, url):
         self.trace(5, "looking at SR episode " + url)
 
-        if not re.match('http://sverigesradio.se/sida/avsnitt/\d+\?programid=\d+&playepisode=\d+', url):
+        # sverigesradio.se/sida/artikel.aspx?programid=4427&artikel=6143755
+        if self.looks_like_sr_artikel(url):
+            pass # no work needed for artiel
+        elif not re.match('http://sverigesradio.se/sida/avsnitt/\d+\?programid=\d+&playepisode=\d+', url):
             m = re.match('http://sverigesradio.se/sida/avsnitt/(\d+)\?programid=\d+', url)
             if not m:
                 assert("The URL seems to be missing the avsnitt-i: " + url)
@@ -436,5 +450,18 @@ if __name__ == '__main__':
     for a in sys.argv:
         if a.find('unittest') >= 0:
             sys.exit(unittest.main())
-    SrUrlFinder().main()
+
+    parser = argparse.ArgumentParser(description='My favorite argparser.')
+    parser.add_argument('-l', '--tracelevel', help='Verbosity level 1 is important like error, 9 is unneeded debuginfo', default=4, type=int)
+    parser.add_argument('--avsnitt', help='avsnitt', default=0, type=int, required=False)
+    parser.add_argument('--progid', help='progid', default=0, type=int, required=False)
+    parser.add_argument('--artikel', help='artikel', default=0, type=int, required=False)
+
+    r = parser.parse_args(None)
+
+    common.tracelevel = r.tracelevel
+
+
+    redirect_url = SrUrlFinder(r.progid, r.avsnitt, r.artikel).find()
+    common.trace(3, 'result "' + redirect_url + '"')
              

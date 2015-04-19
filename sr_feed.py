@@ -142,11 +142,19 @@ class SrFeed:
 
     def looks_like_avsnitt_programid(self, url):
         return re.match('http.*avsnitt[/=]([^&/;?]+).*programid=([^&/;?]+)', url)
-    def looks_like_programid_artikel(self, url):
-        return re.match('http.*programid=([^&/;?]+).*artikel[/=]([^&/;?]+)', url)
+    def looks_like_episode_artikel(self, url):
+        # http://sverigesradio.se/sida/artikel.aspx?programid=4427&artikel=6143755
+        return re.match('http.*artikel.aspx.*artikel[/=]([^&/;?]+)', url)
 
     def fetch_media_url_for_entry(self, url):
         # http://sverigesradio.se/sida/artikel.aspx?programid=4427&artikel=6143755
+
+        m = self.looks_like_episode_artikel(url)
+        if m:
+            artikel = m.group(1)
+            url = 'http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=' + artikel + ';tracelevel=' + str(self.tracelevel)
+            self.trace(7, 'created sr_redirect url for artikel=' + artikel + "\n" + url)
+            return url
 
         m = self.looks_like_avsnitt_programid(url)
         if m:
