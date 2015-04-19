@@ -40,7 +40,9 @@ class SrFeed:
         common.trace(level, args)
 
     def get_feed(self):
-        return self.handle_feed_url(self.feed_url)
+        et = self.handle_feed_url(self.feed_url)
+        xmlstr = ET.tostring(et, encoding='utf8', method='xml')
+        return xmlstr
     
 
     def handle_feed_url(self, url, u_thing=None):
@@ -92,9 +94,9 @@ class SrFeed:
         
         
         if self.content_type.find('application/atom') >= 0:
-            self.parse_atom_feed()
+            return self.parse_atom_feed()
         elif self.content_type.find('application/rss') >= 0:
-            self.parse_rss_feed()
+            return self.parse_rss_feed()
         else:
             raise Exception('Content-type of feed is ' + content_type + '. Not handled!')
 
@@ -130,15 +132,26 @@ class SrFeed:
             link.attrib['type'] = "text/html"
         url = link.attrib['href']
 
-        self.trace(8, 'url for entry ' + url)
-
+        self.trace(6, 'url for entry ' + url)
+        
         media_url = self.fetch_media_url_for_entry(url)
 
         media_link_el = xml.etree.ElementTree.Element('link', { 'rel':"self", 'href': media_url, 'type': 'audio/mp4' })
         entryEl.append(media_link_el)
         return entryEl
 
+    def check_match_avsnitt_programid(self, url):
+        return re.match('http.*avsnitt[/=]([^&/;?]+).*programid=([^&/;?]+)', url)
+
     def fetch_media_url_for_entry(self, url):
+        m = self.check_match_avsnitt_programid(url)
+        if m:
+            avsnitt = m.group(1)
+            programid = m.group(2)    
+            url = 'http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?avsnitt=' + avsnitt + ';programid=' + programid + ';tracelevel=' + str(self.tracelevel)
+            self.trace(7, 'created sr_redirect url for avsnitt=' + avsnitt + ' and programid=' + programid +"\n" + url)
+            return url
+
         self.trace(8, 'Processing ' + url)
         u_thing = urllib2.urlopen(urllib2.Request(url))
         content_type = u_thing.headers['content-type']
@@ -150,11 +163,12 @@ class SrFeed:
         if u_thing.geturl() != url:
             url = u_thing.geturl()
             self.trace(5, 'seems like redirect to ' + url)
+            if self.check_match_avsnitt_programid(url):
+                return self.fetch_media_url_for_entry(url)
 
         self.handle_sr_episode(url, u_thing.read())
 
         
-                
  
 
     #def handle_sr_program_page(self, url):
@@ -462,7 +476,7 @@ if __name__ == '__main__':
 
 
     feed = sr_feed.get_feed()
-
+    
     print(feed)
              
      

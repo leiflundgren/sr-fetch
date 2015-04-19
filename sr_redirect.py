@@ -14,6 +14,9 @@ class SrRedirect(AppBase):
         if not avsnitt or not programid:
             self.start_response("500", [("Content-Type", "text/plain")])
             return ['parameters avsnitt and programid is required!']
+        if not avsnitt.isnumeric() or not programid.isnumeric:
+            self.start_response("500", [("Content-Type", "text/plain")])
+            return ['parameters avsnitt and programid must be numbers!']
 
         self.log(4, 'Attempt to find prog=' + str(programid) + ' and avsnitt=' + str(avsnitt))
         url_finder=SrUrlFinder(programid, avsnitt)
