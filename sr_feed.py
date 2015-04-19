@@ -73,6 +73,7 @@ class SrFeed:
         except Exception, ex:
             self.trace(3, 'Failed to parse urllib directly, caught ' + str(ex))
 
+            u_thing = self.urllib_open_feed(url)
             self.body = u_thing.read()
             if len(self.body) == 0:
                 raise Exception('Got empty body from url Unexpected!')
@@ -80,7 +81,7 @@ class SrFeed:
             if not charset is None:
                 self.body = self.body.decode(charset)
 
-            self.trace(7, "Beginning of body:\n" + self.body[0:100])
+            self.trace(7, "Beginning of body:\n" + self.body[0:200])
 
             self.xml = xml.etree.ElementTree.fromstring(self.body)
 
@@ -133,19 +134,23 @@ class SrFeed:
         entryEl.append(media_link_el)
         return entryEl
 
-    def check_match_avsnitt_programid(self, url):
+    def looks_like_avsnitt_programid(self, url):
         return re.match('http.*avsnitt[/=]([^&/;?]+).*programid=([^&/;?]+)', url)
+    def looks_like_programid_artikel(self, url):
+        return re.match('http.*programid=([^&/;?]+).*artikel[/=]([^&/;?]+)', url)
 
     def fetch_media_url_for_entry(self, url):
-        m = self.check_match_avsnitt_programid(url)
+        # http://sverigesradio.se/sida/artikel.aspx?programid=4427&artikel=6143755
+
+        m = self.looks_like_avsnitt_programid(url)
         if m:
             avsnitt = m.group(1)
             programid = m.group(2)    
             url = 'http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?avsnitt=' + avsnitt + ';programid=' + programid + ';tracelevel=' + str(self.tracelevel)
             self.trace(7, 'created sr_redirect url for avsnitt=' + avsnitt + ' and programid=' + programid +"\n" + url)
             return url
-
-        self.trace(8, 'Processing ' + url)
+        
+        self.trace(8, 'Processing fetching ' + url)
         u_thing = urllib2.urlopen(urllib2.Request(url))
         content_type = u_thing.headers['content-type']
         if content_type.find(';') > 0:
@@ -156,8 +161,13 @@ class SrFeed:
         if u_thing.geturl() != url:
             url = u_thing.geturl()
             self.trace(5, 'seems like redirect to ' + url)
-            if self.check_match_avsnitt_programid(url):
+            if self.looks_like_avsnitt_programid(url):
                 return self.fetch_media_url_for_entry(url)
+            if self.looks_like_programid_artikel(url):
+                self.trace(5, 'Redirected to another artikel. Re-trying that')
+                return self.fetch_media_url_for_entry(url)
+
+        
 
         self.handle_sr_episode(url, u_thing.read())
 
@@ -202,6 +212,10 @@ class SrFeed:
     #    #self.trace(0, 'we dont actualy do anything with the program page yet. We should find latest episode or something...')
     #    #exit()
         
+    def looks_like_sr_episode(self, url):
+        # http://sverigesradio.se/sida/avsnitt/412431?programid=4490
+        return not re.match('^http://sverigesradio.se/sida/avsnitt/\d+', url) is None
+
     # http://sverigesradio.se/sida/avsnitt/412431?programid=4490
     def handle_sr_episode(self, url, response_html = None):
         self.trace(5, "looking at SR episode " + url)
