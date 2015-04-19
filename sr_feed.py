@@ -54,6 +54,7 @@ class SrFeed:
             raise Exception('Content-type of feed is ' + content_type + '. Not handled!')
 
         self.trace(5, 'Retreiving content from ' + url)
+
         self.body = u_thing.read()
         if len(self.body) == 0:
             raise Exception('Got empty body from url Unexpected!')
@@ -73,9 +74,7 @@ class SrFeed:
 
         self.trace(7, "Beginning of body:\n" + self.body[0:100])
 
-        #self.xml = XmlHandler().load_from_string(self.body)
         self.xml = xml.etree.ElementTree.fromstring(self.body)
-        #self.xml_body = xml.dom.minidom.parseString(self.body)
         self.trace(3, 'xml type ' + str(type(self.xml)))
         
         
