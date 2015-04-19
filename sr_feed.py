@@ -8,7 +8,7 @@ import re
 import urllib2
 import urllib
 
-from xml.etree import ElementTree as ET
+import xml.etree.ElementTree 
 
 import common
 
@@ -26,7 +26,7 @@ class SrFeed:
 
     def get_feed(self):
         et = self.handle_feed_url(self.feed_url)
-        xmlstr = ET.tostring(et, encoding='utf-8', method='xml')
+        xmlstr = xml.etree.ElementTree.tostring(et, encoding='utf-8', method='xml')
         if self.content_type.find('charset') < 0:
             self.content_type = self.content_type + '; charset=utf-8'
         # ElementTree thinks it has to explicitly state namespace on all nodes. Some readers might have problem with that.
@@ -74,7 +74,7 @@ class SrFeed:
         self.trace(7, "Beginning of body:\n" + self.body[0:100])
 
         #self.xml = XmlHandler().load_from_string(self.body)
-        self.xml = ET.fromstring(self.body)
+        self.xml = xml.etree.ElementTree.fromstring(self.body)
         #self.xml_body = xml.dom.minidom.parseString(self.body)
         self.trace(3, 'xml type ' + str(type(self.xml)))
         
