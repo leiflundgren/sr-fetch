@@ -22,7 +22,7 @@ class SrFeed:
         self.trace(7, 'init looking at ' + feed_url)
 
     def trace(self, level, *args):
-        common.trace(level, args)
+        common.trace(level, 'SrFeed: ', args)
 
     def get_feed(self):
         et = self.handle_feed_url(self.feed_url)

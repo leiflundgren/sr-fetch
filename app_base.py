@@ -3,7 +3,8 @@ import common
 
 class AppBase(object):
     """Base class for my pythong web stuff"""
-    def __init__(self, environ, start_response):
+    def __init__(self, app_name, environ, start_response):
+        self.app_name = app_name
         self.environ = environ
         self.start_response = start_response
 
@@ -22,7 +23,10 @@ class AppBase(object):
 
     def log(self, level, *args):
         # print >> self.log_handle, s
-        common.trace(level, args)
+        common.trace(level, self.app_name, ': ', args)
+
+    def trace(self, level, *args):
+        return self.log(level, args)
 
     def application(self):
         self.log('Not implemented. Should be overriden in subclass')

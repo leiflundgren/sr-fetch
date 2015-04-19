@@ -2,7 +2,7 @@ from app_base import AppBase
 
 class EnvTest(AppBase):
     def __init__(self, environ, start_response):
-        AppBase.__init__(self, environ, start_response)
+        AppBase.__init__(self, 'EnvTest', environ, start_response)
         
     def application(self):
         # Sorting and stringifying the environment key, value pairs

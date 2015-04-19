@@ -5,7 +5,7 @@ from sr_url_finder import SrUrlFinder
 class SrRedirect(AppBase):
     """A class that takes a request un query-string, finds the appropriate SR episode and redirects to the download URL"""
     def __init__(self, environ, start_response):
-        AppBase.__init__(self, environ, start_response)
+        AppBase.__init__(self, 'SrRedirect', environ, start_response)
         
     def application(self):
 

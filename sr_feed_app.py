@@ -5,7 +5,7 @@ import sr_feed
 class SrFeedApp(AppBase):
     """A class that takes a request un query-string, finds the appropriate SR episode and redirects to the download URL"""
     def __init__(self, environ, start_response):
-        AppBase.__init__(self, environ, start_response)
+        AppBase.__init__(self, 'SrFeed', environ, start_response)
         
     def application(self):
 

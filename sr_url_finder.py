@@ -27,6 +27,9 @@ class SrUrlFinder:
         self.avsnitt = avsnitt
         self.artikel = artikel
 
+    def trace(self, level, *args):
+        common.trace(level, 'SrFinder: ', args)
+
     def find(self):
         if self.progid and self.avsnitt :
             url = "http://sverigesradio.se/sida/avsnitt/" + str(self.avsnitt) + '?programid=' + str(self.progid)
@@ -34,10 +37,6 @@ class SrUrlFinder:
             url = 'http://sverigesradio.se/sida/artikel.aspx?artikel=' + str(self.artikel)
         self.trace(5, "looking at URL " + url)
         return self.handle_url_check_result(url)
-
-    def trace(self, level, *args):
-        return common.trace(level, args)
-
     
     def make_hidef(self, url):
         slow_speed_string = '_a96.m4a'
