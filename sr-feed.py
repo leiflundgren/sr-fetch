@@ -12,7 +12,7 @@ import re
 import urllib2
 import urllib
 
-import XmlHandler
+from XmlHandler import find_child_nodes
 
 #import xml.etree
 import xml.sax.saxutils
@@ -22,10 +22,12 @@ import xml.sax.saxutils
 #from Config import Config
 #import xpath
 #import lxml.etree
-from XmlHandler import XmlHandler
+#from XmlHandler import XmlHandler
+from xml.etree import ElementTree as ET
 
 import common
 
+ns = {'atom': "http://www.w3.org/2005/Atom"}
 
 class SrFeed:
     
@@ -38,9 +40,10 @@ class SrFeed:
         common.trace(level, args)
 
     def get_feed(self):
-        return self.handle_url(self.feed_url)
+        return self.handle_feed_url(self.feed_url)
     
-    def handle_url(self, url, u_thing=None):
+
+    def handle_feed_url(self, url, u_thing=None):
         self.trace(4, 'Handling url ' + url)
         if u_thing == None:
             self.trace(7, 'Fetching content from url')
@@ -79,134 +82,121 @@ class SrFeed:
         if self.body[0] == '&' or self.body[0] == u'&':
             self.body = xml.sax.saxutils.unescape(self.body)
 
-        self.trace(7, self.body)
+        self.trace(7, "Beginning of body:\n" + self.body[0:100])
 
 
-        self.xml = XmlHandler().load_from_string(self.body)
+        #self.xml = XmlHandler().load_from_string(self.body)
+        self.xml = ET.fromstring(self.body)
         #self.xml_body = xml.dom.minidom.parseString(self.body)
         self.trace(3, 'xml type ' + str(type(self.xml)))
         
         
         if self.content_type.find('application/atom') >= 0:
-            self.parse_atom_feed(self.body)
+            self.parse_atom_feed()
         elif self.content_type.find('application/rss') >= 0:
-            self.parse_rss_feed(self.body)
+            self.parse_rss_feed()
         else:
             raise Exception('Content-type of feed is ' + content_type + '. Not handled!')
 
-    @staticmethod
-    def find_child_nodes(el, node_names):
-        """
-            el 
-        """
-        if len(node_names) == 0:
-            return [el]
-        name = node_names[0]
-        # if name[0] == '@':
 
 
-        res = []
-        #sub = el.
-        for c in el.childNodes:
-            #print c
-            #print c._get_localName()
-            if c._get_localName() == name:
-                res = res + find_child_nodes(c, node_names[1:] )
-        return res
+    def parse_atom_feed(self):
+        
+        self.trace(7, 'xml type ' + str(type(self.xml)))
+        self.trace(7, 'ls type' + str(type(['hej','hopp'])))
 
-    @staticmethod
-    def parse_atom_feed(self, body):
-        xml = minidom.parseString(body)
-        raise 'xml type ' + str(type(xml))
-        entries = find_child_nodes(xml, ['feed', 'entry'])
-        self.trace(7, 'Found %d ref-nodes in asx-data' % len(asx_refs))
-        for r in asx_refs:
-            self.handle_url( r.attributes['href'].value )
+        assert(self.xml.tag.endswith('feed'))
+
+        #entries = find_child_nodes(self.xml, ['entry'])
+        entries = self.xml.findall('atom:entry', ns)
+        self.trace(7, 'Found %d entries in atom feed ' % len(entries))
+        for r in entries:
+            self.handle_atom_entry(r)
    
-        pass
+        return self.xml
 
-    @staticmethod
     def parse_rss_feed(self, body):
-        pass
-              
+        raise NotImplementedError()
 
-    def handle_html_url(self, url):
-    
-        def find_child_nodes(el, node_names):
-            if len(node_names) == 0:
-                return [el]
-            name = node_names[0]
-            res = []
-            #sub = el.
-            for c in el.childNodes:
-                #print c
-                #print c._get_localName()
-                if c._get_localName() == name:
-                    res = res + find_child_nodes(c, node_names[1:] )
-            return res
-            
-    
-        self.trace(8, 'Processing html ' + url)
+
+    def handle_atom_entry(self, entryEl):
+        #: type: entryEl: xml.etree.ElementTree.Element
+
+        url = ''
+
+        link = entryEl.find('atom:link/[@type="text/html"]', ns)
+        if link is None:
+            link = entryEl.find('atom:link', ns)
+            link.attrib['type'] = "text/html"
+        url = link.attrib['href']
+
+        self.trace(8, 'url for entry ' + url)
+
+        media_url = self.fetch_media_url_for_entry(url)
+
+        media_link_el = xml.etree.ElementTree.Element('link', { 'rel':"self", 'href': media_url, 'type': 'audio/mp4' })
+        entryEl.append(media_link_el)
+        return entryEl
+
+    def fetch_media_url_for_entry(self, url):
+        self.trace(8, 'Processing ' + url)
         u_thing = urllib2.urlopen(urllib2.Request(url))
         content_type = u_thing.headers['content-type']
         if content_type.find(';') > 0:
             content_type = content_type[0:content_type.find(';')].strip()
-        if content_type.find('x-ms-asf') < 0:
+        if content_type.find('text/html') < 0:
             self.trace(2, 'Content-type is "' + content_type + '". That was not expected!')
 
-        asx = u_thing.read()
-        self.trace(9, 'Raw asx:\r\n' + asx)
-        xml = minidom.parseString(asx)
-        self.trace(8, 'Retreived asx\r\n' + xml.toxml())
-        
-        asx_refs = find_child_nodes(xml, ['asx', 'entry', 'ref'])
-        self.trace(7, 'Found %d ref-nodes in asx-data' % len(asx_refs))
-        for r in asx_refs:
-            self.handle_url( r.attributes['href'].value )
+        if u_thing.geturl() != url:
+            url = u_thing.geturl()
+            self.trace(5, 'seems like redirect to ' + url)
+
+        self.handle_sr_episode(url, u_thing.read())
+
         
                 
  
 
-    def handle_sr_program_page(self, url):
-        """ Handles download of latest episode from
-            http://sverigesradio.se/sida/avsnitt?programid=4490
-        """
-        self.trace(6, 'handle_sr_program_page(' + url + ')' )
-        response = urllib2.urlopen(url)
-        html = response.read()
+    #def handle_sr_program_page(self, url):
+    #    """ Handles download of latest episode from
+    #        http://sverigesradio.se/sida/avsnitt?programid=4490
+    #    """
+    #    self.trace(6, 'handle_sr_program_page(' + url + ')' )
+    #    response = urllib2.urlopen(url)
+    #    html = response.read()
         
-        pos = html.find('<span>Lyssna</span>')
-        if pos < 0:
-            raise 'SR program page lacks Lyssna-tag'
-        self.trace(9, 'clip ' + str(pos) + ': ' + html[pos:pos+50])
+    #    pos = html.find('<span>Lyssna</span>')
+    #    if pos < 0:
+    #        raise 'SR program page lacks Lyssna-tag'
+    #    self.trace(9, 'clip ' + str(pos) + ': ' + html[pos:pos+50])
         
-        href= html.rfind('href="', 0, pos)
-        if pos < 0:
-            raise 'SR program page has, Lyssna-tag but href is missing'
-        href = href + 6
-        self.trace(9, 'href=' + html[href:href+50])
+    #    href= html.rfind('href="', 0, pos)
+    #    if pos < 0:
+    #        raise 'SR program page has, Lyssna-tag but href is missing'
+    #    href = href + 6
+    #    self.trace(9, 'href=' + html[href:href+50])
         
-        endp = html.find('"', href)
-        self.trace(9, 'href=' + str(href) + '  endp=' + str(endp))
-        page_url = urllib.unquote(html[href:endp]).replace('&amp;', '&')
-        self.trace(8, 'page_url: ' + page_url)
+    #    endp = html.find('"', href)
+    #    self.trace(9, 'href=' + str(href) + '  endp=' + str(endp))
+    #    page_url = urllib.unquote(html[href:endp]).replace('&amp;', '&')
+    #    self.trace(8, 'page_url: ' + page_url)
             
-        # Create a list of each bit between slashes
-        slashparts = url.split('/')
-        # Now join back the first three sections 'http:', '' and 'example.com'
-        basename = '/'.join(slashparts[:3])
-        url = basename + page_url
-        self.trace(4, 'Deduced latest episode to be ' + url)
+    #    # Create a list of each bit between slashes
+    #    slashparts = url.split('/')
+    #    # Now join back the first three sections 'http:', '' and 'example.com'
+    #    basename = '/'.join(slashparts[:3])
+    #    url = basename + page_url
+    #    self.trace(4, 'Deduced latest episode to be ' + url)
         
-        # raise 'abort!!!!'
+    #    # raise 'abort!!!!'
         
-        self.handle_url(url)
+    #    self.handle_sr_episode(url)
         
-        #self.trace(0, 'we dont actualy do anything with the program page yet. We should find latest episode or something...')
-        #exit()
+    #    #self.trace(0, 'we dont actualy do anything with the program page yet. We should find latest episode or something...')
+    #    #exit()
         
     # http://sverigesradio.se/sida/avsnitt/412431?programid=4490
-    def handle_sr_episode(self, url):
+    def handle_sr_episode(self, url, response_html = None):
         self.trace(5, "looking at SR episode " + url)
 
         if not re.match('http://sverigesradio.se/sida/avsnitt/\d+\?programid=\d+&playepisode=\d+', url):
@@ -215,37 +205,39 @@ class SrFeed:
                 assert("The URL seems to be missing the avsnitt-i: " + url)
             self.trace(7, 'deduced episodeid to be ' + m.group(1))
             
-            return self.handle_sr_episode(url.rstrip('&') + '&playepisode=' + m.group(1))
+            return self.handle_sr_episode(url.rstrip('&') + '&playepisode=' + m.group(1), response_html)
 
-        response = urllib2.urlopen(url)
-        html = response.read()
+        
+        if response_html is None:
+            response = urllib2.urlopen(url)
+            response_html = response.read()
 
         # look for <meta name="twitter:player:stream" content="http://sverigesradio.se/topsy/ljudfil/5032268" />
         
-        stream = self.find_html_meta_argument(html, 'twitter:player:stream')
+        stream = self.find_html_meta_argument(response_html, 'twitter:player:stream')
         
         if not stream:
-            raise "Failed to find twitter:player:stream-meta-header!"
+            raise Exception("Failed to find twitter:player:stream-meta-header!")
         
         if not stream.startswith('http'):
             stream = 'http://sverigesradio.se' + stream
             self.trace(5, 'modified stream url to ' + stream)
             
         if not self.filename:
-            self.trace(8, 'Trying to deduce filename from html-content.')
+            self.trace(8, 'Trying to deduce filename from response_html-content.')
             programname = ''
-            displaydate = self.find_html_meta_argument(html, 'displaydate')
-            programid = self.find_html_meta_argument(html, 'programid')
+            displaydate = self.find_html_meta_argument(response_html, 'displaydate')
+            programid = self.find_html_meta_argument(response_html, 'programid')
 
             # change date from 20141210 to 2014-12-10            
             displaydate =  displaydate[:-4] + '-' +  displaydate[-4:-2] + '-' + displaydate[-2:]
 
-            title = self.find_html_meta_argument(html, 'og:title')
+            title = self.find_html_meta_argument(response_html, 'og:title')
 
             idx = title.rfind(' - ')
             if idx < 0:
                 self.trace(8, 'programname is not part of og:title, truing twitter:title')
-                title = self.find_html_meta_argument(html, 'twitter:title')
+                title = self.find_html_meta_argument(response_html, 'twitter:title')
                 idx = title.rfind(' - ')
 
             if idx > 0:
@@ -448,10 +440,12 @@ class SrFeed:
 class TestSrFetch(unittest.TestCase):
     pass
 
+#args 4430 12 
 if __name__ == '__main__':
     for a in sys.argv:
         if a.find('unittest') >= 0:
             sys.exit(unittest.main())
+
 
     if len(sys.argv) == 1 or sys.argv[1][0] == '-' and sys.argv[1].find('h') > 0:
         print(sys.argv[0] + ' feed_url / sr-programid [tracelevel=8]')

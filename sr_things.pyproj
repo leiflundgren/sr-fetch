@@ -11,7 +11,7 @@
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <InterpreterId>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</InterpreterId>
+    <InterpreterId>{fcc291aa-427c-498c-a4d7-4502d6449b8c}</InterpreterId>
     <InterpreterVersion>2.7</InterpreterVersion>
     <IsWindowsApplication>False</IsWindowsApplication>
     <CommandLineArguments>4430 12</CommandLineArguments>
@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\2.7" />
+    <InterpreterReference Include="{683a85ba-62a4-4fa1-bfbc-3dddfcace987}\2.7" />
     <InterpreterReference Include="{fcc291aa-427c-498c-a4d7-4502d6449b8c}\2.7" />
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
