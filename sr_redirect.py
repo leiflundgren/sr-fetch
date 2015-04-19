@@ -28,6 +28,9 @@ class SrRedirect(AppBase):
             self.log(3, 'query-string: ', self.qs)
             self.start_response("500", [("Content-Type", "text/plain")])
             return ['parameters avsnitt and programid is required!']
+        if not avsnitt.isnumeric() or not programid.isnumeric:
+            self.start_response("500", [("Content-Type", "text/plain")])
+            return ['parameters avsnitt and programid must be numbers!']
 
         self.log(4, 'Attempt to find prog=' + str(programid) + ' and avsnitt=' + str(avsnitt))
         url_finder=SrUrlFinder(programid, avsnitt)
@@ -38,3 +41,4 @@ class SrRedirect(AppBase):
         #return [cgi.escape(m4a_url)]
         return []
 
+     

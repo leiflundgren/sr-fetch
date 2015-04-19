@@ -24,6 +24,11 @@ def trace(level, *args):
             return str(thing)
         except UnicodeEncodeError:
             return unicode(thing).encode('ascii', 'ignore')
+<<<<<<< HEAD
+=======
+        except:
+            return unicode(thing).encode('ascii', 'ignore')
+>>>>>>> f24de458f1e8aad2b244e44fe9e52b3406ddba8f
 
     if tracelevel >= level:
         msg = datetime.datetime.now().strftime("%H:%M:%S: ")
@@ -33,6 +38,10 @@ def trace(level, *args):
         else:
             for count, thing in enumerate(args):
                 msg += mystr(thing)                
+<<<<<<< HEAD
+=======
+        msg += "\n"
+>>>>>>> f24de458f1e8aad2b244e44fe9e52b3406ddba8f
         mywrite(msg)
         return msg
 
