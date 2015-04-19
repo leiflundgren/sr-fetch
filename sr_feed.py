@@ -87,6 +87,12 @@ class SrFeed:
 
         self.trace(3, 'xml type ' + str(type(self.xml)))
         
+        # maybe we should modify the original feed-id, since we change it.
+        # but we should make sure two feeds gets different id. 
+        # This need thought, leaving as is.
+        #feed_id_element = self.xml.find('atom:id', ns)
+        #if not feed_id_element is None:
+        #    feed_id_element.text = 'uuid:35331161-3BC2-4D3E-9901-545993A44636;id=4711;alt=leifsmod'
         
         if self.content_type.find('application/atom') >= 0:
             return self.parse_atom_feed()
