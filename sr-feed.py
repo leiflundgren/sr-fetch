@@ -2,27 +2,12 @@
 
 import sys
 import os
-import glob
-import urllib2
 import subprocess
 import unittest
-import argparse
-import datetime
 import re
 import urllib2
 import urllib
 
-from XmlHandler import find_child_nodes
-
-#import xml.etree
-import xml.sax.saxutils
-#import feedparser
-# from feedformatter import Feed
-# import PyRSS2Gen as RSS2
-#from Config import Config
-#import xpath
-#import lxml.etree
-#from XmlHandler import XmlHandler
 from xml.etree import ElementTree as ET
 
 import common
@@ -41,7 +26,10 @@ class SrFeed:
 
     def get_feed(self):
         et = self.handle_feed_url(self.feed_url)
-        xmlstr = ET.tostring(et, encoding='utf8', method='xml')
+        xmlstr = ET.tostring(et, encoding='utf-8', method='xml')
+        # ElementTree thinks it has to explicitly state namespace on all nodes. Some readers might have problem with that.
+        # This is a hack to remove the namespace
+        xmlstr = xmlstr.replace('<ns0:', '<').replace('</ns0:', '</').replace('xmlns:ns0="','xmlns="')
         return xmlstr
     
 
@@ -81,11 +69,7 @@ class SrFeed:
         if not charset is None:
             self.body = self.body.decode(charset)
 
-        if self.body[0] == '&' or self.body[0] == u'&':
-            self.body = xml.sax.saxutils.unescape(self.body)
-
         self.trace(7, "Beginning of body:\n" + self.body[0:100])
-
 
         #self.xml = XmlHandler().load_from_string(self.body)
         self.xml = ET.fromstring(self.body)
@@ -109,7 +93,6 @@ class SrFeed:
 
         assert(self.xml.tag.endswith('feed'))
 
-        #entries = find_child_nodes(self.xml, ['entry'])
         entries = self.xml.findall('atom:entry', ns)
         self.trace(7, 'Found %d entries in atom feed ' % len(entries))
         for r in entries:
