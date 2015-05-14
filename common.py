@@ -14,10 +14,12 @@ log_handle = None
 
 def trace(level, *args):
     def mywrite(thing):
+        msg = mystr(thing)
         if log_handle is None:
-            sys.stdout.write(mystr(thing))
+            sys.stdout.write(msg)
+            sys.stdout.write("\n")
         else:
-            print >> log_handle, mystr(thing)
+            print >> log_handle, msg
 
     def mystr(thing):
         try:
@@ -36,7 +38,6 @@ def trace(level, *args):
             for count, thing in enumerate(args):
                 msg += mystr(thing)                
 
-        msg += "\n"
         mywrite(msg)
         return msg
 
