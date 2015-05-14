@@ -22,7 +22,11 @@ class SrFeedApp(AppBase):
         feed_data = feeder.get_feed()
         #self.log(5, 'Result ', m4a_url, ' ', type(m4a_url))
      
-        self.start_response("200 OK", [("Content-Type", feeder.content_type)])
+        headers = [
+            ("Content-Type", feeder.content_type),
+            ("Content-Length", str(len(feed_data)))
+        ]
+        self.start_response("200 OK", headers)
         return [feed_data]
 
 

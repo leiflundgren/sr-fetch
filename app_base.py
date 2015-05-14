@@ -19,7 +19,8 @@ class AppBase(object):
         except Exception, ex:
             pass
         self.tracelevel = common.tracelevel
-        self.log(4, 'tracelevel is ' + str(common.tracelevel))
+        self.remote_addr =  environ.get('REMOTE_ADDR')
+        self.log(4, 'tracelevel is ' + str(common.tracelevel) + " request from " + self.remote_addr)
 
     def log(self, level, *args):
         # print >> self.log_handle, s

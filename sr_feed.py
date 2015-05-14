@@ -19,7 +19,7 @@ class SrFeed:
     def __init__(self, feed_url, tracelevel):
         self.tracelevel = tracelevel
         self.feed_url = feed_url
-        self.trace(7, 'init looking at ' + feed_url)
+        self.trace(7, 'initaialed a feed reader for ' + feed_url)
 
     def trace(self, level, *args):
         common.trace(level, 'SrFeed: ', args)
@@ -32,6 +32,7 @@ class SrFeed:
         # ElementTree thinks it has to explicitly state namespace on all nodes. Some readers might have problem with that.
         # This is a hack to remove the namespace
         xmlstr = xmlstr.replace('<ns0:', '<').replace('</ns0:', '</').replace('xmlns:ns0="','xmlns="')
+        self.trace(9, 'feed aquired. content-type="' + self.content_type + "\" len=" + str(len(xmlstr)) + " \r\n" + xmlstr)
         return xmlstr
     
     def urllib_open_feed(self, url):
@@ -153,7 +154,7 @@ class SrFeed:
         if m:
             artikel = m.group(1)
             url = 'http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=' + artikel + ';tracelevel=' + str(self.tracelevel)
-            self.trace(7, 'created sr_redirect url for artikel=' + artikel + "\n" + url)
+            self.trace(7, 'created sr_redirect url for artikel=' + artikel + ": " + url)
             return url
 
         m = self.looks_like_avsnitt_programid(url)
@@ -161,7 +162,7 @@ class SrFeed:
             avsnitt = m.group(1)
             programid = m.group(2)    
             url = 'http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?avsnitt=' + avsnitt + ';programid=' + programid + ';tracelevel=' + str(self.tracelevel)
-            self.trace(7, 'created sr_redirect url for avsnitt=' + avsnitt + ' and programid=' + programid +"\n" + url)
+            self.trace(7, 'created sr_redirect url for avsnitt=' + avsnitt + ' and programid=' + programid +": " + url)
             return url
         
         self.trace(8, 'Processing fetching ' + url)
