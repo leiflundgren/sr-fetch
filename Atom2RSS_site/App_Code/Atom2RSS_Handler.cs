@@ -36,12 +36,19 @@ namespace Atom2RSS
             var string_writer = new System.IO.StringWriter();
 
             //var out = context.Response.OutputStream
-            feed.SaveAsRss20(XmlWriter.Create(string_writer, new XmlWriterSettings { Async=false, Indent=true, Encoding=System.Text.Encoding.UTF8 }));
+            using ( var fw = new System.IO.StreamWriter( System.IO.File.OpenWrite(@"C:\dev\sr-fetch\Atom2RSS_site\sample2.rss.xml")) )
+                using ( var xw = XmlWriter.Create(fw, new XmlWriterSettings { Async=false, Indent=false, Encoding=System.Text.Encoding.UTF8 }))
+                    feed.SaveAsRss20(xw);
 
-            var rss = string_writer.ToString();
+            //var rss = string_writer.ToString();
+            //System.IO.File.WriteAllText(@"C:\dev\sr-fetch\Atom2RSS_site\sample2.rss.xml", rss);
 
             context.Response.ContentType = "application/rss+xml; charset=utf-8";
-            new System.IO.StreamWriter(context.Response.OutputStream).Write(rss);
+//            new System.IO.StreamWriter(context.Response.OutputStream).Write(rss);
+            using (var sw = new System.IO.StreamWriter(context.Response.OutputStream) ) 
+                using (var xw = XmlWriter.Create(sw, new XmlWriterSettings { Async = false, Indent = false, Encoding = System.Text.Encoding.UTF8 }))
+                    feed.SaveAsRss20(xw);
+
 
             //context.Response.Write("<H1>This is an HttpHandler Test.</H1>");
             //context.Response.Write("<p>Your Browser:</p>");
