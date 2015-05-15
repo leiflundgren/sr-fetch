@@ -10,24 +10,38 @@ import datetime
 
 tracelevel = 4
 
+log_handle = None
+
 def trace(level, *args):
     def mywrite(thing):
-        sys.stdout.write(mystr(thing))
+        msg = mystr(thing)
+        if log_handle is None:
+            sys.stdout.write(msg)
+            sys.stdout.write("\n")
+        else:
+            print >> log_handle, msg
+
     def mystr(thing):
         try:
             return str(thing)
         except UnicodeEncodeError:
             return unicode(thing).encode('ascii', 'ignore')
+        except:
+            return unicode(thing).encode('ascii', 'ignore')
 
     if tracelevel >= level:
-        mywrite( datetime.datetime.now().strftime("%H:%M:%S: ") )
+        msg = datetime.datetime.now().strftime("%H:%M:%S: ")
         if isinstance(args[0], (list, tuple)):
             for s in args[0]:
-                mywrite(s)
+                msg += mystr(s)
         else:
             for count, thing in enumerate(args):
-                mywrite(thing)                
-        print '' # newline
+                msg += mystr(thing)                
+
+        mywrite(msg)
+        return msg
+
+    return 'not logged'
 
 def pretty(value,htchar="\t",lfchar="\n",indent=0):
   if type(value) in [dict]:
@@ -101,3 +115,10 @@ def unescape_html(html):
         last = sc+1
     return res
 
+"""" Parses a datetime like 2000-01-01T23:45:00
+Timezone is ignored """
+def parse_datetime(s):
+    return datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%S")
+
+def format_datetime(dt):
+    return dt.strftime('%Y-%m-%dT%H:%M:%S%z')
