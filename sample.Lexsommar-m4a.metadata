@@ -1,0 +1,11 @@
+leif@galena:~$ src/AtomicParsley-debian-0.9.0/AtomicParsley b3-music/Lexsommar/Lexsommar\ 2013-07-15\ Vive\ la\ France.m4a -t +
+ Major Brand: mp42  -  version 0
+ Compatible Brands: mp42 isom 3gp4 3g2a mp41
+ Tagging schemes available:
+   iTunes-style metadata allowed.
+   ISO-copyright notices @ movie and/or track level allowed.
+   uuid private user extension tags allowed.
+Atom "©nam" contains: Lexsommar 20130715 17:00
+Atom "©ART" contains: Sveriges Radio
+Atom "©cmt" contains: �rstidens v�lljud med Alexander H Rauch-Estreich.
+Atom "covr" contains: 1 piece of artwork
