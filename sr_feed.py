@@ -9,6 +9,7 @@ import urllib2
 import urllib
 
 import xml.etree.ElementTree 
+import lxml.etree
 
 import common
 
@@ -16,9 +17,11 @@ ns = {'atom': "http://www.w3.org/2005/Atom"}
 
 class SrFeed:
     
-    def __init__(self, feed_url, tracelevel):
+    def __init__(self, feed_url, tracelevel, format):
         self.tracelevel = tracelevel
         self.feed_url = feed_url
+        self.format = format
+        self.content_type = ''
         self.trace(7, 'initaialed a feed reader for ' + feed_url)
 
     def trace(self, level, *args):
@@ -26,15 +29,40 @@ class SrFeed:
 
     def get_feed(self):
         et = self.handle_feed_url(self.feed_url)
+
+        conv_et = self.translate_format(et)
+
         xmlstr = xml.etree.ElementTree.tostring(et, encoding='utf-8', method='xml')
         if self.content_type.find('charset') < 0:
             self.content_type = self.content_type + '; charset=utf-8'
         # ElementTree thinks it has to explicitly state namespace on all nodes. Some readers might have problem with that.
         # This is a hack to remove the namespace
-        xmlstr = xmlstr.replace('<ns0:', '<').replace('</ns0:', '</').replace('xmlns:ns0="','xmlns="')
+        xmlstr = xmlstr.replace('<ns0:', '<').replace('</ns0:', '</').replace('xmlns:ns0="','xmlns="') 
         self.trace(9, 'feed aquired. content-type="' + self.content_type + "\" len=" + str(len(xmlstr)) + " \r\n" + xmlstr)
-        return xmlstr
+        
+        return xmlstr + "\r\n\r\n"
     
+    def translate_format(self, et):
+        if self.format is None:
+            self.trace(7, 'format of feed not specified, so ' + self.content_type + ' no altered.')
+            return et
+        if self.content_type.find(self.format) >= 0:
+            self.trace(6, 'Content-type is ' + self.content_type + ' so format ' + self.format + ' seems met.')
+            return et
+
+        if self.content_type.find('rss') >= 0 and self.format.find('atom') >= 0:
+            raise NotImplementedError('Cannot convert from rss to atom')
+
+        if self.content_type.find('atom') >= 0 and self.format.find('rss') >= 0:
+            return self.translate_atom_to_rss(et)
+
+    def translate_atom_to_rss(self, et):
+        xls = xml.etree.ElementTree.parse('./atom2rss.xsl')
+        transformer = lxml.etree.XLST(xls)
+        newdom = transformer(et)
+        return newdom
+
+
     def urllib_open_feed(self, url):
         u_request = urllib2.Request(url, headers={"Accept" : "application/atom+xml, application/rss+xml, application/xml"})
         return urllib2.urlopen( u_request )
@@ -484,7 +512,7 @@ if __name__ == '__main__':
 
 
     if len(sys.argv) == 1 or sys.argv[1][0] == '-' and sys.argv[1].find('h') > 0:
-        print(sys.argv[0] + ' feed_url / sr-programid [tracelevel=8]')
+        print(sys.argv[0] + ' feed_url / sr-programid [tracelevel=8] [format=rss]')
         sys.exit(0)
 
     feed_url = sys.argv[1] if sys.argv[1].find('http') == 0 else 'http://api.sr.se/api/rss/program/' + sys.argv[1]
@@ -494,7 +522,11 @@ if __name__ == '__main__':
     else:
         common.tracelevel = 8
 
-    feeder = SrFeed(feed_url, common.tracelevel)
+    format = None
+    if len(sys.argv) >= 4:
+        format = sys.argv[3][10:]
+
+    feeder = SrFeed(feed_url, common.tracelevel, format)
 
 
     feed = feeder.get_feed()

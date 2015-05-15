@@ -17,8 +17,10 @@ class SrFeedApp(AppBase):
             self.start_response("500", [("Content-Type", "text/plain")])
             return ['parameter programid must be numbers!']
 
+        format = self.qs.get('format', [None])[0] 
+
         self.log(4, 'Attempt to find prog=' + str(programid))
-        feeder = sr_feed.SrFeed('http://api.sr.se/api/rss/program/' + str(programid), self.tracelevel)
+        feeder = sr_feed.SrFeed('http://api.sr.se/api/rss/program/' + str(programid), self.tracelevel, format)
         feed_data = feeder.get_feed()
         #self.log(5, 'Result ', m4a_url, ' ', type(m4a_url))
      
