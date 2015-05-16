@@ -82,9 +82,6 @@ class SrFeed:
             self.dom = ET.parse(u_thing)
             self.trace(8, 'dom thing ', type(self.dom), dir(self.dom))
             self.xml = get_root(self.dom)
-            #fel()           
-            #self.xml = ET.parse(u_thing).getroot()
-
             self.trace(6, 'Successfully parsed urllib-response directly to xml')
         except Exception, ex:
             self.trace(3, 'Failed to parse urllib directly, caught ' + str(ex))
