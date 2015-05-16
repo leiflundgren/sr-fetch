@@ -95,8 +95,11 @@ class SrFeed:
                 
         self.trace(5, 'Retreiving content from ' + url)
         try:
-            self.dom = xml.etree.ElementTree.parse(u_thing)
-            self.xml = dom.getroot()
+            #self.dom = xml.etree.ElementTree.parse(u_thing)
+            #self.xml = dom.getroot()
+                        
+            self.xml = xml.etree.ElementTree.parse(u_thing).getroot()
+
             self.trace(6, 'Successfully parsed urllib-response directly to xml')
         except Exception, ex:
             self.trace(3, 'Failed to parse urllib directly, caught ' + str(ex))
@@ -112,6 +115,18 @@ class SrFeed:
             self.trace(7, "Beginning of body:\n" + self.body[0:200])
 
             self.xml = xml.etree.ElementTree.fromstring(self.body)
+
+        #self.body = u_thing.read()
+        #if len(self.body) == 0:
+        #    raise Exception('Got empty body from url ' + url + ' Unexpected!')
+
+        #if not charset is None:
+        #    self.body = self.body.decode(charset)
+
+        #self.trace(7, "Beginning of body:\n" + self.body[0:200])
+
+        #self.dom = xml.etree.ElementTree.fromstring(self.body)
+        #self.xml = dom.getroot()
 
         self.trace(3, 'xml type ' + str(type(self.xml)))
         
@@ -514,7 +529,9 @@ if __name__ == '__main__':
         print(sys.argv[0] + ' feed_url / sr-programid [tracelevel=8] [format=None/rss/atom]')
         sys.exit(0)
 
-    feed_url = sys.argv[1] if sys.argv[1].find('http') == 0 else 'http://api.sr.se/api/rss/program/' + sys.argv[1]
+    feed_url = sys.argv[1]
+    if not feed_url.startswith('http') and feed_url.find('/') < 0:
+        feed_url = 'http://api.sr.se/api/rss/program/' + feed_url
     
     if len(sys.argv) >= 3:
         common.tracelevel = int(sys.argv[2])
