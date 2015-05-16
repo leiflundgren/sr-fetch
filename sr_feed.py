@@ -13,6 +13,8 @@ import lxml.etree
 
 import common
 
+from Atom2RSS import Atom2RSS
+
 ns = {'atom': "http://www.w3.org/2005/Atom"}
 
 class SrFeed:
@@ -56,12 +58,8 @@ class SrFeed:
         if self.content_type.find('atom') >= 0 and self.format.find('rss') >= 0:
             return self.translate_atom_to_rss(et)
 
-    def translate_atom_to_rss(self, et):
-        xls = xml.etree.ElementTree.parse('./atom2rss.xsl')
-        transformer = lxml.etree.XLST(xls)
-        newdom = transformer(et)
-        return newdom
-
+    def translate_atom_to_rss(self, et):        
+        return Atom2RSS(true).transform(et)
 
     def urllib_open_feed(self, url):
         u_request = urllib2.Request(url, headers={"Accept" : "application/atom+xml, application/rss+xml, application/xml"})
@@ -512,7 +510,7 @@ if __name__ == '__main__':
 
 
     if len(sys.argv) == 1 or sys.argv[1][0] == '-' and sys.argv[1].find('h') > 0:
-        print(sys.argv[0] + ' feed_url / sr-programid [tracelevel=8] [format=rss]')
+        print(sys.argv[0] + ' feed_url / sr-programid [tracelevel=8] [format=None/rss/atom]')
         sys.exit(0)
 
     feed_url = sys.argv[1] if sys.argv[1].find('http') == 0 else 'http://api.sr.se/api/rss/program/' + sys.argv[1]
