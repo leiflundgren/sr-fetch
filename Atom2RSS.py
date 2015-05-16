@@ -1,5 +1,4 @@
 import lxml.etree as ET
-import codecs
 from common import trace
 
 
@@ -26,6 +25,6 @@ class Atom2RSS(object):
         #if True or isinstance(atom_thing, ET._Element):
         #    atom_thing = atom_thing.getroottree()
         #    trace(8, 'transfroming atom_thing: ', str(type(atom_thing)))
-        atom_thing = atom_thing.getroot()
+        # atom_thing = atom_thing.getroot()
 
         return self.transformer(atom_thing)

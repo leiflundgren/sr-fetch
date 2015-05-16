@@ -31,11 +31,11 @@ def trace(level, *args):
 
     if tracelevel >= level:
         msg = datetime.datetime.now().strftime("%H:%M:%S: ")
-        if isinstance(args[0], (list, tuple)):
-            for s in args[0]:
-                msg += mystr(s)
-        else:
-            for count, thing in enumerate(args):
+        for count, thing in enumerate(args):
+            if isinstance(thing, (list, tuple)):
+                for s in thing:
+                    msg += mystr(s)
+            else:
                 msg += mystr(thing)                
 
         mywrite(msg)
