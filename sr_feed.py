@@ -59,7 +59,7 @@ class SrFeed:
             return self.translate_atom_to_rss(et)
 
     def translate_atom_to_rss(self, et):        
-        return Atom2RSS(true).transform(et)
+        return Atom2RSS(True).transform(et)
 
     def urllib_open_feed(self, url):
         u_request = urllib2.Request(url, headers={"Accept" : "application/atom+xml, application/rss+xml, application/xml"})
@@ -95,7 +95,8 @@ class SrFeed:
                 
         self.trace(5, 'Retreiving content from ' + url)
         try:
-            self.xml = xml.etree.ElementTree.parse(u_thing).getroot()
+            self.dom = xml.etree.ElementTree.parse(u_thing)
+            self.xml = dom.getroot()
             self.trace(6, 'Successfully parsed urllib-response directly to xml')
         except Exception, ex:
             self.trace(3, 'Failed to parse urllib directly, caught ' + str(ex))
@@ -103,7 +104,7 @@ class SrFeed:
             u_thing = self.urllib_open_feed(url)
             self.body = u_thing.read()
             if len(self.body) == 0:
-                raise Exception('Got empty body from url Unexpected!')
+                raise Exception('Got empty body from url', url, ' Unexpected!')
 
             if not charset is None:
                 self.body = self.body.decode(charset)
@@ -142,7 +143,7 @@ class SrFeed:
         for r in entries:
             self.handle_atom_entry(r)
    
-        return self.xml
+        return self.dom
 
     def parse_rss_feed(self, body):
         raise NotImplementedError()
@@ -520,9 +521,11 @@ if __name__ == '__main__':
     else:
         common.tracelevel = 8
 
+    print sys.argv
+
     format = None
     if len(sys.argv) >= 4:
-        format = sys.argv[3][10:]
+        format = sys.argv[3]
 
     feeder = SrFeed(feed_url, common.tracelevel, format)
 
