@@ -1,7 +1,7 @@
 import lxml.etree as ET
 from common import trace
 
-
+ 
 class Atom2RSS(object):
     """Converts an atom feed to an rss"""
 

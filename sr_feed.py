@@ -25,6 +25,7 @@ class SrFeed:
         self.format = format
         self.content_type = ''
         self.trace(7, 'initaialed a feed reader for ' + feed_url)
+        self.trace(9, 'lxml version is ', ET.LXML_VERSION)
 
     def trace(self, level, *args):
         common.trace(level, 'SrFeed: ', args)
@@ -81,7 +82,7 @@ class SrFeed:
             self.dom = ET.parse(u_thing)
             self.trace(8, 'dom thing ', type(self.dom), dir(self.dom))
             self.xml = get_root(self.dom)
-            fel()           
+            #fel()           
             #self.xml = ET.parse(u_thing).getroot()
 
             self.trace(6, 'Successfully parsed urllib-response directly to xml')
@@ -95,7 +96,7 @@ class SrFeed:
                 raise Exception('Got empty body from url', url, ' Unexpected!')
 
             if not self.charset is None:
-                self.body = self.body.decode(charset)
+                self.body = self.body.decode(self.charset)
 
             self.trace(7, "Beginning of body:\n" + self.body[0:200])
 
