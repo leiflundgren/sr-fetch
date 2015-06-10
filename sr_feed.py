@@ -8,10 +8,12 @@ import re
 import urllib2
 import urllib
 
-import xml.etree.ElementTree 
-import lxml.etree
+#import xml.etree.ElementTree 
+import lxml.etree as ET
 
 import common
+
+from Atom2RSS import Atom2RSS
 
 ns = {'atom': "http://www.w3.org/2005/Atom"}
 
@@ -23,6 +25,7 @@ class SrFeed:
         self.format = format
         self.content_type = ''
         self.trace(7, 'initaialed a feed reader for ' + feed_url)
+        self.trace(9, 'lxml version is ', ET.LXML_VERSION)
 
     def trace(self, level, *args):
         common.trace(level, 'SrFeed: ', args)
@@ -32,7 +35,7 @@ class SrFeed:
 
         conv_et = self.translate_format(et)
 
-        xmlstr = xml.etree.ElementTree.tostring(et, encoding='utf-8', method='xml')
+        xmlstr = ET.tostring(et, encoding='utf-8', method='xml')
         if self.content_type.find('charset') < 0:
             self.content_type = self.content_type + '; charset=utf-8'
         # ElementTree thinks it has to explicitly state namespace on all nodes. Some readers might have problem with that.
@@ -56,15 +59,11 @@ class SrFeed:
         if self.content_type.find('atom') >= 0 and self.format.find('rss') >= 0:
             return self.translate_atom_to_rss(et)
 
-    def translate_atom_to_rss(self, et):
-        xls = xml.etree.ElementTree.parse('./atom2rss.xsl')
-        transformer = lxml.etree.XLST(xls)
-        newdom = transformer(et)
-        return newdom
-
+    def translate_atom_to_rss(self, et):        
+        return Atom2RSS(True).transform(et)
 
     def urllib_open_feed(self, url):
-        u_request = urllib2.Request(url, headers={"Accept" : "application/atom+xml, application/rss+xml, application/xml"})
+        u_request = urllib2.Request(url, headers={"Accept" : "application/atom+xml, application/rss+xml, application/xml, text/xml"})
         return urllib2.urlopen( u_request )
 
     def handle_feed_url(self, url, u_thing=None):
@@ -76,43 +75,45 @@ class SrFeed:
             self.trace(5, 'Urllib automatically redirected to ' + u_thing.geturl())
             return self.handle_url(self, u_thing.geturl(), u_thing)
 
-        raw_content_type = u_thing.headers['content-type']
-        self.trace(7, 'Got response ' + str(u_thing.getcode()) + ' Content-type: ' + raw_content_type)
-
-
-        colon = raw_content_type.find(';')
-        self.content_type = raw_content_type[0:colon].strip()        
-        if self.content_type.find('application/atom') < 0 and self.content_type.find('application/rss') < 0:
-            raise Exception('Content-type of feed is ' + content_type + '. Not handled!')
-
-        charset = None
-        if colon > 0:
-            p = raw_content_type.find('charset', colon)
-            if p > 0:
-                p = raw_content_type.find('=', p)
-                if p > 0:
-                    p = p+1
-                    e = raw_content_type.find(';', p)
-                    charset = raw_content_type[p:]  if e < 0 else raw_content_type[p:e]
+        self.set_contenttype_charset(u_thing)
                 
         self.trace(5, 'Retreiving content from ' + url)
         try:
-            self.xml = xml.etree.ElementTree.parse(u_thing).getroot()
+            self.dom = ET.parse(u_thing)
+            self.trace(8, 'dom thing ', type(self.dom), dir(self.dom))
+            self.xml = get_root(self.dom)
             self.trace(6, 'Successfully parsed urllib-response directly to xml')
         except Exception, ex:
             self.trace(3, 'Failed to parse urllib directly, caught ' + str(ex))
 
             u_thing = self.urllib_open_feed(url)
+            self.set_contenttype_charset(u_thing)
             self.body = u_thing.read()
             if len(self.body) == 0:
-                raise Exception('Got empty body from url Unexpected!')
+                raise Exception('Got empty body from url', url, ' Unexpected!')
 
-            if not charset is None:
-                self.body = self.body.decode(charset)
+            if not self.charset is None:
+                self.body = self.body.decode(self.charset)
 
             self.trace(7, "Beginning of body:\n" + self.body[0:200])
 
-            self.xml = xml.etree.ElementTree.fromstring(self.body)
+            self.dom = ET.fromstring(self.body)
+            self.trace(8, 'dom thing ', type(self.dom), dir(self.dom))
+            #self.xml = self.dom.getroot()
+            self.xml = get_root(self.dom)
+
+
+        #self.body = u_thing.read()
+        #if len(self.body) == 0:
+        #    raise Exception('Got empty body from url ' + url + ' Unexpected!')
+
+        #if not charset is None:
+        #    self.body = self.body.decode(charset)
+
+        #self.trace(7, "Beginning of body:\n" + self.body[0:200])
+
+        #self.dom = ET.fromstring(self.body)
+        #self.xml = dom.getroot()
 
         self.trace(3, 'xml type ' + str(type(self.xml)))
         
@@ -123,13 +124,34 @@ class SrFeed:
         #if not feed_id_element is None:
         #    feed_id_element.text = 'uuid:35331161-3BC2-4D3E-9901-545993A44636;id=4711;alt=leifsmod'
         
-        if self.content_type.find('application/atom') >= 0:
+        if self.content_type.find('application/atom') >= 0 or self.content_type.find('xml') >= 0:
             return self.parse_atom_feed()
         elif self.content_type.find('application/rss') >= 0:
             return self.parse_rss_feed()
         else:
             raise Exception('Content-type of feed is ' + content_type + '. Not handled!')
 
+    def set_contenttype_charset(self, u_thing):
+        raw_content_type = u_thing.headers['content-type']
+        self.trace(7, 'Got response ' + str(u_thing.getcode()) + ' Content-type: ' + raw_content_type)
+
+
+        colon = raw_content_type.find(';')
+        self.content_type = (raw_content_type if colon < 0 else raw_content_type[0:colon]).strip()        
+
+        if self.content_type.find('application/atom') < 0 and self.content_type.find('application/rss') < 0 and self.content_type.find('xml') < 0:
+            raise Exception('Content-type of feed is ' + self.content_type + '. Not handled!')
+
+        self.charset = None
+        if colon > 0:
+            p = raw_content_type.find('charset', colon)
+            if p > 0:
+                p = raw_content_type.find('=', p)
+                if p > 0:
+                    p = p+1
+                    e = raw_content_type.find(';', p)
+                    self.charset = raw_content_type[p:]  if e < 0 else raw_content_type[p:e]
+        return (self.content_type, self.charset)
 
 
     def parse_atom_feed(self):
@@ -144,14 +166,14 @@ class SrFeed:
         for r in entries:
             self.handle_atom_entry(r)
    
-        return self.xml
+        return self.dom
 
     def parse_rss_feed(self, body):
         raise NotImplementedError()
 
 
     def handle_atom_entry(self, entryEl):
-        #: type: entryEl: xml.etree.ElementTree.Element
+        #: type: entryEl: ET.Element
 
         url = ''
 
@@ -165,7 +187,7 @@ class SrFeed:
         
         media_url = self.fetch_media_url_for_entry(url)
 
-        media_link_el = xml.etree.ElementTree.Element('link', { 'rel':"enclosure", 'href': media_url, 'type': 'audio/mp4' })
+        media_link_el = ET.Element('link', { 'rel':"enclosure", 'href': media_url, 'type': 'audio/mp4' })
         entryEl.append(media_link_el)
         return entryEl
 
@@ -500,6 +522,15 @@ class SrFeed:
         return x.startswith('http')
 
 
+def get_root(element_thing):
+    # lxml.etree._ElementTree :: getroot
+    if isinstance(element_thing, ET._ElementTree):
+        return element_thing.getroot()
+    # <type 'lxml.etree._Element'> :: getroottree
+    if isinstance(element_thing, ET._Element):
+        return get_root(element_thing.getroottree())
+            
+    return element_thing
 
 class TestSrFetch(unittest.TestCase):
     pass
@@ -512,19 +543,23 @@ if __name__ == '__main__':
 
 
     if len(sys.argv) == 1 or sys.argv[1][0] == '-' and sys.argv[1].find('h') > 0:
-        print(sys.argv[0] + ' feed_url / sr-programid [tracelevel=8] [format=rss]')
+        print(sys.argv[0] + ' feed_url / sr-programid [tracelevel=8] [format=None/rss/atom]')
         sys.exit(0)
 
-    feed_url = sys.argv[1] if sys.argv[1].find('http') == 0 else 'http://api.sr.se/api/rss/program/' + sys.argv[1]
+    feed_url = sys.argv[1]
+    if not feed_url.startswith('http') and feed_url.find('/') < 0:
+        feed_url = 'http://api.sr.se/api/rss/program/' + feed_url
     
     if len(sys.argv) >= 3:
         common.tracelevel = int(sys.argv[2])
     else:
         common.tracelevel = 8
 
+    print sys.argv
+
     format = None
     if len(sys.argv) >= 4:
-        format = sys.argv[3][10:]
+        format = sys.argv[3]
 
     feeder = SrFeed(feed_url, common.tracelevel, format)
 
