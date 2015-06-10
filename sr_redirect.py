@@ -9,9 +9,9 @@ class SrRedirect(AppBase):
         
     def application(self):
 
-        avsnitt = self.qs.get('avsnitt', [None])[0]
-        programid = self.qs.get('programid', [None])[0] 
-        artikel = self.qs.get('artikel', [None])[0]
+        avsnitt = self.qs_get('avsnitt')
+        programid = self.qs_get('programid') 
+        artikel = self.qs_get('artikel')
         if not avsnitt and not artikel :
             path = 'string'
             path = self.environ['PATH_INFO']
