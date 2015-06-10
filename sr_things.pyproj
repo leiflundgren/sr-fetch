@@ -42,6 +42,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="hello_world.py" />
+    <Compile Include="HttpProxyer.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="lxml_testing.py">
       <SubType>Code</SubType>
     </Compile>

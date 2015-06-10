@@ -12,6 +12,7 @@ class SrRedirect(AppBase):
         avsnitt = self.qs_get('avsnitt')
         programid = self.qs_get('programid') 
         artikel = self.qs_get('artikel')
+        proxy_mode = self.qs_get('proxymode')
         if not avsnitt and not artikel :
             path = 'string'
             path = self.environ['PATH_INFO']
@@ -43,10 +44,13 @@ class SrRedirect(AppBase):
 
         m4a_url =  url_finder.find()
         self.log(5, 'Result ', m4a_url, ' ', type(m4a_url))
-        if not m4a_url is None:
-            self.start_response("301 moved permanently", [("Location", m4a_url)])
-        else:
+        if m4a_url is None:
             self.start_response("503 Media not available yet", [])
+        elif not proxy_mode is None:
+            self.log(4, 'Proxy mode is one, start proxying...')
+
+        else:
+            self.start_response("301 moved permanently", [("Location", m4a_url)])
         #return [cgi.escape(m4a_url)]
         return []
 
