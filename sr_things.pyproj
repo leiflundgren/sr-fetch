@@ -42,6 +42,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="hello_world.py" />
+    <Compile Include="HttpProxyer.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="lxml_testing.py">
       <SubType>Code</SubType>
     </Compile>
@@ -53,6 +56,9 @@
     </Compile>
     <Compile Include="uwsgi_hello.py" />
     <Compile Include="XmlHandler.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="xsl_test.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

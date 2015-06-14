@@ -15,7 +15,7 @@ class AppBase(object):
         except Exception, ex:
             self.log(1, 'while looking at logging, fail, fail, fail: ' + str(ex))
         try:
-            common.tracelevel = int(self.qs.get('tracelevel', [None])[0])
+            common.tracelevel = int(self.qs_get('tracelevel'))
         except Exception, ex:
             pass
         self.tracelevel = common.tracelevel
@@ -34,5 +34,6 @@ class AppBase(object):
         self.start_response("501 not implemented", [("Content-Type", "text/html")])
         return ["Not implemented. Should be overriden in subclass"] 
 
-
+    def qs_get(self, arg):
+        return self.qs.get(arg, [None])[0]
 
