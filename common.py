@@ -12,26 +12,26 @@ tracelevel = 4
 log_handle = None
 
 def trace(level, *args):
-    def mywrite(thing):
-        return mystr(thing)
     def mystr(thing):
-        try:
-            return str(thing)
-        except UnicodeEncodeError:
-            return unicode(thing).encode('ascii', 'ignore')
-        except ex as Exception:
-            return 'Failed to format thing as string caught ' + str(ex)
+        if isinstance(thing, (list, tuple)):
+            msg = ''
+            for s in thing:
+                msg += mystr(s) + ','
+            return msg
+        else:
+            try:
+                return str(thing)
+            except UnicodeEncodeError:
+                return unicode(thing).encode('ascii', 'ignore')
+            except ex as Exception:
+                return 'Failed to format thing as string caught ' + str(ex)
 
     if tracelevel < level:
         return
 
     msg = datetime.datetime.now().strftime("%H:%M:%S: ")
-    if isinstance(args[0], (list, tuple)):
-        for s in args[0]:
-            msg += mywrite(s)
-    else:
-        for count, thing in enumerate(args):
-            msg += mywrite(thing)
+    for count, thing in enumerate(args):
+            msg += mystr(thing)
 
     if log_handle is None:
         print >> sys.stderr, msg.rstrip()
