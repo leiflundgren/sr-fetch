@@ -544,6 +544,7 @@ if __name__ == '__main__':
 
     for a in sys.argv:
         if a.find('unittest') >= 0:
+            common.trace(4, 'Running sr_feed-unitttests')
             sys.exit(unittest.main())
         elif a.find('proxy') >= 0:
             do_proxy = True

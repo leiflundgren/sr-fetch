@@ -9,7 +9,7 @@ class SrFeedApp(AppBase):
         
     def application(self):
 
-        programid = self.qs.get('programid', [None])[0] 
+        programid = self.qs_get('programid') 
         if not programid:
             self.start_response("500", [("Content-Type", "text/plain")])
             return ['parameter programid is required!']
@@ -17,8 +17,8 @@ class SrFeedApp(AppBase):
             self.start_response("500", [("Content-Type", "text/plain")])
             return ['parameter programid must be numbers!']
 
-        format = self.qs.get('format', [None])[0] 
         proxy_data = self.qs_get('proxy_data', 'False').lower() == 'true'
+        format = self.qs_get('format') 
 
         self.log(4, 'Attempt to find prog=' + str(programid)  + ', proxy_data = ' + str(proxy_data))
         feeder = sr_feed.SrFeed('http://api.sr.se/api/rss/program/' + str(programid), self.tracelevel, format, proxy_data)

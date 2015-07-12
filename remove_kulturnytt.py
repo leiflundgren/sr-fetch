@@ -9,8 +9,8 @@ import common
 from datetime import timedelta
 
 # Kulturnytt starts at 3990 and ends 4470
-# ffmpeg -acodec copy -i Lexsommar 2013-07-10 Regn, Regn, Regn.m4a -t 3990 Lexsommar 2013-07-10a Regn, Regn, Regn.m4a
-# ffmpeg -acodec copy -i Lexsommar 2013-07-10 Regn, Regn, Regn.m4a -ss 4470 Lexsommar 2013-07-10b Regn, Regn, Regn.m4a
+# ffmpeg -i Lexsommar 2013-07-10 Regn, Regn, Regn.m4a -t 3990 -acodec copy Lexsommar 2013-07-10a Regn, Regn, Regn.m4a
+# ffmpeg -i Lexsommar 2013-07-10 Regn, Regn, Regn.m4a -ss 4470 -acodec copy Lexsommar 2013-07-10b Regn, Regn, Regn.m4a
 
 def isEmpty(value):
     return value is None or len(value) == 0
@@ -30,7 +30,7 @@ class RemoveKulturnytt:
         # print 'overwrite = ' + str(self.args.overwrite)
         # print 'filename = ' + str(self.args.filename)
 
-        self.ffmpg_cmd_base = ['ffmpeg', '-acodec', 'copy', '-v', str(max(0,tracelevel-6)), '-i', self.filename]
+        self.ffmpg_cmd_base = ['ffmpeg', '-v', str(max(0,tracelevel-6)), '-i', self.filename, '-acodec', 'copy']
         
 
     def read_metadata(self):
@@ -38,45 +38,54 @@ class RemoveKulturnytt:
         self.trace(6, 'Reading metadata from ' + self.filename)
 
         self.duration = timedelta()
-        while True:
-            line = proc.stderr.readline()
-            if isEmpty(line):
-                break 
+        data = proc.stderr.read()
+        self.trace(8, 'read data:\n' + data)
+        
+        input_begin = data.find('Input #0')
 
-            # print line
+        if input_begin < 0:
+            self.trace(3, 'ffprobe didn\'t find any streams! ' + self.filename)
+            return
 
-            if not line.startswith('Input #0'):
-                continue
+        input_end = data.find('Input #', input_begin+5)
+        if input_end < 0:
+            input_end = len(data)
 
-            dur_line = proc.stderr.readline()
-            # print dur_line
+        dur_pos = data.find('Duration:', input_begin, input_end)
+        if dur_pos < 0:
+            self.trace(3, 'ffprobe didn\'t find duration of stream #0 between ' + str(input_begin) + ' to ' + str(input_end))
+            return
 
-            self.trace(7, dur_line)
+        dur_eol = data.find('\n', dur_pos)
+        dur_line = data[dur_pos:dur_eol]
+        # print dur_line
 
-            key = 'Duration:'
-            pos = dur_line.index(key) + len(key)
-            endp = dur_line.index(',', pos)
-            # print 'pos:' + str(pos) + '  endp:' + str(endp)
-            sdur = dur_line[pos:endp].strip()
+        self.trace(7, dur_line)
 
-            parts = re.compile('[:\.]').split(sdur)
-            # print 'sdur:' + sdur + ' parts:' + str(parts)
-            self.duration = timedelta()
-            i = 0
-            if len(parts)>=3:
-                self.duration = self.duration + timedelta(hours=int(parts[i]))
-                i = i+1
-            if len(parts)>=2:
-                self.duration = self.duration + timedelta(minutes=int(parts[i]))
-                i = i+1
-            if len(parts)>=1:
-                self.duration = self.duration + timedelta(seconds=int(parts[i]))
-                i = i+1
+        key = 'Duration:'
+        pos = dur_line.index(key) + len(key)
+        endp = dur_line.index(',', pos)
+        # print 'pos:' + str(pos) + '  endp:' + str(endp)
+        sdur = dur_line[pos:endp].strip()
 
-            stream_info = proc.stderr.readline()
-            break
+        parts = re.compile('[:\.]').split(sdur)
+        # print 'sdur:' + sdur + ' parts:' + str(parts)
+        self.duration = timedelta()
+        i = 0
+        if len(parts)>=3:
+            self.duration = self.duration + timedelta(hours=int(parts[i]))
+            i = i+1
+        if len(parts)>=2:
+            self.duration = self.duration + timedelta(minutes=int(parts[i]))
+            i = i+1
+        if len(parts)>=1:
+            self.duration = self.duration + timedelta(seconds=int(parts[i]))
+            i = i+1
 
-        proc.terminate()                      # Kill the process
+        try:
+            proc.terminate()                      # Kill the process
+        except:
+            pass
 
     def is_supported_show(self):
         lower_filename = self.filename.lower()
@@ -197,7 +206,6 @@ class RemoveKulturnytt:
 
         a_part = self.build_new_name('a')
         b_part = self.build_new_name('b')
-
 
         if not self.overwrite and ( os.path.exists(a_part) or os.path.exists(b_part) ):
             if self.deleteMaster:

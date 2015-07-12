@@ -9,27 +9,7 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "sr-rss", "%USERPROFILE%\Goo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atom2RSS_console", "C:\dev\sr-fetch\Atom2RSS_console\Atom2RSS_console.csproj", "{CD8A1106-143F-47DA-AA0F-56EAE4C31FAA}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Atom2RSS_site", "http://localhost:51060", "{514C7C61-841C-4E03-8809-35183C44F7DF}"
-	ProjectSection(WebsiteProperties) = preProject
-		UseIISExpress = "true"
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_51060"
-		Debug.AspNetCompiler.PhysicalPath = "C:\dev\sr-fetch\Atom2RSS_site\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51060\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_51060"
-		Release.AspNetCompiler.PhysicalPath = "C:\dev\sr-fetch\Atom2RSS_site\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51060\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "C:\dev\sr-fetch\Atom2RSS_site\"
-		DefaultWebSiteLanguage = "Visual C#"
-	EndProjectSection
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "sr_things_datolite", "\\datolite\leif\src\py_web\sr_things_datolite.pyproj", "{03B757EC-C789-4EA6-B6AC-3ADD94539289}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,10 +25,8 @@ Global
 		{CD8A1106-143F-47DA-AA0F-56EAE4C31FAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD8A1106-143F-47DA-AA0F-56EAE4C31FAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD8A1106-143F-47DA-AA0F-56EAE4C31FAA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{514C7C61-841C-4E03-8809-35183C44F7DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{514C7C61-841C-4E03-8809-35183C44F7DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{514C7C61-841C-4E03-8809-35183C44F7DF}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{514C7C61-841C-4E03-8809-35183C44F7DF}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{03B757EC-C789-4EA6-B6AC-3ADD94539289}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03B757EC-C789-4EA6-B6AC-3ADD94539289}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

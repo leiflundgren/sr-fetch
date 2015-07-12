@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -42,6 +42,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="hello_world.py" />
+    <Compile Include="HttpProxyer.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="lxml_testing.py">
       <SubType>Code</SubType>
     </Compile>
@@ -55,9 +58,13 @@
     <Compile Include="XmlHandler.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="xsl_test.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\2.7" />
+    <InterpreterReference Include="{6830c6cc-d1f0-4f78-9fd4-b6df460ac8bc}\2.7" />
     <InterpreterReference Include="{683a85ba-62a4-4fa1-bfbc-3dddfcace987}\2.7" />
     <InterpreterReference Include="{fcc291aa-427c-498c-a4d7-4502d6449b8c}\2.7" />
   </ItemGroup>
