@@ -9,39 +9,34 @@ import argparse
 import datetime
 
 tracelevel = 4
-
 log_handle = None
 
 def trace(level, *args):
     def mywrite(thing):
-        msg = mystr(thing)
-        if log_handle is None:
-            sys.stdout.write(msg)
-            sys.stdout.write("\n")
-        else:
-            print >> log_handle, msg
-
+        return mystr(thing)
     def mystr(thing):
         try:
             return str(thing)
         except UnicodeEncodeError:
             return unicode(thing).encode('ascii', 'ignore')
-        except:
-            return unicode(thing).encode('ascii', 'ignore')
+        except ex as Exception:
+            return 'Failed to format thing as string caught ' + str(ex)
 
-    if tracelevel >= level:
-        msg = datetime.datetime.now().strftime("%H:%M:%S: ")
+    if tracelevel < level:
+        return
+
+    msg = datetime.datetime.now().strftime("%H:%M:%S: ")
+    if isinstance(args[0], (list, tuple)):
+        for s in args[0]:
+            msg += mywrite(s)
+    else:
         for count, thing in enumerate(args):
-            if isinstance(thing, (list, tuple)):
-                for s in thing:
-                    msg += mystr(s)
-            else:
-                msg += mystr(thing)                
+            msg += mywrite(thing)
 
-        mywrite(msg)
-        return msg
-
-    return 'not logged'
+    if log_handle is None:
+        print >> sys.stderr, msg.rstrip()
+    else:
+        print >> log_handle, msg.rstrip()
 
 def pretty(value,htchar="\t",lfchar="\n",indent=0):
   if type(value) in [dict]:
@@ -63,7 +58,11 @@ def run_child_process(cmd):
         line = p.stdout.readline()
         stdout_data += line
         trace(7, line.strip())
-    trace(6, 'process terminated ' + str(p.returncode))
+    if p.returncode == 0:
+        trace(6, 'process terminated successfully')
+    else:
+        trace(4, 'process failed ' + str(p.returncode) + "\r\n" + stdout_data )
+    
     return (p.returncode, stdout_data)
 
 def is_swe_month(x):
@@ -113,7 +112,7 @@ def unescape_html(html):
             res += '_'
 
         last = sc+1
-    return res
+    return res.replace(':', ' ').replace('  ', ' ').replace('  ', ' ').replace('  ', ' ').replace('  ', ' ')
 
 """" Parses a datetime like 2000-01-01T23:45:00
 Timezone is ignored """
