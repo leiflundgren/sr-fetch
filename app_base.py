@@ -29,6 +29,9 @@ class AppBase(object):
     def trace(self, level, *args):
         return self.log(level, args)
 
+    def qs_get(self, keyname, default=None):
+        return self.qs.get(keyname, [default])[0]
+
     def application(self):
         self.log('Not implemented. Should be overriden in subclass')
         self.start_response("501 not implemented", [("Content-Type", "text/html")])

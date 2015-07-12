@@ -18,9 +18,10 @@ class SrFeedApp(AppBase):
             return ['parameter programid must be numbers!']
 
         format = self.qs.get('format', [None])[0] 
+        proxy_data = self.qs_get('proxy_data', 'False').lower() == 'true'
 
-        self.log(4, 'Attempt to find prog=' + str(programid))
-        feeder = sr_feed.SrFeed('http://api.sr.se/api/rss/program/' + str(programid), self.tracelevel, format)
+        self.log(4, 'Attempt to find prog=' + str(programid)  + ', proxy_data = ' + str(proxy_data))
+        feeder = sr_feed.SrFeed('http://api.sr.se/api/rss/program/' + str(programid), self.tracelevel, format, proxy_data)
         feed_data = feeder.get_feed()
         #self.log(5, 'Result ', m4a_url, ' ', type(m4a_url))
      

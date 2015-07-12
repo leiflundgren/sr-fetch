@@ -9,9 +9,11 @@ class SrRedirect(AppBase):
         
     def application(self):
 
-        avsnitt = self.qs.get('avsnitt', [None])[0]
-        programid = self.qs.get('programid', [None])[0] 
-        artikel = self.qs.get('artikel', [None])[0]
+        avsnitt = self.qs_get('avsnitt')
+        programid = self.qs_get('programid')
+        artikel = self.qs_get('artikel')
+        proxy_data = self.qs_get('proxy_data', 'False').lower() == 'true'
+
         if not avsnitt and not artikel :
             path = 'string'
             path = self.environ['PATH_INFO']
@@ -23,6 +25,7 @@ class SrRedirect(AppBase):
                 if qmark > 0:
                     avsnitt = path[pos:qmark]
                     self.log(5, 'Extracted avsnitt from query URL ', avsnitt)
+
 
         if (not avsnitt or not programid) and not artikel:
             self.log(3, 'query-string: ', self.qs)
@@ -38,7 +41,8 @@ class SrRedirect(AppBase):
             self.start_response("500", [("Content-Type", "text/plain")])
             return ['parameters artikel must be numbers!']
 
-        self.log(4, 'Attempt to find prog="' + str(programid) + '", avsnitt="' + str(avsnitt) + '" and artikel="' + artikel + '"')
+        
+        self.log(4, 'Attempt to find prog="' + str(programid) + '", avsnitt="' + str(avsnitt) + '" and artikel="' + artikel + '"' + ', proxy_data = ' + str(proxy_data))
         url_finder=SrUrlFinder(programid, avsnitt, artikel)
 
         m4a_url =  url_finder.find()

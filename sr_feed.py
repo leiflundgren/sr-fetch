@@ -19,10 +19,11 @@ ns = {'atom': "http://www.w3.org/2005/Atom"}
 
 class SrFeed:
     
-    def __init__(self, feed_url, tracelevel, format):
+    def __init__(self, feed_url, tracelevel, format, do_proxy):
         self.tracelevel = tracelevel
         self.feed_url = feed_url
         self.format = format
+        self.do_proxy = do_proxy
         self.content_type = ''
         self.trace(7, 'initaialed a feed reader for ' + feed_url)
         self.trace(9, 'lxml version is ', ET.LXML_VERSION)
@@ -203,7 +204,7 @@ class SrFeed:
         m = self.looks_like_episode_artikel(url)
         if m:
             artikel = m.group(1)
-            url = 'http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=' + artikel + ';tracelevel=' + str(self.tracelevel)
+            url = 'http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=' + artikel + ';tracelevel=' + str(self.tracelevel) + ';proxy_data=' + str(self.do_proxy)
             self.trace(7, 'created sr_redirect url for artikel=' + artikel + ": " + url)
             return url
 
@@ -211,7 +212,7 @@ class SrFeed:
         if m:
             avsnitt = m.group(1)
             programid = m.group(2)    
-            url = 'http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?avsnitt=' + avsnitt + ';programid=' + programid + ';tracelevel=' + str(self.tracelevel)
+            url = 'http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?avsnitt=' + avsnitt + ';programid=' + programid + ';tracelevel=' + str(self.tracelevel) + ';proxy_data=' + str(self.do_proxy)
             self.trace(7, 'created sr_redirect url for avsnitt=' + avsnitt + ' and programid=' + programid +": " + url)
             return url
         
@@ -537,9 +538,15 @@ class TestSrFetch(unittest.TestCase):
 
 #args 4430 12 
 if __name__ == '__main__':
+    print sys.argv
+
+    do_proxy = False
+
     for a in sys.argv:
         if a.find('unittest') >= 0:
             sys.exit(unittest.main())
+        elif a.find('proxy') >= 0:
+            do_proxy = True
 
 
     if len(sys.argv) == 1 or sys.argv[1][0] == '-' and sys.argv[1].find('h') > 0:
@@ -555,17 +562,16 @@ if __name__ == '__main__':
     else:
         common.tracelevel = 8
 
-    print sys.argv
 
     format = None
     if len(sys.argv) >= 4:
         format = sys.argv[3]
 
-    feeder = SrFeed(feed_url, common.tracelevel, format)
+    feeder = SrFeed(feed_url, common.tracelevel, format, do_proxy)
 
 
     feed = feeder.get_feed()
     
-    print(feed)
+    common.trace(2, common.pretty(feed))
              
      
