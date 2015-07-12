@@ -8,7 +8,7 @@ import subprocess
 import argparse
 import datetime
 
-tracelevel = 4
+tracelevel = 9
 log_handle = None
 
 def trace(level, *args):

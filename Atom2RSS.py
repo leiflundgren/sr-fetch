@@ -19,8 +19,8 @@ class Atom2RSS(object):
         trace(8, 'xsl loaded and transformer created: ' , self.transformer)
 
     def transform(self, atom_thing):
-        trace(8, 'transfroming atom_thing: ', str(type(atom_thing)))
-        trace(8, 'transfroming atom_thing: ', dir(atom_thing))
+        trace(8, 'transforming atom_thing: ', str(type(atom_thing)))
+        trace(8, 'transforming atom_thing: ', dir(atom_thing))
 
         #if True or isinstance(atom_thing, ET._Element):
         #    atom_thing = atom_thing.getroottree()

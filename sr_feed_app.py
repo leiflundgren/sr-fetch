@@ -23,12 +23,11 @@ class SrFeedApp(AppBase):
         self.log(4, 'Attempt to find prog=' + str(programid)  + ', proxy_data = ' + str(proxy_data))
         feeder = sr_feed.SrFeed('http://api.sr.se/api/rss/program/' + str(programid), self.tracelevel, format, proxy_data)
         feed_data = feeder.get_feed()
-        #self.log(5, 'Result ', m4a_url, ' ', type(m4a_url))
-     
-        headers = [
+        headers = [     
             ("Content-Type", feeder.content_type),
             ("Content-Length", str(len(feed_data)))
         ]
+        self.log(4, 'Result ', feed_data, headers)
         self.start_response("200 OK", headers)
         return [feed_data]
 

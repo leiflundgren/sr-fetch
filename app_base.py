@@ -37,6 +37,4 @@ class AppBase(object):
         self.start_response("501 not implemented", [("Content-Type", "text/html")])
         return ["Not implemented. Should be overriden in subclass"] 
 
-    def qs_get(self, arg):
-        return self.qs.get(arg, [None])[0]
 
