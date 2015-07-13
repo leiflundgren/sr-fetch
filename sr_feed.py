@@ -67,7 +67,7 @@ class SrFeed:
             raise ValueError('Unknown requested content-type ' + self.content_type)
 
     def translate_atom_to_rss(self, et):        
-        return Atom2RSS(True).transform(et)
+        return Atom2RSS(False).transform(et)
 
     def urllib_open_feed(self, url):
         u_request = urllib2.Request(url, headers={"Accept" : "application/atom+xml, application/rss+xml, application/xml, text/xml"})
@@ -210,7 +210,7 @@ class SrFeed:
         m = self.looks_like_episode_artikel(url)
         if m:
             artikel = m.group(1)
-            url = 'http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=' + artikel + ';tracelevel=' + str(self.tracelevel) + ';proxy_data=' + str(self.do_proxy)
+            url = 'http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect.m4a?artikel=' + artikel + ';tracelevel=' + str(self.tracelevel) + ';proxy_data=' + str(self.do_proxy)
             self.trace(7, 'created sr_redirect url for artikel=' + artikel + ": " + url)
             return url
 
@@ -218,7 +218,7 @@ class SrFeed:
         if m:
             avsnitt = m.group(1)
             programid = m.group(2)    
-            url = 'http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?avsnitt=' + avsnitt + ';programid=' + programid + ';tracelevel=' + str(self.tracelevel) + ';proxy_data=' + str(self.do_proxy)
+            url = 'http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect.m4a?avsnitt=' + avsnitt + ';programid=' + programid + ';tracelevel=' + str(self.tracelevel) + ';proxy_data=' + str(self.do_proxy) + ".m4a"
             self.trace(7, 'created sr_redirect url for avsnitt=' + avsnitt + ' and programid=' + programid +": " + url)
             return url
         

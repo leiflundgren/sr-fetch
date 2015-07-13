@@ -1,5 +1,6 @@
 import lxml.etree as ET
 from common import trace
+from common import pretty
 
  
 class Atom2RSS(object):
@@ -28,3 +29,9 @@ class Atom2RSS(object):
         # atom_thing = atom_thing.getroot()
 
         return self.transformer(atom_thing)
+
+if __name__ == '__main__':
+    dom = ET.parse('sample.rss.xml')
+    rss = Atom2RSS(False).transform(dom)
+    print ET.tostring(rss, pretty_print=True)
+    pass
