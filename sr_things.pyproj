@@ -35,6 +35,7 @@
     <Compile Include="app_factory.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Atom2RSS2.py" />
     <Compile Include="Atom2RSS.py">
       <SubType>Code</SubType>
     </Compile>
