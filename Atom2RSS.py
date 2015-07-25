@@ -6,6 +6,9 @@ from common import trace
 from common import pretty
 from common import get_el
 
+from XmlHandler import find_first_child
+from XmlHandler import find_child_nodes
+
 class Atom2RSS(object):
     """Converts an atom feed to an rss. Abstract base"""
 
@@ -51,56 +54,73 @@ class Atom2RssNodePerNode(Atom2RSS):
         """
         @atom_tree: ElementTree
         """
-        if False: atom_tree = ET.ElementTree()
 
         ns = 'http://www.w3.org/2005/Atom'
         ns_xml = 'http://www.w3.org/XML/1998/namespace'
 
         nsmap = {None: ns, 'xml': ns_xml }
         nsxpath = {'a':ns, 'xml': ns_xml }
+
+        def getfirst(el, xp):
+            r = get(el, xp)
+            if len(r) > 0:
+                return r[0]
+            else:
+                return ''
+
+        def get(el, xp):
+            return el.xpath(xp, namespaces=nsxpath)
+
         atom_root = atom_tree.getroot()
 
-        try:
-            lang = atom_root.attrib['{http://www.w3.org/XML/1998/namespace}lang']
-        except:
-            lang = atom_root.attrib['lang']
+        
+        r= getfirst(atom_tree, '/a:feed/a:rights[@type="text"]/text()')
+        #r= get_first(atom_tree, '/a:feed/a:rights[@type="text"]/text()', namespaces=nsxpath)
+
+        lang = getfirst(atom_tree, '/a:feed/@xml:lang')
+
+#        lang = atom_tree.xpath('/a:feed/@xml:lang', namespaces=nsxpath)[0]
         
         rss_root = ET.Element('rss', version='2.0')
         rss_channel = ET.SubElement(rss_root, 'channel')
 
-        atom_title = atom_root.get('title')
-        atom_title = atom_root.get('title', nsmap)
-        atom_title = atom_root[0]
-        atom_title = get_el(atom_root, 'title', ns)
         rss_title = ET.SubElement(rss_channel, 'title')
-        rss_title.text = atom_title.text
-        rss_title.text = atom_root.xpath('a:title/text()', namespaces=nsmap)
+        rss_title.text = getfirst(atom_root, 'a:title[@type="text"]/text()')
 
-
+        ET.SubElement(rss_channel, 'language').text = lang
         
+        ET.SubElement(rss_channel, 'description').text = getfirst(atom_root, 'a:subtitle[@type="text"]/text()')
 
-        # atom
-        #<title type="text">P2 Live</title>
-        #<subtitle type="text">Sveriges bästa konserter inom klassisk musik, nutida musik, jazz, folk- och världsmusik</subtitle>
-        #<id>uuid:f3f4f7ea-e0bf-404b-b58b-9eb781b101b6;id=37566</id>
-        #<rights type="text">Copyright Sveriges Radio 2015. All rights reserved.</rights>
-        #<updated>2015-07-13T10:08:00+02:00</updated>
-        #<logo>http://sverigesradio.se/sida/content/img/channellogos/srlogo.png</logo>
-        #<link rel="alternate" href="http://sverigesradio.se/sida/default.aspx?programid=4427"/>
+        ET.SubElement(rss_channel, 'copyright').text = getfirst(atom_root, 'a:rights/text()')
 
-        # rss
-        #<title>P2 Live</title>
-        #<language>sv</language>
-        #<description>Sveriges bästa konserter inom klassisk musik, nutida musik, jazz, folk- och världsmusik</description>
-        #<image>
-        #    <url>http://sverigesradio.se/sida/content/img/channellogos/srlogo.png</url>
-        #    <title>P2 Live</title>
-        #    <link>http://sverigesradio.se/sida/default.aspx?programid=4427</link>
-        #</image>
-        #<copyright>Copyright Sveriges Radio 2015. All rights reserved.</copyright>
-        #<pubDate>2015-07-13T10:08:00+02:00</pubDate>
-        #<link>http://sverigesradio.se/sida/default.aspx?programid=4427</link>
-        
+        ET.SubElement(rss_channel, 'pubDate').text = getfirst(atom_root, 'a:updated/text()')
+
+
+        rss_image = ET.SubElement(rss_channel, 'image')
+        ET.SubElement(rss_image, 'url').text = getfirst(atom_root, 'a:logo/text()')
+        ET.SubElement(rss_image, 'title').text = rss_title.text
+        ET.SubElement(rss_image, 'link').text = getfirst(atom_root, 'a:link/@href')
+
+        for atom_entry in find_child_nodes(atom_root, ['entry']):
+            rss_item = ET.SubElement(rss_channel, 'item')
+
+            #rss
+            #<item>
+            ET.SubElement(rss_item, 'description').text = getfirst(atom_entry, 'a:summary/text()')
+            ET.SubElement(rss_item, 'guid').text= getfirst(atom_entry, 'a:id/text()')
+            ET.SubElement(rss_item, 'title').text= getfirst(atom_entry, 'a:title/text()')
+            ET.SubElement(rss_item, 'pubDate').text= getfirst(atom_entry, 'a:published/text()')
+            
+            href_link = ET.SubElement(rss_item, 'link', type="text/html")
+            href_link.text= getfirst(atom_entry, 'a:link[@type="text/html"]/@href')
+            
+            atom_enclosure = getfirst(atom_entry, 'a:link[@rel="enclosure"][@type]')
+            enclosure_link = ET.SubElement(rss_item, 'link', type=atom_enclosure.attrib['type'], rel="enclosure")
+            enclosure_link.text= atom_enclosure.attrib['href']
+
+            ET.SubElement(rss_item, 'category').text = getfirst(atom_entry, 'a:category/text()')
+            
+
         return rss_root
 
 if __name__ == '__main__':

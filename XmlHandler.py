@@ -97,15 +97,22 @@ def find_child_nodes(el, node_names, only_first = False):
     if isinstance(node_names , str):
         return find_child_nodes(el, node_names.split('/'), only_first)
 
-    trace(7, 'xml type ' + str(type(el)))
+    # trace(7, 'xml type ' + str(type(el)))
     if len(node_names) == 0:
         return el
     name = node_names[0]
     if name[0] == '@':
         aname = name[1:]
         for n,v in el.attrib.iteritems():
+            if n[0] == '{' and aname[0] != '{':
+                n= n[n.index('}')+1:]
+
             if n==aname:
                 return v
+        return None
+
+    if name[0] == '[':
+        pass
 
     if name == 'text()':
         return el.text
@@ -143,7 +150,7 @@ class TestXmlHandler(unittest.TestCase):
         fubar = find_first_child(xml, 'hello/foo/bar/text()')
         self.assertEqual('fubar', fubar)
         world = find_first_child(xml, 'hello/@target')
-        self.assertEqual('world', world)
+        self.assertEqual('World', world)
     pass
 
 if __name__ == '__main__':

@@ -3,9 +3,9 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{03b757ec-c789-4ea6-b6ac-3add94539289}</ProjectGuid>
+    <ProjectGuid>{722fe784-6f26-4a7f-a483-0dca37683482}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>XmlHandler.py</StartupFile>
+    <StartupFile>Atom2RSS.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -26,6 +26,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="atom2rss.xsl" />
+    <Content Include="sample.atom.xml" />
+    <Content Include="sample.rss_2.xml" />
     <Content Include="uwsgi.ini" />
   </ItemGroup>
   <ItemGroup>
@@ -35,7 +37,6 @@
     <Compile Include="app_factory.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Atom2RSS2.py" />
     <Compile Include="Atom2RSS.py">
       <SubType>Code</SubType>
     </Compile>
