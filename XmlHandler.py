@@ -52,6 +52,12 @@ if not xml_loaded:
 class XmlHandler(object):
     """description of class"""
 
+    xml = None
+
+    def __init__(self, string=None):
+        if not string is None:
+            self.xml = self.load_from_string(string)
+             
     def load_from_string(self, string):
         if xml_cxml:
             self.xml = xml.etree.CElementTree.fromstring(string)
@@ -80,18 +86,29 @@ class XmlHandler(object):
     def load_from_string_lxml(self, str):
         self.xml = lxml.etree.fromstring(str)
 
-def find_child_nodes(el, node_names):
+def find_first_child(el, node_names):
+    return find_child_nodes(el, node_names, True)
+
+def find_child_nodes(el, node_names, only_first = False):
+
     #: :type el: xml.etree.ElementTree.Element
     #: :type node_names: list
                         
+    if isinstance(node_names , str):
+        return find_child_nodes(el, node_names.split('/'), only_first)
+
     trace(7, 'xml type ' + str(type(el)))
-
-
     if len(node_names) == 0:
-        return [el]
+        return el
     name = node_names[0]
-    # if name[0] == '@':
+    if name[0] == '@':
+        aname = name[1:]
+        for n,v in el.attrib.iteritems():
+            if n==aname:
+                return v
 
+    if name == 'text()':
+        return el.text
 
     res = []
     #sub = el.
@@ -104,40 +121,33 @@ def find_child_nodes(el, node_names):
             tag = tag[tag.index('}')+1:]
 
         if tag == name:
-            res = res + find_child_nodes(c, node_names[1:] )
+            res.append(find_child_nodes(c, node_names[1:], only_first))
+            if only_first and len(res) > 0:
+                return res[0]
+            
     return res
 
 
 class TestXmlHandler(unittest.TestCase):
     def test_xml_load(self):
-        string = '<hello target="World">there</hello>'
+        string = '<xml_ex><hello target="World"><foo><bar>fubar</bar></foo> there</hello></xml_ex>'
         xml = XmlHandler().load_from_string(string)
         print 'got xml object ' + str(xml) + ' of type ' + str(type(xml))
+                
+        hello_ls = find_child_nodes(xml, ['hello'])
+        self.assertEqual(1, len(hello_ls))
 
+        foo = find_first_child(xml, 'hello/foo')
+        self.assertEqual('foo', foo.tag)
+
+        fubar = find_first_child(xml, 'hello/foo/bar/text()')
+        self.assertEqual('fubar', fubar)
+        world = find_first_child(xml, 'hello/@target')
+        self.assertEqual('world', world)
     pass
 
 if __name__ == '__main__':
-    for a in sys.argv:
-        if a.find('unittest') >= 0:            
-            common.tracelevel = 8
-            sys.argv = ['-v']
-            sys.exit(unittest.main())
+    common.tracelevel = 8
+    sys.argv = ['-v']
+    sys.exit(unittest.main())
 
-    if len(sys.argv) == 1 or sys.argv[1][0] == '-' and sys.argv[1].find('h') > 0:
-        print(sys.argv[0] + ' feed_url / sr-programid [tracelevel=8]')
-        sys.exit(0)
-
-    feed_url = sys.argv[1] if sys.argv[1].find('http') == 0 else 'http://api.sr.se/api/rss/program/' + sys.argv[1]
-    
-    if len(sys.argv) >= 3:
-        common.tracelevel = int(sys.argv[2])
-    else:
-        common.tracelevel = 8
-
-    sr_feed = SrFeed(feed_url, common.tracelevel)
-
-
-    feed = sr_feed.get_feed()
-
-    print(feed)
-             

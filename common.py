@@ -121,3 +121,17 @@ def parse_datetime(s):
 
 def format_datetime(dt):
     return dt.strftime('%Y-%m-%dT%H:%M:%S%z')
+
+def get_el(root, name, ns=None):
+    if ns is None:
+        key = name
+    else:
+        if ns[0]!='{': ns = '{' + ns + '}'
+        key = ns + name
+    
+    for child in root:
+        if child.tag == key:
+            return child
+    return None
+
+ 
