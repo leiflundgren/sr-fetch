@@ -1,0 +1,290 @@
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="sv">
+    <title type="text">P2 Live</title>
+    <subtitle type="text">Sveriges bästa konserter inom klassisk musik, nutida musik, jazz, folk- och världsmusik</subtitle>
+    <id>uuid:f3f4f7ea-e0bf-404b-b58b-9eb781b101b6;id=37566</id>
+    <rights type="text">Copyright Sveriges Radio 2015. All rights reserved.</rights>
+    <updated>2015-07-13T10:08:00+02:00</updated>
+    <logo>http://sverigesradio.se/sida/content/img/channellogos/srlogo.png</logo>
+    <link rel="alternate" href="http://sverigesradio.se/sida/default.aspx?programid=4427"/>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6210631</id>
+        <title type="text">Violinsolist med resekamrat från 1734 </title>
+        <summary type="html">&lt;p&gt;Erich Wolfgang Korngolds Violinkonsert i D-dur framför Baiba Skride på en Stradivarius från 1734.&lt;/p&gt;</summary>
+        <published>2015-07-13T10:05:00+02:00</published>
+        <updated>2015-07-13T10:08:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6210631" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3548056.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Baiba Skride uppträder världen över med en Stradivarius från 1734. Tidigare har hon spelat på en Stradivarius från 1725. Foto: Christoph Müller-Girod/CC BY 2.0&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5387297&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Baiba Skride med Sveriges Radios Symfoniorkester&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Erich Wolfgang Korngolds Violinkonsert i D-dur framför Baiba Skride på en Stradivarius från 1734.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6192666.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6210631;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6209766</id>
+        <title type="text">Olycklig kärlek med indisk-bengaliska anor</title>
+        <summary type="html">&lt;p&gt;Hör Lisa Larsson sjunga&amp;nbsp;Rolf Martinssons nya verk, Garden of Devotion.&amp;nbsp; Texterna är hämtade från nobelpristagaren Rabindranath Tagore.&lt;br data-mce-bogus="1"&gt;&lt;/p&gt;</summary>
+        <published>2015-07-10T16:20:00+02:00</published>
+        <updated>2015-07-10T16:25:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6209766" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5385964&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Konsert med Helsingborgs symfoniorkester&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Hör Lisa Larsson sjunga&amp;nbsp;Rolf Martinssons nya verk, Garden of Devotion.&amp;nbsp; Texterna är hämtade från nobelpristagaren Rabindranath Tagore.&lt;br data-mce-bogus="1"&gt;&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6208519.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6209766;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6209642</id>
+        <title type="text">Mary Halvorson – en expressiv vägvisare </title>
+        <summary type="html">&lt;p&gt;Hör&amp;nbsp;den fantastiska konserten med det amerikanska bandet Mary Halvorson Quintet från vinterns Umeå Jazzfestival.&lt;/p&gt;</summary>
+        <published>2015-07-10T14:55:00+02:00</published>
+        <updated>2015-07-10T15:52:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6209642" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3505908_2048_1152.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Den amerikanska gitarristen Mary Halvorson besökte Umeå Jazzfestival med sin kvintett. Foto: Mikael Lindberg/Sveriges Radio&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=db&amp;id=5386512&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Avantgardistisk jazz i Umeå&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Hör&amp;nbsp;den fantastiska konserten med det amerikanska bandet Mary Halvorson Quintet från vinterns Umeå Jazzfestival.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6209631.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6209642;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6208764</id>
+        <title type="text">1400-tal på stor musikfestival</title>
+        <summary type="html">&lt;p&gt;Huelgasensemblen och Paul van Nevel tar oss med till 1400-talet och musik av hovkompositören Firminus Caron vid den stora musikfestivalen i Namur.&lt;/p&gt;</summary>
+        <published>2015-07-09T14:22:00+02:00</published>
+        <updated>2015-07-09T14:22:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6208764" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3547475.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Den belgiske ensembleledaren Paul van Nevel. Foto: Michiel Hendryckx/CC BY 3.0&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5384743&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Vokal prakt från Karl den djärves hov&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Huelgasensemblen och Paul van Nevel tar oss med till 1400-talet och musik av hovkompositören Firminus Caron vid den stora musikfestivalen i Namur.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6192669.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6208764;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6208734</id>
+        <title type="text">Triakel + Maïa Barouh</title>
+        <summary type="html">&lt;p&gt;Triakel sjunger Thyra Karlssons visor i Ådals-Lidens kyrka, Maïa Barouh i vild fransk-japansk mix från Urkult.&lt;/p&gt;</summary>
+        <published>2015-07-09T14:06:00+02:00</published>
+        <updated>2015-07-09T14:08:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6208734" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3474444_2048_1152.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Triakel är Emma Härdelin, Kjell-Erik Eriksson och Jan Strömstedt. Pressbild/Karin Alfredsson&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5383461&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Konsert från Ådals-Lidens kyrka och Urkult&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Triakel sjunger Thyra Karlssons visor i Ådals-Lidens kyrka, Maïa Barouh i vild fransk-japansk mix från Urkult.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6206306.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6208734;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6206923</id>
+        <title type="text">Nyfikenhet, framåtanda och kampvilja</title>
+        <summary type="html">&lt;p&gt;Under femtio- och sextiotalet i Sverige bubblade det bland svenska tonsättare. Möt musik av&amp;nbsp;kompositörerna Dag Wir&amp;eacute;n, Bo Linde, Karl-Birger Blomdahl och Sven-Erik Bäck.&lt;/p&gt;</summary>
+        <published>2015-07-07T12:49:00+02:00</published>
+        <updated>2015-07-07T12:53:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6206923" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3496716_2048_1151.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Karl-Birger Blomdahl. Foto: SVT Bild&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5382217&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Det expressiva, svenska 1900-talet&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Under femtio- och sextiotalet i Sverige bubblade det bland svenska tonsättare. Möt musik av&amp;nbsp;kompositörerna Dag Wir&amp;eacute;n, Bo Linde, Karl-Birger Blomdahl och Sven-Erik Bäck.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6206300.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6206923;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6206085</id>
+        <title type="text">Verdis Requiem med Radiosymfonikerna</title>
+        <summary type="html">&lt;p&gt;Hör det bejublade gästspelet i Belgien med solisterna Anja Kampe, Michelle de Young, Alexey Dolgov och Michail Petrenko.&lt;/p&gt;</summary>
+        <published>2015-07-06T13:20:00+02:00</published>
+        <updated>2015-07-06T15:52:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6206085" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3545513.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Giuseppe Verdi, målning av Giovanni Boldini, 1886. Foto: Flickr user: Chloé. CC BY-NC-SA 2.0&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5380119&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Sveriges Radios Symfoniorkester i Bryssel&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Hör det bejublade gästspelet i Belgien med solisterna Anja Kampe, Michelle de Young, Alexey Dolgov och Michail Petrenko.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6192678.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6206085;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6204665</id>
+        <title type="text">Nyfiken crossover-konsert i musikens gränsland</title>
+        <summary type="html">&lt;p&gt;Nils Landgren och Stockholms Läns Blåsarsymfoniker rör sig fritt bland olika musikstilar i en konsert från Musikaliska i Stockholm.&lt;/p&gt;</summary>
+        <published>2015-07-03T12:03:00+02:00</published>
+        <updated>2015-07-03T12:08:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6204665" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3523547.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Nils Landgren med sin karaktäristiska röda trombon. Foto: Johannes Lundberg/Sveriges Radio&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5378829&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Nils Landgren möter Blåsarsymfonikerna&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Nils Landgren och Stockholms Läns Blåsarsymfoniker rör sig fritt bland olika musikstilar i en konsert från Musikaliska i Stockholm.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6203070.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6204665;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6203890</id>
+        <title type="text">Konsert med framtidens stjärnor</title>
+        <summary type="html">&lt;p&gt;Hör den fransk-nigerianska sopranen Omo Bello i den här konserten med unga lovande musiker.&lt;/p&gt;</summary>
+        <published>2015-07-02T13:48:00+02:00</published>
+        <updated>2015-07-03T12:02:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6203890" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5377533&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Rising Stars på Stockholms Konserhus&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Hör den fransk-nigerianska sopranen Omo Bello i den här konserten med unga lovande musiker.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6203065.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6203890;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6203887</id>
+        <title type="text">Mikkel Ploug Group feat. Mark Turner</title>
+        <summary type="html">&lt;p&gt;Hör en konsert med Mikkel Ploug Group som gästas av&amp;nbsp;saxofonisten Mark Turner.&lt;/p&gt;</summary>
+        <published>2015-07-02T13:47:00+02:00</published>
+        <updated>2015-07-02T13:55:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6203887" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5376207&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Mikkel Ploug Group från Fasching i Stockholm&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Hör en konsert med Mikkel Ploug Group som gästas av&amp;nbsp;saxofonisten Mark Turner.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6202336.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6203887;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6203882</id>
+        <title type="text">Irländska Kila och folkmusik från Vitryssland</title>
+        <summary type="html">&lt;p&gt;Irländska Kila gjorde att bejublat framträdande på Urkult i somras med sin maffiga folkrock. Dessutom en konsert med vitryska sång- och dansensemblen Vietah.&lt;/p&gt;</summary>
+        <published>2015-07-02T13:47:00+02:00</published>
+        <updated>2015-07-02T13:53:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6203882" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3486815_2048_1151.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Rónán Ó Snodaigh ur Kila på en bodhrán. Foto: Mats Einarsson/Sveriges Radio&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5376192&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Konserter från Urkult och Euroradio Folk Festival&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Irländska Kila gjorde att bejublat framträdande på Urkult i somras med sin maffiga folkrock. Dessutom en konsert med vitryska sång- och dansensemblen Vietah.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6202333.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6203882;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6202019</id>
+        <title type="text">Fyra konserter med fem solister</title>
+        <summary type="html">&lt;p&gt;Hör avslutningskonserten från Martha Argerich-festivalen i Lugano, med bland andra Martha själv, Renaud Capu&amp;ccedil;on och Alexander Gurning.&lt;/p&gt;</summary>
+        <published>2015-06-30T14:16:00+02:00</published>
+        <updated>2015-06-30T14:31:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6202019" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5374926&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Konsert med Italienska Schweiz orkester&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Hör avslutningskonserten från Martha Argerich-festivalen i Lugano, med bland andra Martha själv, Renaud Capu&amp;ccedil;on och Alexander Gurning.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6192686.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6202019;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6201178</id>
+        <title type="text">Segerstam och Radiosymfonikerna</title>
+        <summary type="html">&lt;p&gt;Vi följer med dirigentlegenden Leif Segerstam och Sveriges Radios Symfoniorkester till Moskva i en konsert med hela tre extranummer!&lt;/p&gt;</summary>
+        <published>2015-06-29T16:16:00+02:00</published>
+        <updated>2015-06-29T16:22:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6201178" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3542211.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Leif Segerstam är chefdirigent för Åbo Filharmoniska Orkester och Malmö Opera. Foto: Björn Edergren/Sveriges Radio&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5372739&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Debussy, Alfvén och Sibelius i Moskva&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Vi följer med dirigentlegenden Leif Segerstam och Sveriges Radios Symfoniorkester till Moskva i en konsert med hela tre extranummer!&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6179829.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6201178;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6198194</id>
+        <title type="text">Bach, Bach, Bach och Bach</title>
+        <summary type="html">&lt;p&gt;I Frederiksbergskyrkan i Köpenhamn ger den polska ensemblen Arte dei Suonatori ger prov på familjen Bachs övermusikalitet.&lt;/p&gt;</summary>
+        <published>2015-06-25T10:50:00+02:00</published>
+        <updated>2015-06-25T11:06:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6198194" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3541322.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Den polska ensemblen Arte dei Suonatori. Pressbild/midsommerbarok.dk&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5370030&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Arte dei Sounatori från festivalen Midsommerbarok&lt;/a&gt;&lt;/p&gt;&lt;p&gt;I Frederiksbergskyrkan i Köpenhamn ger den polska ensemblen Arte dei Suonatori ger prov på familjen Bachs övermusikalitet.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6179826.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6198194;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6197425</id>
+        <title type="text">Mästarspelmän på Skansen och en engelsk gitarrlegend</title>
+        <summary type="html">&lt;p&gt;Följ med till den årliga spelmanskonserten i Seglora kyrka i Stockholm. Sedan&amp;nbsp;minns vi den engelska gitarrlegenden John Renbourn&amp;nbsp;med en konsert från 2004.&lt;/p&gt;</summary>
+        <published>2015-06-24T12:16:00+02:00</published>
+        <updated>2015-06-24T13:31:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6197425" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3511033_2048_1152.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Den engelska gitarristen John Renbourn dog den 26 mars i år. Foto: Flickranvändaren Sean Rowe/CC BY-NC-ND 2.0&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5368582&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Svensk traditionsmusik och engelsk folkmusik&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Följ med till den årliga spelmanskonserten i Seglora kyrka i Stockholm. Sedan&amp;nbsp;minns vi den engelska gitarrlegenden John Renbourn&amp;nbsp;med en konsert från 2004.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6195810.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6197425;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6197401</id>
+        <title type="text">Från minimalism till vokal/elektroimpro via jazz</title>
+        <summary type="html">&lt;p&gt;Några av Sveriges mest spännande akter stod på scen på&amp;nbsp;Nefertiti i Göteborg när det musikerdrivna skivbolaget Hoob Records firade 10-årsjubileum.&lt;/p&gt;</summary>
+        <published>2015-06-24T12:16:00+02:00</published>
+        <updated>2015-06-24T13:14:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6197401" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3497210_1800_1013.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Per Störby Jutbring. Foto: Johannes Lundberg&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5368610&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Jazzkonsert från Göteborg&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Några av Sveriges mest spännande akter stod på scen på&amp;nbsp;Nefertiti i Göteborg när det musikerdrivna skivbolaget Hoob Records firade 10-årsjubileum.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6195826.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6197401;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6196333</id>
+        <title type="text">Virtuos dragspelskonsert med Jörgen Sundeqvist</title>
+        <summary type="html">&lt;p&gt;Fredrik Högberg lät sig inspireras av dragspelstraditionen kring timmerflottarna på Ångermanälven när han skapade konserten "Dragspelskungen".&lt;/p&gt;</summary>
+        <published>2015-06-23T11:28:00+02:00</published>
+        <updated>2015-06-23T11:53:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6196333" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/478/3467987_2048_1152.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Dragspelaren Jörgen Sundeqvist med Nordiska kammarorkestern. Foto: Niklas Axelsson, SR&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5367291&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Konsert från Kulturfestivalen Sundsvall&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Fredrik Högberg lät sig inspireras av dragspelstraditionen kring timmerflottarna på Ångermanälven när han skapade konserten "Dragspelskungen".&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6195764.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6196333;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6196324</id>
+        <title type="text">Fyra verk av Arvo Pärt</title>
+        <summary type="html">&lt;p&gt;Radiokören under ledning av Peter Dijkstra och Stockholm sinfonietta framför fyra verk av Pärt, bland annat hans berömda "Te Deum".&lt;/p&gt;</summary>
+        <published>2015-06-23T11:28:00+02:00</published>
+        <updated>2015-06-23T11:36:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6196324" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3525796.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Arvo Pärt föddes i Paide i norra Estland 1935 och är idag en idag en av världens största gestalter inom samtida konstmusik. Foto: Kaupko Kikkas&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;Radiokören under ledning av Peter Dijkstra och Stockholm sinfonietta framför fyra verk av Pärt, bland annat hans berömda "Te Deum".&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6164504.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6196324;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6195194</id>
+        <title type="text">Bob hund på Malmö opera</title>
+        <summary type="html">&lt;p&gt;Förra året&amp;nbsp;lånade&amp;nbsp;Bob hund&amp;nbsp;hela Malmö Opera med orkester och allt. Hör hela den fantastiska föreställning som blev resultatet!&lt;/p&gt;</summary>
+        <published>2015-06-22T10:08:00+02:00</published>
+        <updated>2015-06-22T10:12:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6195194" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3485023_1182_665.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Bob Hund intog Malmö Opera i augusti i fjol. Pressbild/Cesare Righetti&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5364460&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Bob hund på Malmö opera/Stockholm Syndrome Ensemble&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Förra året&amp;nbsp;lånade&amp;nbsp;Bob hund&amp;nbsp;hela Malmö Opera med orkester och allt. Hör hela den fantastiska föreställning som blev resultatet!&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6192922.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6195194;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+    <entry>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6192947</id>
+        <title type="text">The 7 Rays and Beyond med Jerry Bergonzi Quintet</title>
+        <summary type="html">&lt;p&gt;Hör en konsert med den amerikanska saxofonisten Jerry Bergonzi, som präglat jazzscenen under de senaste 35 åren.&lt;/p&gt;</summary>
+        <published>2015-06-17T17:25:00+02:00</published>
+        <updated>2015-06-17T17:31:00+02:00</updated>
+        <author>
+            <name>P2 Live</name>
+        </author>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6192947" type="text/html"/>
+        <category term=""/>
+        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3489945_2048_1361.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Bergonzi. Foto: Miriam Aïda/Sveriges Radio  &lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5361711&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Jazz från Radiohuset i Malmö&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Hör en konsert med den amerikanska saxofonisten Jerry Bergonzi, som präglat jazzscenen under de senaste 35 åren.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6190690.gif" width="1px" height="1px" /&gt;</content>
+        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6192947;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+    </entry>
+</feed>
+
