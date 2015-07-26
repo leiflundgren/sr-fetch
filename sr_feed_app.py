@@ -21,7 +21,7 @@ class SrFeedApp(AppBase):
         format = self.qs_get('format') 
 
         self.log(4, 'Attempt to find prog=' + str(programid)  + ', proxy_data = ' + str(proxy_data))
-        feeder = sr_feed.SrFeed('http://api.sr.se/api/rss/program/' + str(programid), self.tracelevel, format, proxy_data)
+        feeder = sr_feed.SrFeed(self.base_url, 'http://api.sr.se/api/rss/program/' + str(programid), self.tracelevel, format, proxy_data)
         feed_data = feeder.get_feed()
         headers = [     
             ("Content-Type", feeder.content_type),
