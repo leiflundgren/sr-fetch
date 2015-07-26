@@ -94,6 +94,7 @@ class Atom2RssNodePerNode(Atom2RSS):
 
         ET.SubElement(rss_channel, 'copyright').text = getfirst(atom_root, 'a:rights/text()')
 
+        ET.SubElement(rss_channel, 'lastBuildDate').text = getfirst(atom_root, 'a:updated/text()')
         ET.SubElement(rss_channel, 'pubDate').text = getfirst(atom_root, 'a:updated/text()')
 
 
@@ -108,9 +109,9 @@ class Atom2RssNodePerNode(Atom2RSS):
 
             #rss
             #<item>
+            ET.SubElement(rss_item, 'title').text= getfirst(atom_entry, 'a:title/text()')
             ET.SubElement(rss_item, 'description').text = getfirst(atom_entry, 'a:summary/text()')
             ET.SubElement(rss_item, 'guid').text= atom_id
-            ET.SubElement(rss_item, 'title').text= getfirst(atom_entry, 'a:title/text()')
             ET.SubElement(rss_item, 'pubDate').text= getfirst(atom_entry, 'a:published/text()')
             
             atom_href_link = getfirst(atom_entry, 'a:link[@type="text/html"]')
@@ -123,12 +124,14 @@ class Atom2RssNodePerNode(Atom2RSS):
 #                atom_enclosure = atom_entry[9]
             if not is_none_or_empty(atom_enclosure):
                 try:
-                    enclosure_link = ET.SubElement(rss_item, 'link', rel="enclosure")
-                    enclosure_link.attrib['type'] =atom_enclosure.attrib.get('type','') 
-                    enclosure_link.text= atom_enclosure.attrib['href']
+                    media_url = atom_enclosure.attrib['href']
+                    enclosure_link = ET.SubElement(rss_item, 'enclosure', type=atom_enclosure.attrib.get('type',''), url=media_url)
                     trace(7, 'atom contained enclosure ', enclosure_link.text, ' type=', enclosure_link.attrib['type'])
                     trace(7, 'atom enclosure ', ET.tostring(atom_enclosure, pretty_print=True))
                     trace(7, 'rss enclosure ', ET.tostring(enclosure_link, pretty_print=True))
+
+                    ET.SubElement(rss_item, 'link').text = media_url
+
                 except AttributeError, e:
                     trace(1, 'atom_enclosure="', atom_enclosure, '"')
                     raise
