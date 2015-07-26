@@ -13,7 +13,7 @@ import lxml.etree as ET
 
 import common
 
-from Atom2RSS import Atom2RSS
+import Atom2RSS
 
 ns = {'atom': "http://www.w3.org/2005/Atom"}
 
@@ -67,7 +67,7 @@ class SrFeed:
             raise ValueError('Unknown requested content-type ' + self.content_type)
 
     def translate_atom_to_rss(self, et):        
-        return Atom2RSS(False).transform(et)
+        return Atom2RSS.Atom2RssNodePerNode().transform(et)
 
     def urllib_open_feed(self, url):
         u_request = urllib2.Request(url, headers={"Accept" : "application/atom+xml, application/rss+xml, application/xml, text/xml"})
@@ -194,8 +194,11 @@ class SrFeed:
         
         media_url = self.fetch_media_url_for_entry(url)
 
-        media_link_el = ET.Element('link', { 'rel':"enclosure", 'href': media_url, 'type': 'audio/mp4' })
-        entryEl.append(media_link_el)
+        tag = entryEl.tag
+        pos = tag.index('}')
+        tag = tag[:pos+1] + 'link'
+        media_link_el = ET.SubElement(entryEl, tag, rel="enclosure", href=media_url, type='audio/mp4')
+        
         return entryEl
 
     def looks_like_avsnitt_programid(self, url):

@@ -5,6 +5,7 @@ import lxml.etree as ET
 from common import trace
 from common import pretty
 from common import get_el
+from common import is_none_or_empty
 
 from XmlHandler import find_first_child
 from XmlHandler import find_child_nodes
@@ -103,20 +104,36 @@ class Atom2RssNodePerNode(Atom2RSS):
 
         for atom_entry in find_child_nodes(atom_root, ['entry']):
             rss_item = ET.SubElement(rss_channel, 'item')
+            atom_id = getfirst(atom_entry, 'a:id/text()')
 
             #rss
             #<item>
             ET.SubElement(rss_item, 'description').text = getfirst(atom_entry, 'a:summary/text()')
-            ET.SubElement(rss_item, 'guid').text= getfirst(atom_entry, 'a:id/text()')
+            ET.SubElement(rss_item, 'guid').text= atom_id
             ET.SubElement(rss_item, 'title').text= getfirst(atom_entry, 'a:title/text()')
             ET.SubElement(rss_item, 'pubDate').text= getfirst(atom_entry, 'a:published/text()')
             
+            atom_href_link = getfirst(atom_entry, 'a:link[@type="text/html"]')
             href_link = ET.SubElement(rss_item, 'link', type="text/html")
             href_link.text= getfirst(atom_entry, 'a:link[@type="text/html"]/@href')
+            trace(7, 'atom href ', ET.tostring(atom_href_link, pretty_print=True))
             
-            atom_enclosure = getfirst(atom_entry, 'a:link[@rel="enclosure"][@type]')
-            enclosure_link = ET.SubElement(rss_item, 'link', type=atom_enclosure.attrib['type'], rel="enclosure")
-            enclosure_link.text= atom_enclosure.attrib['href']
+            atom_enclosure = getfirst(atom_entry, 'a:link[@rel="enclosure"]')            
+#            if not atom_enclosure:
+#                atom_enclosure = atom_entry[9]
+            if not is_none_or_empty(atom_enclosure):
+                try:
+                    enclosure_link = ET.SubElement(rss_item, 'link', rel="enclosure")
+                    enclosure_link.attrib['type'] =atom_enclosure.attrib.get('type','') 
+                    enclosure_link.text= atom_enclosure.attrib['href']
+                    trace(7, 'atom contained enclosure ', enclosure_link.text, ' type=', enclosure_link.attrib['type'])
+                    trace(7, 'atom enclosure ', ET.tostring(atom_enclosure, pretty_print=True))
+                    trace(7, 'rss enclosure ', ET.tostring(enclosure_link, pretty_print=True))
+                except AttributeError, e:
+                    trace(1, 'atom_enclosure="', atom_enclosure, '"')
+                    raise
+            else:
+                trace(6, 'atom_entry ', atom_id, ' did not have enclosure: ', ET.tostring(atom_entry))
 
             ET.SubElement(rss_item, 'category').text = getfirst(atom_entry, 'a:category/text()')
             

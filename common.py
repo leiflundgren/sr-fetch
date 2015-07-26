@@ -134,4 +134,5 @@ def get_el(root, name, ns=None):
             return child
     return None
 
- 
+def is_none_or_empty(s):
+    return s is None or isinstance(s, str) and s == ""
