@@ -50,9 +50,9 @@ class SrRedirect(AppBase):
         self.log(5, 'Result ', m4a_url, ' ', type(m4a_url))
         if m4a_url is None:
             self.start_response("503 Media not available yet", [])
-        elif not proxy_mode is None:
+        elif proxy_data is None:
             self.log(4, 'Proxy mode is one, start proxying...')
-
+            self.start_response("501 Not implemented proxying", [])
         else:
             self.start_response("301 moved permanently", [("Location", m4a_url)])
         #return [cgi.escape(m4a_url)]
