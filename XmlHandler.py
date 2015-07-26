@@ -47,7 +47,20 @@ if not xml_loaded:
     raise Exception('Failed to load *ANY* XML library!!!')
 
 
-       
+def get_namespace(el):
+    type_name = type(el).__name__
+    if isinstance(el, str):
+        tag = el
+    elif type_name == 'lxml.etree.Element':
+        tag = el.tag
+    else:
+        raise ValueError('el is type unknown type ' + type_name)
+
+    c = tag.find('}')
+    if c < 0:
+        return ''
+    else:
+        return tag[0:c+1]       
 
 class XmlHandler(object):
     """description of class"""

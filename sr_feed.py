@@ -12,10 +12,17 @@ import urllib
 import lxml.etree as ET
 
 import common
+from common import is_none_or_empty
+
+from XmlHandler import get_namespace
 
 import Atom2RSS
 
-ns = {'atom': "http://www.w3.org/2005/Atom"}
+ns_atom = 'http://www.w3.org/2005/Atom'
+ns_xml = 'http://www.w3.org/XML/1998/namespace'
+ns_itunes = "http://www.itunes.com/dtds/podcast-1.0.dtd" 
+ns = { 'atom':ns_atom, 'xml': ns_xml, 'itunes':ns_itunes }
+
 
 class SrFeed:
     
@@ -164,42 +171,54 @@ class SrFeed:
     def parse_atom_feed(self):
         
         self.trace(7, 'xml type ' + str(type(self.xml)))
-        self.trace(7, 'ls type' + str(type(['hej','hopp'])))
+        
+
+        def getfirst(el, xp):
+            r = get(el, xp)
+            if len(r) > 0:
+                return r[0]
+            else:
+                return ''
+
+        def get(el, xp):
+            try:
+                #return el.xpath(xp)
+                return el.xpath(xp, namespaces=ns)
+            except ET.XPathEvalError, e:
+                self.trace(2, 'XPath failed ', xp, e)
+                raise
+
 
         assert(self.xml.tag.endswith('feed'))
 
         entries = self.xml.findall('atom:entry', ns)
         self.trace(7, 'Found %d entries in atom feed ' % len(entries))
-        for r in entries:
-            self.handle_atom_entry(r)
-   
+        for entryEl in entries:
+            #: type: entryEl: ET.Element
+
+            url = ''
+
+            link = getfirst(entryEl, "atom:link[@type='text/html']")
+            if is_none_or_empty(link):
+                link = entryEl.find('atom:link', ns)
+                link.attrib['type'] = "text/html"
+            url = link.attrib['href']
+
+            self.trace(6, 'url for entry ' + url)
+        
+            media_url = self.fetch_media_url_for_entry(url)
+
+            tag = get_namespace(entryEl.tag) + 'link'
+            media_link_el = ET.SubElement(entryEl, tag, rel="enclosure", href=media_url, type='audio/mp4')
+        
+
         return self.dom
 
     def parse_rss_feed(self, body):
         raise NotImplementedError()
 
 
-    def handle_atom_entry(self, entryEl):
-        #: type: entryEl: ET.Element
 
-        url = ''
-
-        link = entryEl.find('atom:link/[@type="text/html"]', ns)
-        if link is None:
-            link = entryEl.find('atom:link', ns)
-            link.attrib['type'] = "text/html"
-        url = link.attrib['href']
-
-        self.trace(6, 'url for entry ' + url)
-        
-        media_url = self.fetch_media_url_for_entry(url)
-
-        tag = entryEl.tag
-        pos = tag.index('}')
-        tag = tag[:pos+1] + 'link'
-        media_link_el = ET.SubElement(entryEl, tag, rel="enclosure", href=media_url, type='audio/mp4')
-        
-        return entryEl
 
     def looks_like_avsnitt_programid(self, url):
         return re.match('http.*avsnitt[/=]([^&/;?]+).*programid=([^&/;?]+)', url)
