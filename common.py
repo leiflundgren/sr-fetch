@@ -14,10 +14,10 @@ log_handle = None
 def trace(level, *args):
     def mystr(thing):
         if isinstance(thing, (list, tuple)):
-            msg = ''
+            msg = []
             for s in thing:
-                msg += mystr(s) + ','
-            return msg
+                msg += [mystr(s)]
+            return ', '.join(msg)
         else:
             try:
                 return str(thing)

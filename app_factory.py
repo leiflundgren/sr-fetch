@@ -3,6 +3,7 @@ import uwsgi_hello
 import env_test 
 import sr_redirect
 import sr_feed_app
+import re
 
 known_apps = { 
     'hello_world': uwsgi_hello.UwsgiHello,
@@ -15,7 +16,7 @@ known_apps = {
 def application(environ, start_response):
     path = environ['PATH_INFO']
 
-    path_parts = path.split('/')
+    path_parts = re.findall('[^/\.]+', path)
 
     log = environ['wsgi.errors']
 
@@ -25,7 +26,7 @@ def application(environ, start_response):
             return v(environ, start_response).application()
 
     # Sorting and stringifying the environment key, value pairs
-    response_body = 'You wanted to get to ' + cgi.escape(path) + ' That is an unknown application'
+    response_body = 'You wanted to get to "' + cgi.escape(path) + "'\r\nThat is an unknown application\r\n"
 
     status = '501 Not implemented'
     response_headers = [('Content-Type', 'text/plain'),

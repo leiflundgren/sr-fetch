@@ -7,6 +7,7 @@ import unittest
 import re
 import urllib2
 import urllib
+import urlparse
 
 #import xml.etree.ElementTree 
 import lxml.etree as ET
@@ -26,8 +27,9 @@ ns = { 'atom':ns_atom, 'xml': ns_xml, 'itunes':ns_itunes }
 
 class SrFeed:
     
-    def __init__(self, feed_url, tracelevel, format, do_proxy):
+    def __init__(self, base_url, feed_url, tracelevel, format, do_proxy):
         self.tracelevel = tracelevel
+        self.base_url = base_url
         self.feed_url = feed_url
         self.format = format
         self.do_proxy = do_proxy
@@ -220,29 +222,46 @@ class SrFeed:
 
 
 
-    def looks_like_avsnitt_programid(self, url):
-        return re.match('http.*avsnitt[/=]([^&/;?]+).*programid=([^&/;?]+)', url)
-    def looks_like_episode_artikel(self, url):
-        # http://sverigesradio.se/sida/artikel.aspx?programid=4427&artikel=6143755
-        return re.match('http.*artikel.aspx.*artikel[/=]([^&/;?]+)', url)
+    def fetch_media_url_for_entry(self, url, old_urls=[]):
+        orginal_url = url
 
-    def fetch_media_url_for_entry(self, url):
-        # http://sverigesradio.se/sida/artikel.aspx?programid=4427&artikel=6143755
+        if url in old_urls:
+            self.trace(1,'Found infinite recursion. Attempting to find url already looked at: ' + url + "\r\n----\r\n" + "\r\n".join(old_urls))
+            raise Exception("Found infinite recursion. Attempting to find url already looked.")
 
-        m = self.looks_like_episode_artikel(url)
-        if m:
-            artikel = m.group(1)
-            url = 'http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect.m4a?artikel=' + artikel + ';tracelevel=' + str(self.tracelevel) + ';proxy_data=' + str(self.do_proxy)
-            self.trace(7, 'created sr_redirect url for artikel=' + artikel + ": " + url)
+        qmark = url.find('?')
+        if qmark < 0:
+            self.trace(1, 'Url ' + url + ' missing querystring!')
+            raise ValueError('Url ' + url + ' missing querystring!')
+        qs = urlparse.parse_qs(url[qmark+1:])
+
+        params=[]
+        id = 'unknown'
+        if 'programid' in qs:
+            id = qs['programid'][0]
+            params.append('programid=' + id)
+        if 'avsnitt' in qs:
+            id = qs['avsnitt'][0]
+            params.append('avsnitt=' + id)
+        if 'artikel' in qs:
+            id = qs['artikel'][0]
+            params.append('artikel=' + id)
+
+        # http://sverigesradio.se/sida/artikel.aspx?programid=4427&artikel=6143755
+        if 'avsnitt' in qs or 'artikel' in qs:
+            qs_params = ';'.join(params)
+            url = self.base_url +'sr_redirect/' + id + '.m4a?' + qs_params + ';tracelevel=' + str(self.tracelevel) + ';proxy_data=' + str(self.do_proxy)
+            self.trace(7, 'created sr_redirect url: ' + url)
             return url
 
-        m = self.looks_like_avsnitt_programid(url)
-        if m:
-            avsnitt = m.group(1)
-            programid = m.group(2)    
-            url = 'http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect.m4a?avsnitt=' + avsnitt + ';programid=' + programid + ';tracelevel=' + str(self.tracelevel) + ';proxy_data=' + str(self.do_proxy) + ".m4a"
-            self.trace(7, 'created sr_redirect url for avsnitt=' + avsnitt + ' and programid=' + programid +": " + url)
-            return url
+        #if 'avsnitt' in qs and 'artikel' in qs:
+        #    artikel = qs['artikel']
+        #    programid = qs['programid']
+        ##    artikel = m.group(1)
+        #    url = self.base_url +'sr_redirect.m4a?artikel=' + artikel + ';tracelevel=' + str(self.tracelevel) + ';proxy_data=' + str(self.do_proxy)
+        #    self.trace(7, 'created sr_redirect url for artikel=' + artikel + ": " + url)
+        #    return url
+
         
         self.trace(8, 'Processing fetching ' + url)
         u_thing = urllib2.urlopen(urllib2.Request(url))
@@ -255,11 +274,12 @@ class SrFeed:
         if u_thing.geturl() != url:
             url = u_thing.geturl()
             self.trace(5, 'seems like redirect to ' + url)
-            if self.looks_like_avsnitt_programid(url):
-                return self.fetch_media_url_for_entry(url)
-            if self.looks_like_programid_artikel(url):
+            qs = urlparse.parse_qs(url[qmark+1:])
+            if 'avsnitt' in qs and 'programid' in qs:
+                return self.fetch_media_url_for_entry(url, old_urls.append(orginal_url))
+            if 'artikel' in qs and 'programid' in qs:
                 self.trace(5, 'Redirected to another artikel. Re-trying that')
-                return self.fetch_media_url_for_entry(url)
+                return self.fetch_media_url_for_entry(url, old_urls.append(orginal_url))
 
         
 
@@ -596,7 +616,7 @@ if __name__ == '__main__':
     if len(sys.argv) >= 4:
         format = sys.argv[3]
 
-    feeder = SrFeed(feed_url, common.tracelevel, format, do_proxy)
+    feeder = SrFeed('http://leifdev.leiflundgren.com:8091/py-cgi/', feed_url, common.tracelevel, format, do_proxy)
 
 
     feed = feeder.get_feed()
