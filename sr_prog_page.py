@@ -4,6 +4,10 @@ import sys
 import os
 import unittest
 import re
+
+from urlparse import urlparse
+
+
 import argparse
 
 #import xml.etree.ElementTree 
@@ -20,7 +24,7 @@ class SrProgramPage:
 
     def __init__(self, program_id, tracelevel):
         self.tracelevel = tracelevel
-        self.program_id = program_id
+        self.program_id = str(program_id)
 
     def trace(self, level, *args):
         common.trace(level, 'SrProgramPage: ', args)
@@ -29,13 +33,37 @@ class SrProgramPage:
         return 'http://sverigesradio.se/sida/avsnitt?programid=' + self.program_id
 
     def fetch_page(self):
-        self.html = EHTML.parse(self.get_program_url())
+        url = self.get_program_url()
+        self.trace(5, 'fetching ' + url)
+        self.html = EHTML.parse(url)
+        self.trace(9, 'got page \r\n', ET.tostring(self.html, pretty_print=True))
+        #print ET.tostring(self.html, pretty_print=True)
 
     def parse_page(self):
-        pass
+
+        # good links are 
+        # <a href="/sida/avsnitt/587231?programid=2480&amp;playepisode=587231" aria-label="Lyssna(161 min)" class="btn btn-solid play-symbol play-symbol-wide play" data-require="modules/play-on-click">&#13;
+        # <a href="/sida/avsnitt/587242?programid=2480" class="btn2 btn2-image btn2-image-foldable" data-require="modules/play-on-click">
+
+        res = []
+
+        for a in self.html.findall('//a[@data-require="modules/play-on-click"]'):
+            url = urlparse(a.attrib['href'])
+            path_parts = url.path.split('/')
+            
+            if len(path_parts) < 3 or path_parts[-2] != 'avsnitt':
+                continue
+                
+            avsnitt = path_parts[-1]
+
+            res.append({'avsnitt': avsnitt})
+
+        return res
 
     def find_episodes(self):
-        pass
+        self.fetch_page()
+        return self.parse_page()
+        
 
 
 def get_root(element_thing):
