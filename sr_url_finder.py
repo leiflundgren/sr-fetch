@@ -16,6 +16,7 @@ from xml.dom import minidom
 from xml.dom import minidom 
 
 import common
+import sr_helpers
 
 class SrUrlFinder:
     
@@ -55,7 +56,7 @@ class SrUrlFinder:
         return url.endswith('.m4a')
 
     def looks_like_sr_program_page(self, url):
-        res = not re.match('^http://sverigesradio.se/sida/[\.\w]+/*\?programid=\d+', url) is None
+        res = not re.match(r'^http://sverigesradio.se/sida/[\.\w]+/*\?programid=\d+', url) is None
         self.trace(9, 'looks_like_sr_program_page(' + url + ') -->', res)
         # http://sverigesradio.se/sida/avsnitt?programid=4490
         # http://sverigesradio.se/sida/default.aspx?programid=4432
@@ -63,19 +64,19 @@ class SrUrlFinder:
 
     def looks_like_sr_episode(self, url):
         # http://sverigesradio.se/sida/avsnitt/412431?programid=4490
-        return not re.match('^http://sverigesradio.se/sida/avsnitt/\d+', url) is None
+        return not re.match(r'^http://sverigesradio.se/sida/avsnitt/\d+', url) is None
 
     def looks_like_sr_artikel(self, url):
         # sverigesradio.se/sida/artikel.aspx?programid=4427&artikel=6143755
-        return not re.match('^http://sverigesradio.se/sida/artikel.asp.*artikel=\d+', url) is None
+        return not re.match(r'^http://sverigesradio.se/sida/artikel.asp.*artikel=\d+', url) is None
 
     def looks_like_sr_laddaner(self, url):
         # http://sverigesradio.se/topsy/ljudfil/5032268
-        return not re.match('http://sverigesradio.se/topsy/ljudfil/\d+', url) is None
+        return not re.match(r'http://sverigesradio.se/topsy/ljudfil/\d+', url) is None
 
     def looks_like_sr_lyssnaigen(self, url):
         # http://lyssnaigen.sr.se/Isidor/EREG/musikradion_sthlm/2014/08/10_lexsommar_20140806_1700_21e9c23_a96.m4a
-        return not re.match('http://lyssnaigen\.sr\.se(/.*)(/.*)(/.*)\.m4a$', url) is None        
+        return not re.match(r'http://lyssnaigen\.sr\.se(/.*)(/.*)(/.*)\.m4a$', url) is None        
 
     # Sometimes the URL is to a html-page
     def looks_like_html_page(self, url):
@@ -224,8 +225,8 @@ class SrUrlFinder:
         # sverigesradio.se/sida/artikel.aspx?programid=4427&artikel=6143755
         if self.looks_like_sr_artikel(url):
             pass # no work needed for artiel
-        elif not re.match('http://sverigesradio.se/sida/avsnitt/\d+\?programid=\d+&playepisode=\d+', url):
-            m = re.match('http://sverigesradio.se/sida/avsnitt/(\d+)\?programid=\d+', url)
+        elif not re.match(r'http://sverigesradio.se/sida/avsnitt/\d+\?programid=\d+&playepisode=\d+', url):
+            m = re.match(r'http://sverigesradio.se/sida/avsnitt/(\d+)\?programid=\d+', url)
             if not m:
                 assert("The URL seems to be missing the avsnitt-i: " + url)
                 
@@ -241,7 +242,7 @@ class SrUrlFinder:
         # look for <meta name="twitter:player:stream" content="http://sverigesradio.se/topsy/ljudfil/5032268" />
         
         self.trace(7, 'response ' + content_type + ' len=' + str(len(html)))
-        stream = self.find_html_meta_argument(html, 'twitter:player:stream')
+        stream = sr_helpers.find_html_meta_argument(html, 'twitter:player:stream')
 
         # sometimes artikel.aspx does not contains the stream as expected
         # this seems only to handle when feed contains un-aired episodes
@@ -263,62 +264,7 @@ class SrUrlFinder:
             
         return self.handle_url_check_result(stream)
 
-    def filename_from_html_content(self, html):
-        self.trace(8, 'Trying to deduce filename from html-content.')
-        programname = ''
-        displaydate = self.find_html_meta_argument(html, 'displaydate')
-        programid = self.find_html_meta_argument(html, 'programid')
-
-        # change date from 20141210 to 2014-12-10            
-        displaydate =  displaydate[:-4] + '-' +  displaydate[-4:-2] + '-' + displaydate[-2:]
-
-        title = self.find_html_meta_argument(html, 'og:title')
-
-        idx = title.rfind(' - ')
-        if idx < 0:
-            self.trace(8, 'programname is not part of og:title, truing twitter:title')
-            title = self.find_html_meta_argument(html, 'twitter:title')
-            idx = title.rfind(' - ')
-
-        if idx > 0:
-            programname = title[idx+3:].strip()
-            title = title[:idx]
-  
-        programname = common.unescape_html(programname)
-        programname = programname.replace('/', ' ').rstrip(' .,!')
-        if programname == 'Lordagsmorgon i P2':
-            programname = 'Lordagsmorgon'
-        self.trace(7, 'programname is ' + programname)
-
-
-        parts = title.split(' ')
-
-        # trim date/time from end
-        lastToKeep = 0
-        for idx in range(0, len(parts)):
-            # self.trace(9, 'idx=' + str(idx) + ': "' + parts[idx] + '"')
-            if re.match('\d+(:\d+)*', parts[idx]):
-                pass
-            elif parts[idx] == 'kl':
-                pass
-            elif common.is_swe_month(parts[idx]):
-                pass
-            else:
-                self.trace(9, 'idx=' + str(idx) + ' is to keep "' + parts[idx] + '"')                    
-                lastToKeep = idx
-                continue
-            self.trace(9, 'skipping idx=' + str(idx) + ' "' + parts[idx] + '" from title')
-
-        title = ' '.join(parts[0:lastToKeep+1])
-        title = common.unescape_html(title)
-        title = title.replace('/', ' ').strip(' .,!')
-
-        self.trace(4, 'new title is ' + title)
-
-        filename = programname + ' ' + displaydate + ' ' + title + '.m4a'
-        self.trace(4, 'filename: ' + self.filename)
-        
-        return filename
+ 
             
     def handle_sr_laddaner(self, url):
         """
@@ -337,7 +283,7 @@ class SrUrlFinder:
             redirect_url = rsp.info().getheader('Location')
 
         if redirect_url == url:
-            raise "response "+ str(response.status_code) + "\nHad expected a 302 redirect to lyssnaigen.se.se"
+            raise "response "+ str(rsp.status_code) + "\nHad expected a 302 redirect to lyssnaigen.se.se"
 
         self.trace(6, 'Rediration to ' + redirect_url)
         return self.handle_url_check_result(redirect_url)
@@ -364,102 +310,8 @@ class SrUrlFinder:
     def build_latest_url_from_progid(progid):
         # http://sverigesradio.se/api/radio/radio.aspx?type=latestbroadcast&id=83&codingformat=.m4a&metafile=asx
         return 'http://sverigesradio.se/api/radio/radio.aspx?type=latestbroadcast&id=' + progid + '&codingformat=.m4a&metafile=asx'
+    
 
-
-    #wget -nv -O "$1" `wget -O - -q --limit-rate=44k "$2" | grep http | perl -p -e 's/_a96.m4a/_a192.m4a/' | tr -d '\r\n'` &
-    def wget_command_line(self, input_m4a_url, output_filename):
-        cmd = [ 'wget' ]
-
-        if self.tracelevel <= 3:
-            cmd.append('-q')
-        elif self.tracelevel <= 7:
-            cmd.append('-nv')
-        elif self.tracelevel <= 8:
-            cmd.append('-v')
-        else:
-            cmd.append('-d')
-
-        cmd.extend(['-O', output_filename.replace('/', '_')])
-
-        if not self.downloadlimit is None:
-            cmd.append('--limit-rate=' + str(self.downloadlimit))
-        cmd.append(input_m4a_url)
-        return cmd
-
-
-    def post_process_file(self):
-        self.trace(5, 'Processing downloaded file ' + self.filename)
-
-        new_files = None
-        try:
-            rkn = remove_kulturnytt.RemoveKulturnytt(self.filename, self.overwrite, self.tracelevel, True)
-            new_files = rkn.main()
-            self.trace(7, 'Kulturnytt removal done, parts: ' + str(new_files))
-        except OSError as e:
-            if e.errno == errno.ENOENT:
-                self.trace(4, 'Failed to launch ffmpeg. Ignoring splitting files.')
-            else:
-                raise e
-        
-        if new_files is None:
-            new_files = [self.filename] # reset if below succeeds
-
-        for f in new_files:
-            self.trace(5, 'Setting metadata of ' + str(f))
-            sr_set_metadata.SrSetMetadata(f, self.overwrite, self.tracelevel, None).main()
-
-
-        self.trace(6, 'Post-processing done')
-
-    def find_html_meta_argument(self, html, argname):
-        idx = html.find('<meta name="' + argname + '"')
-        if idx < 0:
-            idx = html.find('<meta property="' + argname + '"')
-        if idx < 0:
-            self.trace(6, "Failed to find meta-argument " + argname)
-            return None
-        
-        # self.trace(8, 'found ' + html[idx:idx+200])
-        
-        idx = html.find('content=', idx)
-        if idx < 0:
-            self.trace(6, "Failed to find content-tag for meta-argument " + argname)
-            return None
-        
-        begin = html.find('"', idx)
-        if begin < 0:
-            raise "Failed to find content-tag start quote"
-            
-        begin = begin+1
-        end = html.find('"', begin)
-        if end < 0:
-            raise "Failed to find content-tag end quote"
-            
-        val = html[begin:end]
-        self.trace(7, "value of "+ argname + " is '" + val + "'")
-        return val
-
-    def find_html_link_argument(self, html, rel_type="canonical", pos = 0):
-        while True:
-            pos = html.find('<link ', pos)
-            if pos < 0:
-                self.trace(6, "Failed to find link element start pos ", str(pos))
-                return None
-
-            pos += 5
-            endp = SrUrlFinder.find_html_endtag(html, 'link', pos)
-
-            (rel_attrib, a_endp) = SrUrlFinder.find_html_attribute(html, 'rel', pos, endp)
-            if rel_attrib != rel_type:
-                self.trace(5, 'Failed to find <link rel="' + rel_type + '" in range ' + str(pos) + '--' + str(endp) )
-                continue
-
-            (href_attrib, a_endp) = SrUrlFinder.find_html_attribute(html, 'href', pos, endp)
-            if rel_attrib is None:
-                self.trace(5, 'Failed to find <link rel="' + rel_type + '" href="..." in range ' + str(pos) + '--' + str(endp) )
-                continue
-
-            return href_attrib
 
     @staticmethod
     def find_html_endtag(html, tag_name, start_pos):
@@ -496,20 +348,6 @@ class SrUrlFinder:
                 raise ValueError("Failed to find link-tag end quote")
 
             return (html[begin:end], end+1)
-
-    def assertTargetDoesntExistOrOverwrite(self):
-        if self.overwrite:
-            return
-        if self.filename is None:
-            return
-        (file_no_ext, ext) = os.path.splitext(self.filename)
-        existing = glob.glob(file_no_ext + '*.m4a')
-        if len(existing) == 0:
-            return
-            
-        self.trace(2, 'Target-file(s) ', existing, ' already exists on disk.')
-        sys.exit(0)
-        
         
 
 class TestSrFetch(unittest.TestCase):
@@ -532,5 +370,6 @@ if __name__ == '__main__':
 
 
     redirect_url = SrUrlFinder(r.progid, r.avsnitt, r.artikel).find()
+
     common.trace(3, 'result "', redirect_url, '"')
              

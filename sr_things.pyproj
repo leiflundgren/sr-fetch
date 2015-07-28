@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{03b757ec-c789-4ea6-b6ac-3add94539289}</ProjectGuid>
+    <ProjectGuid>{722fe784-6f26-4a7f-a483-0dca37683482}</ProjectGuid>
     <ProjectHome />
     <StartupFile>sr_url_finder.py</StartupFile>
     <SearchPath />
@@ -52,6 +52,10 @@
     <Compile Include="lxml_testing.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="sr_helpers.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="sr_prog_page.py" />
     <Compile Include="sr_feed.py" />
     <Compile Include="sr_feed_app.py" />
     <Compile Include="sr_url_finder.py" />
