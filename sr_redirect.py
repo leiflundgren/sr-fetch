@@ -1,6 +1,7 @@
 import cgi
 from app_base import AppBase
 from sr_url_finder import SrUrlFinder
+import urllib2
 
 class SrRedirect(AppBase):
     """A class that takes a request un query-string, finds the appropriate SR episode and redirects to the download URL"""
@@ -43,10 +44,19 @@ class SrRedirect(AppBase):
             return ['parameters artikel must be numbers!']
 
         
-        self.log(4, 'Attempt to find prog="' + str(programid) + '", avsnitt="' + str(avsnitt) + '" and artikel="' + artikel + '"' + ', proxy_data = ' + str(proxy_data))
+        self.log(4, 'Attempt to find prog', programid, 'avsnitt', avsnitt, ' artikel', artikel, 'proxy_data', proxy_data)
         url_finder=SrUrlFinder(programid, avsnitt, artikel)
 
-        m4a_url =  url_finder.find()
+        try:
+            m4a_url =  url_finder.find()
+        except urllib2.HTTPError, e:
+            self.log(2, 'Got HTTP error for prog', programid, 'avsnitt', avsnitt, ' artikel', artikel, 'proxy_data', proxy_data)
+            #self.log(2, 'code', e.code, 'msg', e.msg)
+            self.log(2, e)
+            self.start_response(str(e.code) + ' ' + e.msg, [])
+            return []
+
+
         self.log(5, 'Result ', m4a_url, ' ', type(m4a_url))
         if m4a_url is None:
             self.start_response("503 Media not available yet", [])
