@@ -116,6 +116,7 @@ def filename_from_html_content(html):
                 not re.match(r'\d+(:\d+)*', parts[idx]) # skip time like 12:24:00
                 and parts[idx] != 'kl'
                 and not common.is_swe_month(parts[idx])
+                and not common.is_swe_weekday(parts[idx])
             ):
             #trace(9, 'idx=' + str(idx) + ' is to keep "' + parts[idx] + '"')                    
             lastToKeep = idx
@@ -136,20 +137,51 @@ def filename_from_html_content(html):
         
     return filename
 
-def parse_sr_time_string(s, today=datetime.date.today()):
+def parse_sr_time_string(s, today=datetime.datetime.today()):
     """ 
         This method tries to handle strings like
             klockan 10:03
             igår
             tisdags
+            fredag 24 juli klockan 10:03
     """
     trace(8, 'parse_sr_time_string(' + s + ')')
-    #today = datetime.date.today()
+    t = today
+
+    parts = s.strip().split(' ')
+
+    i=0
+    while i<len(parts):
+        if parts[i] == 'klockan' and i+1<len(parts):
+            n = parts[i+1].split(':')
+            hour = int(n[0])
+            minute = int(n[1]) if len(n) > 1 else 0
+            second = int(n[2]) if len(n) > 2 else 0
+            t = datetime.datetime.combine(t.date(), datetime.time(hour, minute, second))
+            i += 2
+        elif parts[i] == 'Ig&#229;r':
+            t -= datetime.timedelta(days=1)
+            i += 1
+        elif common.is_swe_weekday(parts[i]):
+            #ignore weekday
+            i += 1
+        elif i+1 < len(parts) and parts[i].isdigit() and common.is_swe_month(parts[i+1]):
+            month = common.parse_swe_month(parts[i+1])
+            day = int(parts[i])
+            t = datetime.datetime(t.year, month, day, t.hour, t.minute, t.second)
+            i += 2
+        else:
+            raise ValueError('parse_sr_time_string: Unhandled part ' + parts[i])
+
+    trace(8, 'parse_sr_time_string --> ' + str(t))
+    return t
     
 
 
 class TestHelpers(unittest.TestCase):
     def test_parse_sr_time_string(self):
+
+        t = parse_sr_time_string('klockan 10:03') # Just check no exception
 
         base_day = datetime.datetime(2015,7,29)
 

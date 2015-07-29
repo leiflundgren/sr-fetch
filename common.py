@@ -65,12 +65,25 @@ def run_child_process(cmd):
     
     return (p.returncode, stdout_data)
 
+
 def is_swe_month(x):
-    x = x.lower()
-    for m in ['januari', 'februari', 'mars', 'april', 'maj', 'juni', 'juli', 'augusti', 'september', 'oktober', 'november', 'december']:
-        if x == m:
-            return True
-    return False
+    return parse_swe_month(x) >= 0
+
+def is_swe_weekday(x):
+    return parse_swe_weekday(x) >= 0
+
+def parse_swe_month(x):
+    try:
+        # janiari is month 1
+        return [None, 'januari', 'februari', 'mars', 'april', 'maj', 'juni', 'juli', 'augusti', 'september', 'oktober', 'november', 'december'].index(x.lower())
+    except ValueError:
+        return -1
+
+def parse_swe_weekday(x):
+    try:
+        return ['m&#229;ndag', 'tisdag', 'onsdag', 'torsdag', 'fredag', 'l#246;ndag', 'l#214;rdag', 's#246;ndag', 's#214;ndag'].index(x.lower())
+    except ValueError:
+        return -1
 
 def unescape_html(html):
     res = ''
