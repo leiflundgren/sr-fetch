@@ -5,6 +5,10 @@
 import common
 import urllib2
 import re
+import datetime
+import time
+import unittest
+import sys
 
 def trace(level, *args):
     common.trace(level, 'sr_helpers: ', args)
@@ -108,25 +112,51 @@ def filename_from_html_content(html):
     lastToKeep = 0
     for idx in range(0, len(parts)):
         # trace(9, 'idx=' + str(idx) + ': "' + parts[idx] + '"')
-        if re.match(r'\d+(:\d+)*', parts[idx]):
-            pass
-        elif parts[idx] == 'kl':
-            pass
-        elif common.is_swe_month(parts[idx]):
-            pass
-        else:
-            trace(9, 'idx=' + str(idx) + ' is to keep "' + parts[idx] + '"')                    
+        if  (
+                not re.match(r'\d+(:\d+)*', parts[idx]) # skip time like 12:24:00
+                and parts[idx] != 'kl'
+                and not common.is_swe_month(parts[idx])
+            ):
+            #trace(9, 'idx=' + str(idx) + ' is to keep "' + parts[idx] + '"')                    
             lastToKeep = idx
-            continue
-        trace(9, 'skipping idx=' + str(idx) + ' "' + parts[idx] + '" from title')
+        #trace(9, 'skipping idx=' + str(idx) + ' "' + parts[idx] + '" from title')
 
-    title = ' '.join(parts[0:lastToKeep+1])
+    if lastToKeep == 0:
+        trace(4, 'didn\'t find any valid name-parts in title. Keeping as is: "', title, '"')
+    else:
+        title = ' '.join(parts[0:lastToKeep+1])
+
     title = common.unescape_html(title)
     title = title.replace('/', ' ').strip(' .,!')
 
-    trace(4, 'new title is ' + title)
+    trace(4, 'new title is ' + title + '\r\skipped index ', lastToKeep, 'to ', len(parts)-1)
 
     filename = programname + ' ' + displaydate + ' ' + title + '.m4a'
     trace(4, 'filename: ' + self.filename)
         
     return filename
+
+def parse_sr_time_string(s, today=datetime.date.today()):
+    """ 
+        This method tries to handle strings like
+            klockan 10:03
+            igår
+            tisdags
+    """
+    trace(8, 'parse_sr_time_string(' + s + ')')
+    #today = datetime.date.today()
+    
+
+
+class TestHelpers(unittest.TestCase):
+    def test_parse_sr_time_string(self):
+
+        base_day = datetime.datetime(2015,7,29)
+
+        self.assertEqual(datetime.datetime(2015,7,29, 10,3,0), parse_sr_time_string('klockan 10:03', base_day))
+        self.assertEqual(datetime.datetime(2015,7,28, 10,3,0), parse_sr_time_string('Ig&#229;r klockan 10:03', base_day))
+        self.assertEqual(datetime.datetime(2015,7,24, 10,3,0), parse_sr_time_string('fredag 24 juli klockan 10:03', base_day))
+    pass
+
+if __name__ == '__main__':
+    sys.exit(unittest.main(argv=['-v']))

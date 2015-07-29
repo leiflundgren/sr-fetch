@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{722fe784-6f26-4a7f-a483-0dca37683482}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>sr_prog_page.py</StartupFile>
+    <StartupFile>sr_helpers.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
