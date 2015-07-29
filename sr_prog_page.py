@@ -60,7 +60,22 @@ class SrProgramPage:
             if not existing is None:
                 continue
 
-            res.append({'avsnitt': avsnitt})
+
+
+            for span in a.parent.next_sibling.findall('span'):
+                if not t is None:
+                    break
+                if span.text.find('S&#228;ndes') > 0:
+                    for t_str in span.findall('/abbr/@title'):
+                        if not t is None:
+                            break
+                        try:
+                            t = sr_helpers.parse_sr_time_string(t_str)
+                        except ValueError:
+                            pass
+
+
+            res.append({'avsnitt': avsnitt, 'datetime': t})
 
         return res
 
