@@ -56,6 +56,10 @@ class SrProgramPage:
                 
             avsnitt = path_parts[-1]
 
+            existing = next((e for e in res if e['avsnitt'] == avsnitt), None)
+            if not existing is None:
+                continue
+
             res.append({'avsnitt': avsnitt})
 
         return res
