@@ -7,6 +7,7 @@ import unittest
 import re
 import sr_helpers
 import datetime
+import XmlHandler
 
 from urlparse import urlparse
 
@@ -60,31 +61,22 @@ class SrProgramPage:
         divs_to_search = self.html.findall('//div[@class="audio-box-content"]') + self.html.findall('//div[@class="audio-episode-content"]')
 
         def find_a_playonclick(root):
-            if root.tag == 'a' and root.attrib['data-require'] =="modules/play-on-click":
-                return root.attrib['href']
-            for el in root:
-                href = find_a_playonclick(el)
-                if not href is None:
-                    return href
-            return None
+            a_play = XmlHandler.find_element_attribute(root, 'a', 'data-require', "modules/play-on-click")
+            return None if a_play is None else a_play.attrib['href'] 
 
         """ 
             Find Sändes-keyword and extract time from that.
         """
         def find_transmit_time(root):
-            if root.tag == 'span' and root.attrib.get('class') == 'date':
+            for span in XmlHandler.findall_element_attribute(root, 'span', 'class', 'date'):
                 # Could also have checked text-context
                 #if span.text.find('S&#228;ndes') >= 0 or span.text.find(u'S\xe4ndes') >= 0:
 
-                abbr = root.find('abbr[@title]')
+                abbr = span.find('abbr[@title]')
                 try:
                     return sr_helpers.parse_sr_time_string(abbr.attrib['title'], html_timestamp)
                 except ValueError:
                     pass
-            for el in root:
-                t = find_transmit_time(el)
-                if not t is None:
-                    return t
             return None
 
 

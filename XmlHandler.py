@@ -147,6 +147,25 @@ def find_child_nodes(el, node_names, only_first = False):
             
     return res
 
+def find_element_attribute(root, tagname, attrib, avalue):
+    if root.tag == tagname and root.attrib.get(attrib) == avalue:
+        return root
+
+    for c in root:
+        el = find_element_attribute(c, tagname, attrib, avalue)
+        if not el is None:
+            return el
+    return None
+
+def findall_element_attribute(root, tagname, attrib, avalue):
+    if root.tag == tagname and root.attrib.get(attrib) == avalue:
+        return [root]
+
+    res=[]
+    for c in root:
+        res += findall_element_attribute(c, tagname, attrib, avalue)
+    return res
+
 
 class TestXmlHandler(unittest.TestCase):
     def test_xml_load(self):
