@@ -79,6 +79,22 @@ class SrProgramPage:
                     pass
             return None
 
+        def find_title(root):
+            # <div class="audio-box-title">
+            audio_box_title = XmlHandler.find_element_attribute(root, 'div', 'class', "audio-box-title")
+            try:
+                title_span = XmlHandler.find_element_attribute(audio_box_title, 'span', 'class', "responsive-audio-box-title")
+                return title_span.text_content().strip()
+            except AttributeError:
+                pass
+            # <div class="audio-episode-title audio-info">
+            audio_episode_title = XmlHandler.find_element_attribute(root, 'div', 'class', "audio-episode-title audio-info")
+            try:
+                title_span = XmlHandler.find_element_attribute(audio_episode_title, 'span', 'class', "header2")
+                return title_span.text_content().strip()
+            except AttributeError:
+                pass
+            pass
 
         for div in divs_to_search:
 
@@ -92,20 +108,23 @@ class SrProgramPage:
             if len(path_parts) < 3 or path_parts[-2] != 'avsnitt':
                 continue
                 
-            avsnitt = path_parts[-1]
+            avsnitt_id = path_parts[-1]
 
             avsnitt_timestamp = find_transmit_time(div)
 
-            existing = next((e for e in res if e['avsnitt'] == avsnitt), None)
-            if not existing is None:
-                if existing.get('timestamp', None) is None:
-                    existing['timestamp'] = avsnitt_timestamp
-                continue
+            avsnitt_title = find_title(div)
 
+            avsnitt = next((e for e in res if e['avsnitt'] == avsnitt_id), None)
+            if avsnitt is None:
+                avsnitt = {'avsnitt': avsnitt_id }
+                res.append(avsnitt)
 
+            if not avsnitt_timestamp is None:
+                avsnitt['timestamp'] = avsnitt_timestamp
 
+            if not avsnitt_title is None:
+                avsnitt['title'] = avsnitt_title
 
-            res.append({'avsnitt': avsnitt, 'timestamp': avsnitt_timestamp})
 
         return res
 
