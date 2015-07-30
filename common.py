@@ -14,9 +14,22 @@ def trace(level, *args):
     def mystr(thing):
         if isinstance(thing, (list, tuple)):
             msg = []
+            prefix = ''
+
+            if len(thing) <= 4:
+               separator = ', '
+            else:
+               separator = (os.linesep+"   ")
+               prefix = separator
+
             for s in thing:
                 msg += [mystr(s)]
-            return ', '.join(msg)
+            return prefix + separator.join(msg)
+
+        elif isinstance(thing, datetime.date):
+            msg = thing.strftime("%Y-%m-%d")
+        elif isinstance(thing, datetime.datetime):
+            msg = thing.strftime("%Y-%m-%d %H:%M:%S")
         else:
             try:
                 return str(thing)

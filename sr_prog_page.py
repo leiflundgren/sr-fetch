@@ -56,8 +56,45 @@ class SrProgramPage:
         if not timestamp_span is None:
             html_timestamp = common.parse_datetime(timestamp_span.attrib['data-timestamp'])
 
-        for a in self.html.findall('//a[@data-require="modules/play-on-click"]'):
-            url = urlparse(a.attrib['href'])
+
+        divs_to_search = self.html.findall('//div[@class="audio-box-content"]') + self.html.findall('//div[@class="audio-episode-content"]')
+
+        def find_a_playonclick(root):
+            if root.tag == 'a' and root.attrib['data-require'] =="modules/play-on-click":
+                return root.attrib['href']
+            for el in root:
+                href = find_a_playonclick(el)
+                if not href is None:
+                    return href
+            return None
+
+        """ 
+            Find Sändes-keyword and extract time from that.
+        """
+        def find_transmit_time(root):
+            if root.tag == 'span' and root.attrib.get('class') == 'date':
+                # Could also have checked text-context
+                #if span.text.find('S&#228;ndes') >= 0 or span.text.find(u'S\xe4ndes') >= 0:
+
+                abbr = root.find('abbr[@title]')
+                try:
+                    return sr_helpers.parse_sr_time_string(abbr.attrib['title'], html_timestamp)
+                except ValueError:
+                    pass
+            for el in root:
+                t = find_transmit_time(el)
+                if not t is None:
+                    return t
+            return None
+
+
+        for div in divs_to_search:
+
+            a_href = find_a_playonclick(div)
+            if a_href is None:
+                continue
+
+            url = urlparse(a_href)
             path_parts = url.path.split('/')
             
             if len(path_parts) < 3 or path_parts[-2] != 'avsnitt':
@@ -65,22 +102,7 @@ class SrProgramPage:
                 
             avsnitt = path_parts[-1]
 
-            # Find Sändes-keyword and extract time from that.
-            avsnitt_timestamp = None
-            next_sibling = a.getparent().getnext()
-            if not next_sibling is None:
-                for span in next_sibling.findall('//span'):
-                    if not avsnitt_timestamp is None:
-                        break
-                    if span.text.find('S&#228;ndes') >= 0 or span.text.find(u'S\xe4ndes') >= 0:
-                        for abbr in span.findall('abbr[@title]'):
-                            if not avsnitt_timestamp is None:
-                                break
-                            try:
-                                avsnitt_timestamp = sr_helpers.parse_sr_time_string(abbr.attrib['title'], html_timestamp)
-                            except ValueError:
-                                pass
-
+            avsnitt_timestamp = find_transmit_time(div)
 
             existing = next((e for e in res if e['avsnitt'] == avsnitt), None)
             if not existing is None:
@@ -98,7 +120,7 @@ class SrProgramPage:
     def find_episodes(self):
         self.fetch_page()
         return self.parse_page()
- 
+        
 
 
 def get_root(element_thing):
@@ -131,5 +153,5 @@ if __name__ == '__main__':
     common.tracelevel = r.tracelevel
     
     episodes = SrProgramPage(r.progid, common.tracelevel).find_episodes()
-    common.trace(3, 'SrProgramPage: result "', episodes, '"')
+    common.trace(3, 'SrProgramPage: result: ' , sorted(episodes, key=lambda ep: ep['avsnitt']))
     
