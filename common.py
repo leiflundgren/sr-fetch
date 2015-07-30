@@ -1,6 +1,5 @@
 
-# coding: latin-1
-
+# -*- coding: iso-8859-1 -*-
 
 import sys
 import os
@@ -66,6 +65,11 @@ def run_child_process(cmd):
     return (p.returncode, stdout_data)
 
 
+swe_weekdays = {'m&#229;ndag':0, u'måndag':0, 'tisdag':1, 'onsdag':2, 'torsdag':3, 'fredag':4, 'l#246;ndag':5, 'l#214;rdag':5, u'lördag':5, 'lördag':5, 's#246;ndag':6, 's#214;ndag':6, u'söndag':6, 'söndag':6 }
+
+# make sure januari is month 1
+swe_months = [None, 'januari', 'februari', 'mars', 'april', 'maj', 'juni', 'juli', 'augusti', 'september', 'oktober', 'november', 'december']
+
 def is_swe_month(x):
     return parse_swe_month(x) >= 0
 
@@ -74,16 +78,13 @@ def is_swe_weekday(x):
 
 def parse_swe_month(x):
     try:
-        # janiari is month 1
-        return [None, 'januari', 'februari', 'mars', 'april', 'maj', 'juni', 'juli', 'augusti', 'september', 'oktober', 'november', 'december'].index(x.lower())
+        return swe_months.index(x.lower())
     except ValueError:
         return -1
 
+
 def parse_swe_weekday(x):
-    try:
-        return ['m&#229;ndag', 'tisdag', 'onsdag', 'torsdag', 'fredag', 'l#246;ndag', 'l#214;rdag', 's#246;ndag', 's#214;ndag'].index(x.lower())
-    except ValueError:
-        return -1
+    return swe_weekdays.get(x.lower(), -1)
 
 def unescape_html(html):
     res = ''
@@ -127,10 +128,15 @@ def unescape_html(html):
         last = sc+1
     return res.replace(':', ' ').replace('  ', ' ').replace('  ', ' ').replace('  ', ' ').replace('  ', ' ')
 
-"""" Parses a datetime like 2000-01-01T23:45:00
-Timezone is ignored """
+""" 
+    Parses a datetime like 2000-01-01T23:45:00
+    Timezone is ignored 
+"""
 def parse_datetime(s):
-    return datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%S")
+    try:
+        return datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%S")
+    except ValueError:
+        return datetime.datetime.strptime(s, "%Y-%m-%d %H:%M:%S")
 
 def format_datetime(dt):
     return dt.strftime('%Y-%m-%dT%H:%M:%S%z')

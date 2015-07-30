@@ -1,9 +1,12 @@
 #!/usr/bin/python
+# -*- coding: iso-8859-1 -*-
 
 import sys
 import os
 import unittest
 import re
+import sr_helpers
+import datetime
 
 from urlparse import urlparse
 
@@ -47,6 +50,12 @@ class SrProgramPage:
 
         res = []
 
+        # for timestamp_span in self.html.find('span class="page-render-timestamp hidden" data-timestamp="2015-07-28 19:11:25" />&#13;
+        html_timestamp = datetime.datetime.today()
+        timestamp_span = self.html.find('//span[@class="page-render-timestamp hidden"]')
+        if not timestamp_span is None:
+            html_timestamp = common.parse_datetime(timestamp_span.attrib['data-timestamp'])
+
         for a in self.html.findall('//a[@data-require="modules/play-on-click"]'):
             url = urlparse(a.attrib['href'])
             path_parts = url.path.split('/')
@@ -56,33 +65,40 @@ class SrProgramPage:
                 
             avsnitt = path_parts[-1]
 
+            # Find Sändes-keyword and extract time from that.
+            avsnitt_timestamp = None
+            next_sibling = a.getparent().getnext()
+            if not next_sibling is None:
+                for span in next_sibling.findall('//span'):
+                    if not avsnitt_timestamp is None:
+                        break
+                    if span.text.find('S&#228;ndes') >= 0 or span.text.find(u'S\xe4ndes') >= 0:
+                        for abbr in span.findall('abbr[@title]'):
+                            if not avsnitt_timestamp is None:
+                                break
+                            try:
+                                avsnitt_timestamp = sr_helpers.parse_sr_time_string(abbr.attrib['title'], html_timestamp)
+                            except ValueError:
+                                pass
+
+
             existing = next((e for e in res if e['avsnitt'] == avsnitt), None)
             if not existing is None:
+                if existing.get('timestamp', None) is None:
+                    existing['timestamp'] = avsnitt_timestamp
                 continue
 
 
 
-            for span in a.parent.next_sibling.findall('span'):
-                if not t is None:
-                    break
-                if span.text.find('S&#228;ndes') > 0:
-                    for t_str in span.findall('/abbr/@title'):
-                        if not t is None:
-                            break
-                        try:
-                            t = sr_helpers.parse_sr_time_string(t_str)
-                        except ValueError:
-                            pass
 
-
-            res.append({'avsnitt': avsnitt, 'datetime': t})
+            res.append({'avsnitt': avsnitt, 'timestamp': avsnitt_timestamp})
 
         return res
 
     def find_episodes(self):
         self.fetch_page()
         return self.parse_page()
-        
+ 
 
 
 def get_root(element_thing):

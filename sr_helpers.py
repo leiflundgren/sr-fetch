@@ -1,5 +1,5 @@
 
-# coding: latin-1
+# -*- coding: iso-8859-1 -*-
 
 
 import common
@@ -137,7 +137,7 @@ def filename_from_html_content(html):
         
     return filename
 
-def parse_sr_time_string(s, today=datetime.datetime.today()):
+def parse_sr_time_string(s, today):
     """ 
         This method tries to handle strings like
             klockan 10:03
@@ -161,19 +161,19 @@ def parse_sr_time_string(s, today=datetime.datetime.today()):
             i += 2
         elif parts[i] == 'Ig&#229;r':
             t -= datetime.timedelta(days=1)
-            i++
+            i += 1
         elif common.is_swe_weekday(parts[i]):
             #ignore weekday
-            i++
+            i += 1
         elif len(parts[i]) == 4 and parts[i].isdigit():
             t = datetime.datetime(int(parts[i]), t.month, t.day, t.hour, t.minute, t.second)
-            i++                                  
+            i += 1                                  
         elif i+1 < len(parts) and parts[i].isdigit() and common.is_swe_month(parts[i+1]):
             month = common.parse_swe_month(parts[i+1])
             day = int(parts[i])
-            t1 = datetime.datetime(t.year, month, day, t.hour, t.minute, t.second)
-            if t > t1: # if date causes wrap-around of year
-                t = t1 + datetime.timedelta(365)
+            t = datetime.datetime(t.year, month, day, t.hour, t.minute, t.second)
+            if t > today: # if date causes wrap-around of year
+                t = t - datetime.timedelta(365)
 
             i += 2
         else:
@@ -194,6 +194,8 @@ class TestHelpers(unittest.TestCase):
         self.assertEqual(datetime.datetime(2015,7,29, 10,3,0), parse_sr_time_string('klockan 10:03', base_day))
         self.assertEqual(datetime.datetime(2015,7,28, 10,3,0), parse_sr_time_string('Ig&#229;r klockan 10:03', base_day))
         self.assertEqual(datetime.datetime(2015,7,24, 10,3,0), parse_sr_time_string('fredag 24 juli klockan 10:03', base_day))
+        self.assertEqual(datetime.datetime(2015,7,24, 10,3,0), parse_sr_time_string('m&#229;ndag 24 juli klockan 10:03', base_day))
+        self.assertEqual(datetime.datetime(2015,7,24, 10,3,0), parse_sr_time_string(u'söndag 24 juli klockan 10:03', base_day))
     pass
 
 if __name__ == '__main__':
