@@ -161,14 +161,20 @@ def parse_sr_time_string(s, today=datetime.datetime.today()):
             i += 2
         elif parts[i] == 'Ig&#229;r':
             t -= datetime.timedelta(days=1)
-            i += 1
+            i++
         elif common.is_swe_weekday(parts[i]):
             #ignore weekday
-            i += 1
+            i++
+        elif len(parts[i]) == 4 and parts[i].isdigit():
+            t = datetime.datetime(int(parts[i]), t.month, t.day, t.hour, t.minute, t.second)
+            i++                                  
         elif i+1 < len(parts) and parts[i].isdigit() and common.is_swe_month(parts[i+1]):
             month = common.parse_swe_month(parts[i+1])
             day = int(parts[i])
-            t = datetime.datetime(t.year, month, day, t.hour, t.minute, t.second)
+            t1 = datetime.datetime(t.year, month, day, t.hour, t.minute, t.second)
+            if t > t1: # if date causes wrap-around of year
+                t = t1 + datetime.timedelta(365)
+
             i += 2
         else:
             raise ValueError('parse_sr_time_string: Unhandled part ' + parts[i])
