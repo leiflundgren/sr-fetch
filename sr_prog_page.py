@@ -81,20 +81,20 @@ class SrProgramPage:
 
         def find_title(root):
             # <div class="audio-box-title">
-            audio_box_title = XmlHandler.find_element_attribute(root, 'div', 'class', "audio-box-title")
             try:
+                audio_box_title = XmlHandler.find_element_attribute(root, 'div', 'class', "audio-box-title")
                 title_span = XmlHandler.find_element_attribute(audio_box_title, 'span', 'class', "responsive-audio-box-title")
                 return title_span.text_content().strip()
             except AttributeError:
                 pass
             # <div class="audio-episode-title audio-info">
-            audio_episode_title = XmlHandler.find_element_attribute(root, 'div', 'class', "audio-episode-title audio-info")
             try:
+                audio_episode_title = XmlHandler.find_element_attribute(root, 'div', 'class', "audio-episode-title audio-info")
                 title_span = XmlHandler.find_element_attribute(audio_episode_title, 'span', 'class', "header2")
                 return title_span.text_content().strip()
             except AttributeError:
                 pass
-            pass
+            return None
 
         for div in divs_to_search:
 
