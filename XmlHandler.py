@@ -28,6 +28,8 @@ try:
 except ImportError:
     pass
 
+import lxml.etree
+
 try:
     import lxml.etree.ElementTree
     x = lxml.etree.ElementTree.fromstring('<hello target="World">there</hello>') 
@@ -149,10 +151,10 @@ def find_child_nodes(el, node_names, only_first = False):
     return res
 
 def check_right_element_exactly(e, tagname, attrib, avalue):
-    return e.tag == tagname and e.attrib.get(attrib) == avalue
+    return e.tag == tagname and e.attrib.get(attrib, '') == avalue
 
 def check_right_element_wildcard(e, tagname, attrib, avalue):
-    return fnmatch(e.tag, tagname ) and fnmatch(e.attrib.get(attrib), avalue)
+    return fnmatch(e.tag, tagname ) and fnmatch(e.attrib.get(attrib, ''), avalue)
 
 
 def find_element_attribute(root, tagname, attrib, avalue):
@@ -160,7 +162,7 @@ def find_element_attribute(root, tagname, attrib, avalue):
     q = [root]
     while q:
         e = q.pop()
-        if matcher(e, tagname, attrib, avalue):
+        if e.tag != lxml.etree.Comment and matcher(e, tagname, attrib, avalue):
             return e
         c = list(e)
         q += ( c )

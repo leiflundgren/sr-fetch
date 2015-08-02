@@ -13,8 +13,8 @@ from XmlHandler import find_child_nodes
 class Atom2RSS(object):
     """Converts an atom feed to an rss. Abstract base"""
 
-    def __init__(self, *args, **kwargs):
-        return super(Atom2RSS, self).__init__(*args, **kwargs)
+    def __init__(self):
+        return super(Atom2RSS, self).__init__()
 
     pass
 

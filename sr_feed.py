@@ -9,6 +9,7 @@ import urllib2
 import urllib
 import urlparse
 import argparse
+import datetime
 
 import sr_helpers
 
@@ -31,12 +32,13 @@ ns_itunes = "http://www.itunes.com/dtds/podcast-1.0.dtd"
 ns = { 'atom':ns_atom, 'xml': ns_xml, 'itunes':ns_itunes }
 
 
-class SrFeed:
+class SrFeed(object):
     
-    def __init__(self, base_url, feed_url, tracelevel, format, do_proxy):
+    def __init__(self, base_url, feed_url, progid, tracelevel, format, do_proxy):
         self.tracelevel = tracelevel
         self.base_url = base_url
         self.feed_url = feed_url
+        self.progid = str(progid)
         self.format = format
         self.do_proxy = do_proxy
         self.content_type = ''
@@ -47,9 +49,9 @@ class SrFeed:
         common.trace(level, 'SrFeed: ', args)
 
     def get_feed(self):
-        et = self.handle_feed_url(self.feed_url)
+        (format, feed_et) = self.handle_feed_url(self.feed_url)
 
-        conv_et = self.translate_format(et)
+        conv_et = self.translate_format(format, feed_et)
 
         xmlstr = ET.tostring(conv_et, encoding='utf-8', method='xml')
         if self.content_type.find('charset') < 0:
@@ -61,18 +63,18 @@ class SrFeed:
         
         return xmlstr + "\r\n\r\n"
     
-    def translate_format(self, et):
+    def translate_format(self, format, feed_et):
         if self.format is None:
             self.trace(7, 'format of feed not specified, so ' + self.content_type + ' no altered.')
-            return et
-        if self.content_type.find(self.format) >= 0:
+            return feed_et
+        if format.find(self.format) >= 0:
             self.trace(6, 'Content-type is ' + self.content_type + ' so format ' + self.format + ' seems met.')
-            return et
+            return feed_et
 
-        if self.content_type.find('rss') >= 0 and self.format.find('atom') >= 0:
+        if format.find('rss') >= 0 and self.format.find('atom') >= 0:
             raise NotImplementedError('Cannot convert from rss to atom')
 
-        if self.content_type.find('atom') >= 0 and self.format.find('rss') >= 0:
+        if format.find('atom') >= 0 and self.format.find('rss') >= 0:
             self.trace(5, 'Translating atom-feed to rss')
             rss = self.translate_atom_to_rss(et)
             self.context_type = 'application/rss+xml'
@@ -86,6 +88,10 @@ class SrFeed:
 
 
     def handle_feed_url(self, url, u_thing=None):
+        """
+            Handles a feed.
+            Return tuple (format, feed-xml)
+        """
         self.trace(4, 'Handling url ' + url)
         if u_thing == None:
             self.trace(7, 'Fetching content from url')
@@ -104,7 +110,7 @@ class SrFeed:
         elif self.content_type.find('application/rss') >= 0:
             return self.parse_rss_feed(None)
         elif self.content_type.find('text/html') >= 0:
-            return self.parse_html_feed(None)
+            return self.parse_html_feed()
         else:
             raise Exception('Content-type of feed is ' + self.content_type + '. Not handled!')
 
@@ -115,11 +121,12 @@ class SrFeed:
             else:
                 self.dom = ET.parse(u_thing)
 
-            self.trace(8, 'dom thing ', type(self.dom), dir(self.dom))
+            # self.trace(8, 'dom thing ', type(self.dom), dir(self.dom))
             self.xml = get_root(self.dom)
             self.trace(6, 'Successfully parsed urllib-response directly to xml')
-        #except Exception, ex:
-        #    self.trace(3, 'Failed to parse urllib directly, caught ' + str(ex))
+        except Exception, ex:
+            self.trace(3, 'Failed to parse urllib directly, caught ' + str(ex))
+            raise
 
         #    u_thing = sr_helpers.urllib_open_feed(url)
         #    self.set_contenttype_charset(u_thing)
@@ -209,13 +216,38 @@ class SrFeed:
             media_link_el = ET.SubElement(entryEl, tag, rel="enclosure", href=media_url, type='audio/mp4')
         
 
-        return self.dom
+        return ('atom', self.dom)
 
     def parse_rss_feed(self, body):
         raise NotImplementedError()
 
-    def parse_html_feed(self, body):
-        page_parser = SrProgramPageParser(self.feed_url
+    def parse_html_feed(self):
+        def text_url(x):
+            pos = self.feed_url.index('?')
+            y = self.feed_url[:pos] + '/' + x + self.feed_url[pos:]            
+            self.trace(8, 'text_url(' + x + ') --> ' + y)
+            return y
+
+        def media_url(x):
+            # returns http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect/6215532.m4a?programid=2480;artikel=6215532;tracelevel=9;proxy_data=False
+            y = self.base_url +'sr_redirect/' + x + '.m4a?' + 'programid=' + self.progid + ';artikel=' + x + ';tracelevel=' + str(self.tracelevel) + ';proxy_data=' + str(self.do_proxy)
+            self.trace(8, 'media_url(' + x + ') --> ' + y)
+            return y
+
+        page_parser = SrProgramPageParser(self.tracelevel)
+        page_parser.html = self.dom
+        episodes = page_parser.episodes()
+
+        rss_gen = Page2RSS(text_url, media_url)
+        timestamp = page_parser.timestamp
+        if isinstance(timestamp, datetime.datetime):
+            timestamp = timestamp.strftime("%Y-%m-%d %H:%M:%S")
+        elif isinstance(timestamp, datetime.date):
+            timestamp = timestamp.strftime("%Y-%m-%d")
+
+
+        return ('rss', rss_gen.transform(episodes, title=page_parser.title, timestamp=timestamp, description=page_parser.description, logo_url=page_parser.logo, lang=page_parser.lang))
+
 
 
     def fetch_media_url_for_entry(self, url, old_urls=[]):
@@ -319,7 +351,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='My favorite argparser.')
     parser.add_argument('-l', '--tracelevel', help='Verbosity level 1 is important like error, 9 is unneeded debuginfo', default=4, type=int)
     parser.add_argument('--avsnitt', help='avsnitt', default=None, type=int, required=False)
-    parser.add_argument('--progid', help='progid', default=None, type=int, required=False)
+    parser.add_argument('--progid', help='progid', default=None, type=int, required=True)
     parser.add_argument('--artikel', help='artikel', default=None, type=int, required=False)
     parser.add_argument('--feed', help='Full feed url', default=None, required=False)
     parser.add_argument('--url', help='Full feed url', default=None, required=False)
@@ -342,7 +374,7 @@ if __name__ == '__main__':
         common.trace(1, 'feed/progid required')
         sys.exit(1)
 
-    feeder = SrFeed('http://leifdev.leiflundgren.com:8091/py-cgi/', feed_url, common.tracelevel, r.format, r.proxy)
+    feeder = SrFeed('http://leifdev.leiflundgren.com:8091/py-cgi/', feed_url, r.progid, common.tracelevel, r.format, r.proxy)
 
 
     feed = feeder.get_feed()

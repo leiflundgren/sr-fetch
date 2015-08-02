@@ -26,10 +26,10 @@ def trace(level, *args):
                 msg += [mystr(s)]
             return prefix + separator.join(msg)
 
-        elif isinstance(thing, datetime.date):
-            msg = thing.strftime("%Y-%m-%d")
         elif isinstance(thing, datetime.datetime):
-            msg = thing.strftime("%Y-%m-%d %H:%M:%S")
+            return thing.strftime("%Y-%m-%d %H:%M:%S")
+        elif isinstance(thing, datetime.date):
+            return thing.strftime("%Y-%m-%d")
         else:
             try:
                 return str(thing)

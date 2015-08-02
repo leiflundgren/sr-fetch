@@ -25,7 +25,7 @@ from XmlHandler import get_namespace
 
 
 
-class SrProgramPageParser:
+class SrProgramPageParser(object):
 
     def __init__(self, tracelevel):
         self.tracelevel = tracelevel
@@ -44,18 +44,34 @@ class SrProgramPageParser:
         self.fetch_page(self.url_)
 
     @property
-    def html(self):
+    def html_text(self):
         return ET.tostring(self.html_, pretty_print=True)
+
+    @property
+    def html(self):
+        return self.html_
 
     @html.setter
     def html(self, value):
         try:
-            self.html_ = EHTML.parse(value)
+            if isinstance(value, basestring):
+                self.html_ = EHTML.parse(value)
+            elif isinstance(value, ET._ElementTree):
+                self.html_ = value
+            else:
+                raise ValueError('html set to unknown type: ' + str(typeof(value)))
             self.trace(9, 'got page \r\n', self.html)
         except Exception, ex:
             self.trace(5, 'Failed to parse html: ', ex)
             raise
 
+    @property
+    def timestamp(self):
+        m = None
+        for e in self.episodes_:
+            if m is None or m < e['timestamp']:
+                m = e['timestamp']
+        return m
 
     def trace(self, level, *args):
         common.trace(level, 'SrProgramPageParser: ', args)
@@ -81,12 +97,23 @@ class SrProgramPageParser:
         if not timestamp_span is None:
             html_timestamp = common.parse_datetime(timestamp_span.attrib['data-timestamp'])
 
-        author_meta = self.html.find('/html/head/meta[@name="author"]')        
-        self.author = author_meta.attrib['author'] if author_meta else ''
 
-        description_meta = self.html.find('/html/head/meta[@name="description"]')        
-        self.description = description_meta.attrib['description'] if description_meta else ''
+        html_root = self.html.getroot()
+        head = html_root[0]
 
+        author_meta = head.find('meta[@name="author"]')        
+        self.author = '' if author_meta is None else author_meta.attrib['content']
+
+        description_meta = head.find('meta[@name="description"]')        
+        self.description = '' if description_meta is None else description_meta.attrib['content']
+
+        keywords_meta = head.find('meta[@name="keywords"]')        
+        self.title = '' if keywords_meta is None else keywords_meta.attrib['content']
+  
+        logo_meta = XmlHandler.find_element_attribute(head, 'meta', 'name', "*:image")        
+        self.logo = '' if logo_meta is None else logo_meta.attrib['content']
+                      
+        self.lang = self.html.getroot().attrib.get('lang', '')
 
         divs_to_search = self.html.findall('//div[@class="audio-box-content"]') + self.html.findall('//div[@class="audio-episode-content"]')
 
@@ -161,8 +188,6 @@ class SrProgramPageParser:
                 continue
                 
             avsnitt_id = path_parts[-1]
-            if avsnitt_id == '587242':
-                bp= 17
 
             avsnitt_timestamp = find_transmit_time(div)
 
@@ -187,7 +212,8 @@ class SrProgramPageParser:
         return self.episodes_
 
     def find_episodes(self):
-        self.fetch_page(self.url)
+        if self.html_ is None:
+            self.fetch_page(self.url)
         return self.parse_page()
         
     def episodes(self):
@@ -231,4 +257,5 @@ if __name__ == '__main__':
     parser.url = r.url
     episodes = parser.episodes()
     common.trace(3, 'SrProgramPageParser: result: ' , sorted(episodes, key=lambda ep: ep['avsnitt']))
+    common.trace(5, 'newest episode ', parser.timestamp)
     

@@ -2,6 +2,7 @@
 # -*- coding: iso-8859-1 -*-
 
 import lxml.etree as ET
+
 from common import trace
 from common import pretty
 from common import get_el
@@ -21,7 +22,7 @@ class Page2RSS(object):
     def __init__(self, text_url_formater, media_url_formater):
         self.media_url_formater = media_url_formater
         self.text_url_formater = text_url_formater
-        return super(object, self).__init__()
+        return super(Page2RSS, self).__init__()
 
     def transform(self, page_dict_list, title, timestamp, description=None, logo_url=None, lang=None, copyright=None):
 
@@ -85,7 +86,7 @@ class Page2RSS(object):
             try:
                 media_url = self.media_url_formater(episode_dict['avsnitt'])
                 filename, file_ext = os.path.splitext(os.path.basename(urlparse.urlparse(media_url).path))
-                enclosure_link = ET.SubElement(rss_item, 'enclosure', type='audio/'+file_ext, url=media_url)
+                enclosure_link = ET.SubElement(rss_item, 'enclosure', type='audio/'+file_ext.strip('.'), url=media_url)
                 trace(7, 'rss enclosure ', ET.tostring(enclosure_link, pretty_print=True))
 
                 ET.SubElement(rss_item, 'link').text = media_url

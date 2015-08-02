@@ -18,7 +18,7 @@ from xml.dom import minidom
 import common
 import sr_helpers
 
-class SrUrlFinder:
+class SrUrlFinder(object):
     
     def __init__(self, progid=None, avsnitt=None, artikel=None):
         if artikel is None and (progid is None or avsnitt is None):
