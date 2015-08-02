@@ -110,16 +110,14 @@ class SrProgramPage:
             parent_div = div.getparent()
             try:
                 audio_episode_body = XmlHandler.find_element_attribute(parent_div, 'div', 'class', "audio-episode-body")
-                p = XmlHandler.find_element_attribute(audio_episode_body, 'p', 'class', "preamble")
-                i = XmlHandler.find_element_attribute(p, 'i', 'class', "base-sprite arrow-right white")
-                return i.text().strip()
+                p = XmlHandler.find_element_attribute(audio_episode_body, 'p', 'class', "*preamble")
+                return p.text_content().strip()
             except AttributeError:
                 pass            
             try:
                 audio_audiobox_body = XmlHandler.find_element_attribute(parent_div, 'div', 'class', "audio-box-body")
                 p = XmlHandler.find_element_attribute(audio_audiobox_body, 'p', 'class', "preamble")
-                i = XmlHandler.find_element_attribute(p, 'i', 'class', "base-sprite arrow-right white")
-                return i.text().strip()
+                return p.text_content().strip()
             except AttributeError:
                 pass
             return None
@@ -144,7 +142,7 @@ class SrProgramPage:
 
             avsnitt_title = find_title(div)
 
-            #avsnitt_description = find_desc(div)
+            avsnitt_description = find_desc(div)
 
             avsnitt = next((e for e in res if e['avsnitt'] == avsnitt_id), None)
             if avsnitt is None:
@@ -157,6 +155,8 @@ class SrProgramPage:
             if not avsnitt_title is None:
                 avsnitt['title'] = avsnitt_title
 
+            if not avsnitt_description is None:
+                avsnitt['description'] = avsnitt_description
 
         return res
 
