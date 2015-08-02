@@ -26,18 +26,22 @@ from XmlHandler import get_namespace
 
 class SrProgramPage:
 
-    def __init__(self, program_id, tracelevel):
+    def __init__(self, program_id, tracelevel, url=None):
         self.tracelevel = tracelevel
         self.program_id = str(program_id)
+        self.url = url
 
     def trace(self, level, *args):
         common.trace(level, 'SrProgramPage: ', args)
 
-    def get_program_url(self):
-        return 'http://sverigesradio.se/sida/avsnitt?programid=' + self.program_id
+    def program_url(self):
+        if self.url is None:
+            self.url = 'http://sverigesradio.se/sida/avsnitt?programid=' + self.program_id
+        return self.url
+
 
     def fetch_page(self):
-        url = self.get_program_url()
+        url = self.program_url()
         self.trace(5, 'fetching ' + url)
         self.html = EHTML.parse(url)
         self.trace(9, 'got page \r\n', ET.tostring(self.html, pretty_print=True))
@@ -68,13 +72,19 @@ class SrProgramPage:
             Find Sändes-keyword and extract time from that.
         """
         def find_transmit_time(root):
+            
             for span in XmlHandler.findall_element_attribute(root, 'span', 'class', 'date'):
-                # Could also have checked text-context
-                #if span.text.find('S&#228;ndes') >= 0 or span.text.find(u'S\xe4ndes') >= 0:
-
-                abbr = span.find('abbr[@title]')
                 try:
+                    abbr = span.find('abbr[@title]')
                     return sr_helpers.parse_sr_time_string(abbr.attrib['title'], html_timestamp)
+                except ValueError:
+                    pass
+            for span in XmlHandler.findall_element_attribute(root, 'span', 'class', 'tiny-text'):
+                # 2nd attempt, check text-context                
+                try:
+                    if span.text.find('S&#228;ndes') >= 0 or span.text.find(u'S\xe4ndes') >= 0:
+                        abbr = span.find('abbr[@title]')
+                        return sr_helpers.parse_sr_time_string(abbr.attrib['title'], html_timestamp)
                 except ValueError:
                     pass
             return None
@@ -109,6 +119,8 @@ class SrProgramPage:
                 continue
                 
             avsnitt_id = path_parts[-1]
+            if avsnitt_id == '587242':
+                bp= 17
 
             avsnitt_timestamp = find_transmit_time(div)
 
@@ -158,11 +170,12 @@ if __name__ == '__main__':
     parser.add_argument('--avsnitt', help='avsnitt', default=None, type=int, required=False)
     parser.add_argument('--progid', help='progid', default=None, type=int, required=False)
     parser.add_argument('--artikel', help='artikel', default=None, type=int, required=False)
+    parser.add_argument('--url', help='use url rather than deduce from progid', default=None, required=False)
 
     r = parser.parse_args(None)
 
     common.tracelevel = r.tracelevel
     
-    episodes = SrProgramPage(r.progid, common.tracelevel).find_episodes()
+    episodes = SrProgramPage(r.progid, common.tracelevel, r.url).find_episodes()
     common.trace(3, 'SrProgramPage: result: ' , sorted(episodes, key=lambda ep: ep['avsnitt']))
     
