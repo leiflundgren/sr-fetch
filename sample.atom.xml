@@ -1,290 +1,444 @@
-<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="sv">
-    <title type="text">P2 Live</title>
-    <subtitle type="text">Sveriges bästa konserter inom klassisk musik, nutida musik, jazz, folk- och världsmusik</subtitle>
-    <id>uuid:f3f4f7ea-e0bf-404b-b58b-9eb781b101b6;id=37566</id>
+<?xml version="1.0" encoding="utf-8"?>
+<feed xml:lang="sv" xmlns="http://www.w3.org/2005/Atom">
+    <title type="text">Klassisk förmiddag      </title>
+    <subtitle type="text">Noga utvald och tematisk klassisk musik varje vardagsförmiddag.</subtitle>
+    <id>uuid:75f2e7a7-21af-4171-a254-b59894718468;id=20191</id>
     <rights type="text">Copyright Sveriges Radio 2015. All rights reserved.</rights>
-    <updated>2015-07-13T10:08:00+02:00</updated>
+    <updated>2015-07-30T10:29:00+02:00</updated>
     <logo>http://sverigesradio.se/sida/content/img/channellogos/srlogo.png</logo>
-    <link rel="alternate" href="http://sverigesradio.se/sida/default.aspx?programid=4427"/>
+    <link rel="alternate" href="http://sverigesradio.se/sida/default.aspx?programid=2480" />
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6210631</id>
-        <title type="text">Violinsolist med resekamrat från 1734 </title>
-        <summary type="html">&lt;p&gt;Erich Wolfgang Korngolds Violinkonsert i D-dur framför Baiba Skride på en Stradivarius från 1734.&lt;/p&gt;</summary>
-        <published>2015-07-13T10:05:00+02:00</published>
-        <updated>2015-07-13T10:08:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222207</id>
+        <title type="text">Klassisk förmiddag</title>
+        <summary type="html">med Erika Libeck Lindahl.</summary>
+        <published>2015-07-30T10:28:00+02:00</published>
+        <updated>2015-07-30T10:29:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6210631" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3548056.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Baiba Skride uppträder världen över med en Stradivarius från 1734. Tidigare har hon spelat på en Stradivarius från 1725. Foto: Christoph Müller-Girod/CC BY 2.0&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5387297&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Baiba Skride med Sveriges Radios Symfoniorkester&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Erich Wolfgang Korngolds Violinkonsert i D-dur framför Baiba Skride på en Stradivarius från 1734.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6192666.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6210631;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222207" />
+        <category term="" />
+        <content type="html">
+            med Erika Libeck Lindahl.1. John Tavener: Song for Athene (William Shakespeare) (1993). Cantillon. Dirigent: Anthony Walker.
+            2. Claude Debussy: Stråkkvartett g-moll. Modigliani-kvartetten. Mirare MIR 188.
+            3. Nils Eriksson: Fyra orgelstycken ur musiken till Svensk mässa (1962) spelas av Ulf Samuelsson. Proprius PRCD 9072.
+            4. Elfrida Andrée: Svensk mässa nr 1 (1902). Solister: Liine Carlsson, sopran, Maria Forsström, alt, Nikola Matisic, tenor, Patrik Wirefeldt, bas, Rose-Marie Svensson och Bengt Nilsson, orgel. Gustavikören och Göteborgs domkyrkokör. Medlemmar ur Göteborgs symfoniker. Dirigent: Ann-Marie Rydberg. Intim Musik IMCD 098.
+            5. Georg Philipp Telemann: Konsert D-dur för trumpet, två oboer och stråkar TWV 43:D7. Solister: Hannes Rux, Hans-Peter Westerman och Annette Speer, oboe. Medlemmar ur Camerata, Köln. Dirigent: Michael Schneider. CPO 999.951-2.
+            6. Johann Schrammel: Weana Gmüat. Klassiska Schrammel-kvartetten från Wien. Tudor 722.
+            7. Johannes Brahms: Pianokonsert nr 1 d-moll. Solist: Stephen Hough. Mozarteum-orkestern, Salzburg. Dirigent: Mark Wigglesworth. Hyperion CDA 67961.&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6222207.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6209766</id>
-        <title type="text">Olycklig kärlek med indisk-bengaliska anor</title>
-        <summary type="html">&lt;p&gt;Hör Lisa Larsson sjunga&amp;nbsp;Rolf Martinssons nya verk, Garden of Devotion.&amp;nbsp; Texterna är hämtade från nobelpristagaren Rabindranath Tagore.&lt;br data-mce-bogus="1"&gt;&lt;/p&gt;</summary>
-        <published>2015-07-10T16:20:00+02:00</published>
-        <updated>2015-07-10T16:25:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222206</id>
+        <title type="text">Klassisk förmiddag</title>
+        <summary type="html">med Erika Libeck Lindahl.</summary>
+        <published>2015-07-30T10:28:00+02:00</published>
+        <updated>2015-07-30T10:29:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6209766" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5385964&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Konsert med Helsingborgs symfoniorkester&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Hör Lisa Larsson sjunga&amp;nbsp;Rolf Martinssons nya verk, Garden of Devotion.&amp;nbsp; Texterna är hämtade från nobelpristagaren Rabindranath Tagore.&lt;br data-mce-bogus="1"&gt;&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6208519.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6209766;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222206" />
+        <category term="" />
+        <content type="html">
+            med Erika Libeck Lindahl.1. Joseph Haydn: Tredje satsen ur Stråkkvartett B-dur op 1:1. Acies-kvartetten. Konsert 8/9 2014, Kejsarsalen, Slottet Esterházy, Eisenstadt. Från österrikiska radion.
+            2. Wolfgang Amadeus Mozart: Pianosonat nr 13 B-dur spelas av Ingolf Wunder. DGG 479 0084.
+            3. Alla Pavlova: Orkestersvit ur baletten ”Tummelisa” (2006). Solist: Michail Sjestakov, violin. Peter Tjajkovskij-orkestern. Dirigent: Patrick Baton. Naxos 8.579003.
+            4. Johannes Brahms: Fest- und Gedenksprüche. Radiokören, Stockholm. Dirigent: Peter Dijkstra. Channel Classics CCS CA 35814.
+            5. Luigi Boccherini: Cellokonsert nr 9 B-dur. Solist: Raphael Wallfisch. Northern Chamber Orchestra, Manchester. Dirigent: Nicholas Ward. Naxos 8.557589.
+            6. Camille Saint-Saëns: Klarinett-sonat Ess-dur (1920). Håkan Rosengren, klarinett och Anne Epperson, piano. SMS Classical HR 9346.
+            7. John Fernström: Symfoni nr 6 (1939). Sveriges Radios Symfoniorkester. Dirigent: Mikko Franck. Phono Suecia PSCD 706.&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6222206.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6209642</id>
-        <title type="text">Mary Halvorson – en expressiv vägvisare </title>
-        <summary type="html">&lt;p&gt;Hör&amp;nbsp;den fantastiska konserten med det amerikanska bandet Mary Halvorson Quintet från vinterns Umeå Jazzfestival.&lt;/p&gt;</summary>
-        <published>2015-07-10T14:55:00+02:00</published>
-        <updated>2015-07-10T15:52:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222205</id>
+        <title type="text">Klassisk förmiddag</title>
+        <summary type="html">med Erika Libeck Lindahl.</summary>
+        <published>2015-07-30T10:28:00+02:00</published>
+        <updated>2015-07-30T10:29:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6209642" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3505908_2048_1152.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Den amerikanska gitarristen Mary Halvorson besökte Umeå Jazzfestival med sin kvintett. Foto: Mikael Lindberg/Sveriges Radio&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=db&amp;id=5386512&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Avantgardistisk jazz i Umeå&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Hör&amp;nbsp;den fantastiska konserten med det amerikanska bandet Mary Halvorson Quintet från vinterns Umeå Jazzfestival.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6209631.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6209642;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222205" />
+        <category term="" />
+        <content type="html">
+            med Erika Libeck Lindahl.1. John Williams: Tema ur Jakten på den försvunna skatten (The raiders march) (1981). Liverpools filharmoniska orkester. Dirigent: Carl Davis. Naxos 8.570505.
+            2. Ingmar Milveden: Pianosonatin (1944) spelas av Bengt Forsberg. Acoustica ACCD 1014.
+            3. Hildegard von Bingen: O vos angeli. Solist: Norbert Rodenkirchen, flöjt. Sequentia, Köln. Dirigent: Benjamin Bagby. Harmonia Mundi 88765468642.
+            4. Östersjöfestivalen 2014: Konsert med Sinfonietta Riga (kl 10.30). Solist: Alina Pogostkina, violin. Dirigent: Normunds Šne.
+            a) Ruta Paidere: Tempera.
+            b) Peteris Vasks: Fantasi för violin och orkester, ”Vox amoris”
+            c) Wolfgang Amadeus Mozart: Symfoni nr 41 C-dur, ”Jupitersymfonin”
+            d) Erkki-Sven Tüür: Illusion ur Aktion-Passion-Illusion
+            Konsert 28/8 2014,	Berwaldhallen.
+            5. Robert Schumann: Frauenliebe und –leben (Adalbert von Chamisso). Miah Persson, sopran och Joseph Breinl, piano. BIS SACD 1834.
+            6. Reinhold Glière: Harpkonsert. Solist: Anneleen Lenaerts. Bryssels filharmoniker. Dirigent: Michael Tabachnik. Warner Classics 5054196350550.&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6222205.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6208764</id>
-        <title type="text">1400-tal på stor musikfestival</title>
-        <summary type="html">&lt;p&gt;Huelgasensemblen och Paul van Nevel tar oss med till 1400-talet och musik av hovkompositören Firminus Caron vid den stora musikfestivalen i Namur.&lt;/p&gt;</summary>
-        <published>2015-07-09T14:22:00+02:00</published>
-        <updated>2015-07-09T14:22:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222204</id>
+        <title type="text">Klassisk förmiddag</title>
+        <summary type="html">med Erika Libeck Lindahl.</summary>
+        <published>2015-07-30T10:28:00+02:00</published>
+        <updated>2015-07-30T10:29:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6208764" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3547475.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Den belgiske ensembleledaren Paul van Nevel. Foto: Michiel Hendryckx/CC BY 3.0&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5384743&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Vokal prakt från Karl den djärves hov&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Huelgasensemblen och Paul van Nevel tar oss med till 1400-talet och musik av hovkompositören Firminus Caron vid den stora musikfestivalen i Namur.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6192669.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6208764;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222204" />
+        <category term="" />
+        <content type="html">
+            med Erika Libeck Lindahl.1. Peter Tjajkovskij: Svantemat ur ”Svansjön”. Sankt Petersburgs filharmoniska orkester. Dirigent: Jurij Temirkanov. Signum SIGCD 229.
+            2. Joachim Nikolas Eggert: Stråkkvartett c-moll. Salomonkvartetten. Musica Sveciae MSCD 425.
+            3. Antoine Brumel: Magnificat i andra tonen. The Tallis Scholars. Dirigent: Peter Phillips. Gimell CDGIM 026.
+            4. Ruth Gipps: Symfoni nr 2 (1945). Münchens symfoniker. Dirigent: Douglas Bostock. Classico CLASSCD 274.
+            5. Ludvig van Beethoven: Pianosonat nr 29 B-dur, ”Hammarkla-versonaten” spelas av Igor Levit. Sony Classical 88883703872.
+            6. Dinara Alijeva sjunger rysk opera. Ryska statens symfoniska orkester. Dirigent: Dmitrij Jablonskij. Naxos 8.572893.
+            a) Sergej Rachmaninov: Vokalis
+            b) Sergej Rachmaninov: Francescas aria ur andra scenen av ”Francesca da Rimini”
+            c) Peter Tjajkovskij: Lisas aria ur första akten av ”Spader dam”
+            d) Peter Tjajkovskij: Lisas arioso ur tredje akten av ”Spader dam”
+            e) Peter Tjajkovskij: Tatjanas brevscen ur ”Eugen Onegin”&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6222204.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6208734</id>
-        <title type="text">Triakel + Maïa Barouh</title>
-        <summary type="html">&lt;p&gt;Triakel sjunger Thyra Karlssons visor i Ådals-Lidens kyrka, Maïa Barouh i vild fransk-japansk mix från Urkult.&lt;/p&gt;</summary>
-        <published>2015-07-09T14:06:00+02:00</published>
-        <updated>2015-07-09T14:08:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222203</id>
+        <title type="text">Klassisk förmiddag</title>
+        <summary type="html">med Erika Libeck Lindahl.</summary>
+        <published>2015-07-30T10:28:00+02:00</published>
+        <updated>2015-07-30T10:28:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6208734" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3474444_2048_1152.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Triakel är Emma Härdelin, Kjell-Erik Eriksson och Jan Strömstedt. Pressbild/Karin Alfredsson&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5383461&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Konsert från Ådals-Lidens kyrka och Urkult&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Triakel sjunger Thyra Karlssons visor i Ådals-Lidens kyrka, Maïa Barouh i vild fransk-japansk mix från Urkult.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6206306.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6208734;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222203" />
+        <category term="" />
+        <content type="html">
+            med Erika Libeck Lindahl.1. Antonio Vivaldi: Hösten ur De fyra årstiderna. Violinsolist och dirigent: Rodolfo Richter. B'rock, Ghent. Etcetera KTC 1429.
+            2. Clémence de Grandval: Svit för flöjt och piano. Kenneth Smith, flöjt och Paul Rhodes, piano. Divine Art DDA 21371.
+            3. Benjamin Britten: Les illuminations (Artur Rimbaud) (1939). Solist: Anne-Catherine Gillet, sopran. Lièges kungliga filharmoniska orkester. Dirigent: Paul Daniel. Aeon AECD 1113.
+            4. Johann Sebastian Bach: Soloviolinpartita nr 2 d-moll spelas av Gil Shaham. BR Klassik CC 14.
+            5. Kurt Atterberg: Symfoni nr 1 h moll (1923). Göteborgs symfoniker. Dirigent: Neeme Järvi. Chandos CHSA 5154.
+            6. Wolfgang Amadeus Mozart: Pianotrio G dur K 496. Kungsbacka-trion. Naxos 8.570518.&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6222203.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6206923</id>
-        <title type="text">Nyfikenhet, framåtanda och kampvilja</title>
-        <summary type="html">&lt;p&gt;Under femtio- och sextiotalet i Sverige bubblade det bland svenska tonsättare. Möt musik av&amp;nbsp;kompositörerna Dag Wir&amp;eacute;n, Bo Linde, Karl-Birger Blomdahl och Sven-Erik Bäck.&lt;/p&gt;</summary>
-        <published>2015-07-07T12:49:00+02:00</published>
-        <updated>2015-07-07T12:53:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222202</id>
+        <title type="text">Klassisk förmiddag</title>
+        <summary type="html">med Katarina Lindblad.</summary>
+        <published>2015-07-30T10:28:00+02:00</published>
+        <updated>2015-07-30T10:28:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6206923" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3496716_2048_1151.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Karl-Birger Blomdahl. Foto: SVT Bild&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5382217&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Det expressiva, svenska 1900-talet&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Under femtio- och sextiotalet i Sverige bubblade det bland svenska tonsättare. Möt musik av&amp;nbsp;kompositörerna Dag Wir&amp;eacute;n, Bo Linde, Karl-Birger Blomdahl och Sven-Erik Bäck.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6206300.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6206923;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222202" />
+        <category term="" />
+        <content type="html">
+            med Katarina Lindblad.1. Mikael Edlund: Trio sol (1980). Fagéus-trion. Inspelat 1989. Phono Suecia PSCD 20.
+            2. Lars-Erik Larsson: Dagens stunder (1938). Norrköpings symfoniorkester. Dirigent: Mats Rondin. Naxos 8.557426.
+            3. Antonín Dvořák: Stråkkvartett nr 10 Ess-dur, ”Den slaviska”. Vogler-kvartetten. CPO 777.624 2.
+            4. Marianne von Martinez: Cembalokonsert G-dur. Dirigent och solist: Nicoleta Paraschivescu. La Floridana. Harmonia Mundi 88875026722.
+            5. Ludwig van Beethoven: Sex Gellertsånger (Christian Fürchtegott Gellert). Roderick Williams, baryton och Iain Burnside, piano. Signum SIGCD 139.
+            6. Anton Bruckner: Symfoni nr 1 c-moll. Concertgebouworkestern, Amsterdam. Dirigent: Bernard Haitink. Inspelat 1972. Philips 473 886-2.&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6222202.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6206085</id>
-        <title type="text">Verdis Requiem med Radiosymfonikerna</title>
-        <summary type="html">&lt;p&gt;Hör det bejublade gästspelet i Belgien med solisterna Anja Kampe, Michelle de Young, Alexey Dolgov och Michail Petrenko.&lt;/p&gt;</summary>
-        <published>2015-07-06T13:20:00+02:00</published>
-        <updated>2015-07-06T15:52:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222201</id>
+        <title type="text">Klassisk förmiddag</title>
+        <summary type="html">med Katarina Lindblad.</summary>
+        <published>2015-07-30T10:28:00+02:00</published>
+        <updated>2015-07-30T10:28:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6206085" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3545513.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Giuseppe Verdi, målning av Giovanni Boldini, 1886. Foto: Flickr user: Chloé. CC BY-NC-SA 2.0&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5380119&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Sveriges Radios Symfoniorkester i Bryssel&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Hör det bejublade gästspelet i Belgien med solisterna Anja Kampe, Michelle de Young, Alexey Dolgov och Michail Petrenko.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6192678.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6206085;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222201" />
+        <category term="" />
+        <content type="html">
+            med Katarina Lindblad.1. Pablo de Sarasate: Spansk dans nr 6, ”Habanera”. Julia Fischer, violin och Milana Tjernjavska, piano. Decca 478 5950.
+            2. Alonso Lobo: Misa Beata Dei genetrix. Solist: Herman Stinders, orgel. La grande chapelle. Albert Recasens. Lauda LAU 013.
+            3. Jean Sibelius: Symfoni nr 3 C-dur (1907). BBC:s filharmoniska orkester, Manchester. Dirigent: John Storgårds. Chandos CHAN 10809(3).
+            4. Franz Schubert: Pianosonat nr 19 c-moll spelas Paul Lewis. Harmonia Mundi HMC 902165.
+            5. Joan Tower: Chamber dance (2006). Nashvilles symfoniorkester. Dirigent: Giancarlo Guerrero. Naxos 8.559775.
+            6. Daniel Bacheler: Une jeune fillette. Karl Nyhlin, luta. dB DBCD 147.
+            7. Adolf Wiklund: Pianokonsert nr 1 e-moll (1935). Solist: Johan Ullén. Helsingborgs symfoniorkester. Dirigent: Johannes Gustavsson. Konsert 2007, Helsingborgs konserthus.&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6222201.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6204665</id>
-        <title type="text">Nyfiken crossover-konsert i musikens gränsland</title>
-        <summary type="html">&lt;p&gt;Nils Landgren och Stockholms Läns Blåsarsymfoniker rör sig fritt bland olika musikstilar i en konsert från Musikaliska i Stockholm.&lt;/p&gt;</summary>
-        <published>2015-07-03T12:03:00+02:00</published>
-        <updated>2015-07-03T12:08:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222200</id>
+        <title type="text">Klassisk förmiddag</title>
+        <summary type="html">med Katarina Lindblad.</summary>
+        <published>2015-07-30T10:27:00+02:00</published>
+        <updated>2015-07-30T10:28:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6204665" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3523547.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Nils Landgren med sin karaktäristiska röda trombon. Foto: Johannes Lundberg/Sveriges Radio&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5378829&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Nils Landgren möter Blåsarsymfonikerna&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Nils Landgren och Stockholms Läns Blåsarsymfoniker rör sig fritt bland olika musikstilar i en konsert från Musikaliska i Stockholm.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6203070.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6204665;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222200" />
+        <category term="" />
+        <content type="html">
+            med Katarina Lindblad.1. Aram Chatjaturjan: Sabeldans ur ”Gajane” (1942). Bournemouths symfoniorkester. Dirigent: Kirill Karabyts. Onyx 4063.
+            2. Sven-Eric Johanson: Fancies (1974) (William Shakespeare). Solist: Mikael Holmlund, piano. Svenska kammarkören. Dirigent: Simon Phipps. Naxos 8572539.
+            3. Nadia Boulanger: Tre stycken för cello och piano. Maximilian Hornung, cello och Milana Tjernjavska, piano. Sony Classical 88697749242.
+            4. Konsert från Östersjöfestivalen 2014 (kl. 10.30). Solist: Simon Trpčeski, piano. I, Culture Orchestra. Dirigent: Kirill Karabyts.
+            a) Kara Karajev: Svit ur baletten ”Sju skönheter”.
+            b) George Gershwin: Rhapsody in blue.
+            c) Aram Chatjaturjan: Svit ur ”Spartacus”.
+            Konsert 23/8 2014, Berwaldhallen.
+            5. Gottfrid Berg: På strövtåg (1927). Hans Pålsson, piano. Phono Suecia PSCD 715.
+            6. Felix Mendelssohn-Bartholdy: Stråkkvartett nr 4 e-moll. Escher-kvartetten. BIS-1960.
+            7. Johann Sebastian Bach: Missa brevis A-dur BWV 234. Solister: Eugénie Warnier, sopran, Magid El-Bushra, alt och Sydney Fierro, baryton. Pygmalion. Dirigent: Raphael Pichon. Alpha 130.&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6222200.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6203890</id>
-        <title type="text">Konsert med framtidens stjärnor</title>
-        <summary type="html">&lt;p&gt;Hör den fransk-nigerianska sopranen Omo Bello i den här konserten med unga lovande musiker.&lt;/p&gt;</summary>
-        <published>2015-07-02T13:48:00+02:00</published>
-        <updated>2015-07-03T12:02:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222198</id>
+        <title type="text">Klassisk förmiddag</title>
+        <summary type="html">med Katarina Lindblad.</summary>
+        <published>2015-07-30T10:27:00+02:00</published>
+        <updated>2015-07-30T10:27:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6203890" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5377533&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Rising Stars på Stockholms Konserhus&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Hör den fransk-nigerianska sopranen Omo Bello i den här konserten med unga lovande musiker.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6203065.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6203890;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222198" />
+        <category term="" />
+        <content type="html">
+            med Katarina Lindblad.1. Frédéric Chopin: Vals för piano nr 6 Dess-dur, ”Minutvalsen” spelas av Alexandre Tharaud. Erato 50999 934137 2 5.
+            2. Tor Aulin: Fyra svenska danser för orkester (1913). Västtyska radions symfoniorkester. Dirigent: Niklas Willén. CPO 777.775-2.
+            3. Rachel Matthews: Voices of the trees (2008). Laura Deluca, klarinett och Rachel Matthews, piano.
+            4. Felix Mendelssohn-Bartholdy: Violinkonsert nr 2 e-moll. Solist: Christian Tetzlaff, violin. Frankfurt-radions symfoniorkester. Dirigent: Paavo Järvi. Ondine ODE 1195-2.
+            5. Carl Nielsen: Blåskvintett (1922). Medlemmar ur Midtvest-ensemblen. CPO 777.872-2.
+            6. Wolfgang Amadeus Mozart: Stråkkvartett nr 22 B-dur. Jerusalemkvartetten. Harmonia Mundi HMC 902076.
+            7. Sopranen Kate Royal sjunger operaarior och sånger av Debussy, Delibes, Strauss, Stravinsky och Granados. Academy of Saint Martin-in-the-fields. Dirigent: Edward Gardner. EMI 0946 3 94419 2 1.&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6222198.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6203887</id>
-        <title type="text">Mikkel Ploug Group feat. Mark Turner</title>
-        <summary type="html">&lt;p&gt;Hör en konsert med Mikkel Ploug Group som gästas av&amp;nbsp;saxofonisten Mark Turner.&lt;/p&gt;</summary>
-        <published>2015-07-02T13:47:00+02:00</published>
-        <updated>2015-07-02T13:55:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222197</id>
+        <title type="text">Klassisk förmiddag</title>
+        <summary type="html">med Katarina Lindblad.</summary>
+        <published>2015-07-30T10:26:00+02:00</published>
+        <updated>2015-07-30T10:27:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6203887" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5376207&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Mikkel Ploug Group från Fasching i Stockholm&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Hör en konsert med Mikkel Ploug Group som gästas av&amp;nbsp;saxofonisten Mark Turner.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6202336.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6203887;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6222197" />
+        <category term="" />
+        <content type="html">
+            med Katarina Lindblad.1. Marie Samuelsson: Flow (2000). Kammarensemblen. Dirigent: Joakim Unander. Phono Suecia PSCD 147.
+            2. Gustav Düben: En kort bröllopssång (Daniel Hagert). Solist: Tuuli Lindberg, sopran. Opus X. Dirigent: Petri Tapio Mattson. Alba ABCD 373.
+            3. Alexander Glazunov: Symfoni nr 3 D-dur. Skotska nationalorkestern, Glasgow. Dirigent: José Serebrier. Warner bros 2564 66467-4.
+            4. Ludwig van Beethoven: Variationer Ess-dur, ”Eroica-variationerna”. Cédric Tiberghien, piano. Harmonia Mundi HMC 901775.
+            5. Sergej Prokofjev: Ur ”Löjnant Kizjé” (1933). Solist: Andrej Bondarenko, baryton. Bergens filharmoniska orkester. Dirigent: Andrew Litton. BIS 1994 SACD.
+            6. Johannes Brahms: Klarinettkvintett h-moll. Martin Fröst, klarinett, Janine Jansen och Boris Brovtsyn, violin, Maxim Rysanov, viola och Torleif Thedéen, cello. BIS 2063 SACD.&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6222197.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6203882</id>
-        <title type="text">Irländska Kila och folkmusik från Vitryssland</title>
-        <summary type="html">&lt;p&gt;Irländska Kila gjorde att bejublat framträdande på Urkult i somras med sin maffiga folkrock. Dessutom en konsert med vitryska sång- och dansensemblen Vietah.&lt;/p&gt;</summary>
-        <published>2015-07-02T13:47:00+02:00</published>
-        <updated>2015-07-02T13:53:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6215532</id>
+        <title type="text">Mässa nr 9 ”Mässa i orostid”  eller ”Nelsonmässan” av Joseph Haydn.</title>
+        <summary type="html">med Katarina Lindblad. J Leifs: Stilla ha sommarns blommor somnat, B Crusell: Klarinettkonsert nr 1 Ess-dur, D Pejacevic: Sex fantasistycken op 17, F Mendelssohn-Bartholdy: Symfoni nr 4 A-dur, E Bozza: Sonatin för brasskvintett, C Franck: Violinsonat A-dur, J Haydn: Mässa nr 9 d-moll.</summary>
+        <published>2015-07-20T14:12:00+02:00</published>
+        <updated>2015-07-20T15:15:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6203882" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3486815_2048_1151.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Rónán Ó Snodaigh ur Kila på en bodhrán. Foto: Mats Einarsson/Sveriges Radio&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5376192&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Konserter från Urkult och Euroradio Folk Festival&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Irländska Kila gjorde att bejublat framträdande på Urkult i somras med sin maffiga folkrock. Dessutom en konsert med vitryska sång- och dansensemblen Vietah.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6202333.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6203882;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6215532" />
+        <category term="" />
+        <content type="html">
+            med Katarina Lindblad. J Leifs: Stilla ha sommarns blommor somnat, B Crusell: Klarinettkonsert nr 1 Ess-dur, D Pejacevic: Sex fantasistycken op 17, F Mendelssohn-Bartholdy: Symfoni nr 4 A-dur, E Bozza: Sonatin för brasskvintett, C Franck: Violinsonat A-dur, J Haydn: Mässa nr 9 d-moll.&lt;p&gt;1. Jón Leifs: Stilla ha sommarns blommor somnat (Jónas Hallgrimsson) (1949).  Hallgrimskyrkans motettkör, Reykjavik. Dirigent: Hördur Áskelsson. BIS CD 1030.
+            &lt;/p&gt;&lt;p&gt;2. Bernhard Crusell: Klarinettkonsert nr 1 Ess-dur. Solist: Thea King. Londons symfoniorkester. Dirigent: Alun Francis. Inspelat 1981. Hyperion CDA 66055.
+            &lt;/p&gt;&lt;p&gt;3. Dora Pejacevic: Sex fantasistycken op 17 (1903). Yoko Nishii, piano. Herb Classics 050101.
+            &lt;/p&gt;&lt;p&gt;4. Felix Mendelssohn-Bartholdy: Symfoni nr 4  A-dur, ”Den italienska”. City of Birminghams symfoniorkester. Dirigent: Edward Gardner. Chandos CHSA 5132.
+            &lt;/p&gt;&lt;p&gt;5. Eugene Bozza: Sonatin för brasskvintett (1951). Brass Quintet München. Audite SACD 92 525.
+            &lt;/p&gt;&lt;p&gt;6. César Franck: Violinsonat A-dur. Arabella Steinbacher, violin och Robert Kulek, piano. Pentatone Classics PTC 5186 470.
+            &lt;/p&gt;&lt;p&gt;7. Joseph Haydn: Mässa nr 9 d-moll, ”Nelsonmässan”. Solister: Ann Hoyt, sopran, Kirsten Sollek, alt, Daniel Multu, tenor och Andrew Nolen, bas. Trinity Choir. Rebel Baroque Orchestra. Dirigent: Owen Burdick. Naxos 8.572123.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6215532.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6202019</id>
-        <title type="text">Fyra konserter med fem solister</title>
-        <summary type="html">&lt;p&gt;Hör avslutningskonserten från Martha Argerich-festivalen i Lugano, med bland andra Martha själv, Renaud Capu&amp;ccedil;on och Alexander Gurning.&lt;/p&gt;</summary>
-        <published>2015-06-30T14:16:00+02:00</published>
-        <updated>2015-06-30T14:31:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6215530</id>
+        <title type="text">Carl Nielsen violinkonsert med Nikolaj Znaider.</title>
+        <summary type="html">med Katarina Lindblad. I Stravinsky: Cirkuspolka, Cécile Chaminade: Pianotrio nr 1 g-moll, J Agrell: Oboekonsert B-dur, E Bloch: Stråkvartett G-dur, F Ali-Zadeh: Fantasi för gitarr, C Nielsen: Violinkonsert, J Brahms: Tolv sånger.</summary>
+        <published>2015-07-20T14:11:00+02:00</published>
+        <updated>2015-07-20T15:12:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6202019" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5374926&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Konsert med Italienska Schweiz orkester&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Hör avslutningskonserten från Martha Argerich-festivalen i Lugano, med bland andra Martha själv, Renaud Capu&amp;ccedil;on och Alexander Gurning.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6192686.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6202019;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6215530" />
+        <category term="" />
+        <content type="html">
+            med Katarina Lindblad. I Stravinsky: Cirkuspolka, Cécile Chaminade: Pianotrio nr 1 g-moll, J Agrell: Oboekonsert B-dur, E Bloch: Stråkvartett G-dur, F Ali-Zadeh: Fantasi för gitarr, C Nielsen: Violinkonsert, J Brahms: Tolv sånger.&lt;p&gt;1. Igor Stravinsky: Cirkuspolka (1942). BBC:s walesiska nationalorkester, Cardiff. Dirigent: Thierry Fischer. Orfeo C 849121 A.
+            &lt;/p&gt;&lt;p&gt;2. Cécile Chaminade: Pianotrio nr 1 g-moll. Rembrandttrion. Dorian DOR-90187.
+            &lt;/p&gt;&lt;p&gt;3. Johan Agrell: Oboekonsert B-dur. Solist: Jasu Moisio. Dirigent: Aapo Häkkinen. Helsingfors barockorkester. Aeolus AE 10047.
+            &lt;/p&gt;&lt;p&gt;4. Ernest Bloch: Stråkkvartett G-dur. Galateakvartetten. Sony Classical 88697950242.
+            &lt;/p&gt;&lt;p&gt;5. Franghiz Ali-Zadeh: Fantasi för gitarr (1995) spelas av Nikos Zarkos.
+            &lt;/p&gt;&lt;p&gt;6. Carl Nielsen: Violinkonsert (1911). Solist: Nikolaj Znaider. Londons filharmoniska orkester. Dirigent: Lawrence Foster. EMI 7 2435569062 3.
+            &lt;/p&gt;&lt;p&gt;7. Johannes Brahms: Tolv sånger. Ofelia Sala, sopran och Helmut Deutsch, piano. Från katalanska radion.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6215530.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6201178</id>
-        <title type="text">Segerstam och Radiosymfonikerna</title>
-        <summary type="html">&lt;p&gt;Vi följer med dirigentlegenden Leif Segerstam och Sveriges Radios Symfoniorkester till Moskva i en konsert med hela tre extranummer!&lt;/p&gt;</summary>
-        <published>2015-06-29T16:16:00+02:00</published>
-        <updated>2015-06-29T16:22:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6215527</id>
+        <title type="text">Tjajkovskijs första pianokonsert med Alice Sara Ott.</title>
+        <summary type="html">med Katarina Lindblad. M Schrader: Sommarnatt, H Alfvén: Skärgårdsbilder, H Bosmans: Stråkkvartett, Sveriges Radios Symfoniorkester och Alice Sara Ott spelar Tjajkovskij, Liszt och Schumann, F Hoffmeister: Serenad Ess-dur för blåsare.</summary>
+        <published>2015-07-20T14:10:00+02:00</published>
+        <updated>2015-07-20T14:33:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6201178" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3542211.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Leif Segerstam är chefdirigent för Åbo Filharmoniska Orkester och Malmö Opera. Foto: Björn Edergren/Sveriges Radio&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5372739&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Debussy, Alfvén och Sibelius i Moskva&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Vi följer med dirigentlegenden Leif Segerstam och Sveriges Radios Symfoniorkester till Moskva i en konsert med hela tre extranummer!&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6179829.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6201178;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6215527" />
+        <category term="" />
+        <content type="html">
+            med Katarina Lindblad. M Schrader: Sommarnatt, H Alfvén: Skärgårdsbilder, H Bosmans: Stråkkvartett, Sveriges Radios Symfoniorkester och Alice Sara Ott spelar Tjajkovskij, Liszt och Schumann, F Hoffmeister: Serenad Ess-dur för blåsare.&lt;p&gt;1. Mogens Schrader: Sommarnatt (Gösta Stevens). Jussi Björling, tenor. Nils Grevillius orkester. Dirigent: Nils Grevillius. Inspelat 1936. Angel CDC 761 075-2.
+            &lt;/p&gt;&lt;p&gt;2. Hugo Alfvén: Skärgårdsbilder (1902). Lars Roos, piano. Philips 454 227-2.
+            &lt;/p&gt;&lt;p&gt;3. Henriette Bosmans: Stråkkvartett (1927). Utrechtkvartetten. NM 98020.
+            &lt;/p&gt;&lt;p&gt;4. Konsert med Sveriges Radios Symfoniorkester. Solist: Alice Sara Ott, piano. Dirigent: Daniel Harding.
+            &lt;/p&gt;&lt;p&gt;a) Peter Tjajkovskij: Pianokonsert nr 1 b-moll.
+            &lt;/p&gt;&lt;p&gt;b) Franz Liszt: "La campanella".
+            &lt;/p&gt;&lt;p&gt;c) Robert Schumann: Manfred-uvertyr
+            d) Antonín Dvořák: Symfoni nr 7 d-moll.
+            Konsert 2010.
+            &lt;/p&gt;&lt;p&gt;5. Franz Anton Hoffmeister: Serenad Ess-dur för blåsare. Consortium Classicum. CPO 999 107-2.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6215527.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6198194</id>
-        <title type="text">Bach, Bach, Bach och Bach</title>
-        <summary type="html">&lt;p&gt;I Frederiksbergskyrkan i Köpenhamn ger den polska ensemblen Arte dei Suonatori ger prov på familjen Bachs övermusikalitet.&lt;/p&gt;</summary>
-        <published>2015-06-25T10:50:00+02:00</published>
-        <updated>2015-06-25T11:06:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6215523</id>
+        <title type="text">Jussi Björling och Kerstin Meyer sjunger ur Verdis ”Trubaduren”.</title>
+        <summary type="html">med Katarina Lindblad. S Palmgren: Regndroppar, A Wiklund: Tre stycken för stråkorkester, R Vaughan Williams: Blake-sånger, L Farrenc: Symfoni nr 2 D-dur, J S Bach: Engelsk svit nr 3 g-moll, J Röntgen: Stråktrio nr 8, Ur ”Trubaduren” av G Verdi.</summary>
+        <published>2015-07-20T14:09:00+02:00</published>
+        <updated>2015-07-20T14:27:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6198194" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3541322.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Den polska ensemblen Arte dei Suonatori. Pressbild/midsommerbarok.dk&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5370030&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Arte dei Sounatori från festivalen Midsommerbarok&lt;/a&gt;&lt;/p&gt;&lt;p&gt;I Frederiksbergskyrkan i Köpenhamn ger den polska ensemblen Arte dei Suonatori ger prov på familjen Bachs övermusikalitet.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6179826.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6198194;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6215523" />
+        <category term="" />
+        <content type="html">
+            med Katarina Lindblad. S Palmgren: Regndroppar, A Wiklund: Tre stycken för stråkorkester, R Vaughan Williams: Blake-sånger, L Farrenc: Symfoni nr 2 D-dur, J S Bach: Engelsk svit nr 3 g-moll, J Röntgen: Stråktrio nr 8, Ur ”Trubaduren” av G Verdi.&lt;p&gt;1. Selim Palmgren: Regndroppar (1917). Izumi Tateno, piano. EMI 749 105 2. &lt;/p&gt;&lt;p&gt;2. Adolf Wiklund. Tre stycken för stråkorkester (1924). Sveriges Radios Symfoniorkester. Stig Westerberg. Konsert 1971, Musikaliska Akademien, Stockholm.
+            &lt;/p&gt;&lt;p&gt;3. Ralph Vaughan Williams: Blake-sånger (1957). Mikael Bellini, countertenor, Helén Jahren, oboe. Konsert 1999, Torekovs kyrka, Båstad.
+            &lt;/p&gt;&lt;p&gt;4. Louise Farrenc: Symfoni nr 2 D-dur. Nordtyska radions orkester, Hannover. Dirigent: Johannes Goritzki. CPO 999 820-2.
+            &lt;/p&gt;&lt;p&gt;5. Johann Sebastian Bach: Engelsk svit nr 3 g-moll. Piotr Anderszewski, piano. Warnes Bros 0825646219391.
+            &lt;/p&gt;&lt;p&gt;6. Julius Röntgen: Stråktrio nr 8 (1923). Lendvai-trion. Champs Hill CHRCD 087.
+            &lt;/p&gt;&lt;p&gt;7. Giuseppe Verdi: Ur ”Trubaduren”. Solister: Jussi Björling (Manrico), Hjördis Schymberg (Leonora), Ingeborg Kjellgren (Inez), Kerstin Meyer (Azucena), Olle Sivaoll (Ruiz), Sture Ingebretzen (budbäraren), Hugo Hasslo (Greve Luna), Erik Saedén (Ferrano) och Bertil Alstergård (zigenarhövdingen). Kungliga Hovkapellet, Stockholm. Kungliga Teaterns kör, Stockholm. Dirigent: Herbert Sandberg. Inspelat 1960, Kungliga Teatern, Stockholm.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6215523.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6197425</id>
-        <title type="text">Mästarspelmän på Skansen och en engelsk gitarrlegend</title>
-        <summary type="html">&lt;p&gt;Följ med till den årliga spelmanskonserten i Seglora kyrka i Stockholm. Sedan&amp;nbsp;minns vi den engelska gitarrlegenden John Renbourn&amp;nbsp;med en konsert från 2004.&lt;/p&gt;</summary>
-        <published>2015-06-24T12:16:00+02:00</published>
-        <updated>2015-06-24T13:31:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6215490</id>
+        <title type="text">En sommardag på landet med N W Gade och högsommarmusik av Libby Larsen.</title>
+        <summary type="html">med Katarina Lindblad. M Reidarsdatter-Eriksen: Sol-lokk, H Berge: Velsignade morgen. W A Mozart: ”Kegelstatt”, N W Gade: En sommardag på landet, W Peterson-Berger: Earina, C Gesualdo: Fyra madrigaler, L Larsen: Deep summer music, I Pleyel: Partita Ess-dur, D Sjostakovitj: Svit över finska folkvisor.</summary>
+        <published>2015-07-20T13:42:00+02:00</published>
+        <updated>2015-07-20T14:21:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6197425" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3511033_2048_1152.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Den engelska gitarristen John Renbourn dog den 26 mars i år. Foto: Flickranvändaren Sean Rowe/CC BY-NC-ND 2.0&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5368582&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Svensk traditionsmusik och engelsk folkmusik&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Följ med till den årliga spelmanskonserten i Seglora kyrka i Stockholm. Sedan&amp;nbsp;minns vi den engelska gitarrlegenden John Renbourn&amp;nbsp;med en konsert från 2004.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6195810.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6197425;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6215490" />
+        <category term="" />
+        <content type="html">
+            med Katarina Lindblad. M Reidarsdatter-Eriksen: Sol-lokk, H Berge: Velsignade morgen. W A Mozart: ”Kegelstatt”, N W Gade: En sommardag på landet, W Peterson-Berger: Earina, C Gesualdo: Fyra madrigaler, L Larsen: Deep summer music, I Pleyel: Partita Ess-dur, D Sjostakovitj: Svit över finska folkvisor.&lt;p&gt;1. Marianne Reidarsdatter-Eriksen (Olav Aukrust): Sol-lokk. Solist: Marianne Reidarsdatter-Eriksen, sopran. Röster ur Uranienborgs vokalensemble. Dirigent: Elisabeth Holte. 2L-096-SACD
+            &lt;/p&gt;&lt;p&gt;2. Håkon Berge (Henrik Ibsen): Velsignade morgen. Uranienborgs vokalensemble. Dirigent: Elisabeth Holde. 2L-096-SACD.
+            &lt;/p&gt;&lt;p&gt;3. Wolfgang Amadeus Mozart: Klarinett-trio Ess-dur, ”Kegelstatt”. Martin Fröst, klarinett, Antoine Tamestit, viola och Leif Ove Andsnes, piano. BIS 1893 SACD.
+            &lt;/p&gt;&lt;p&gt;4. Niels Wilhelm Gade: En sommardag på landet. Rheinland-Pfalz statliga filharmoni. Dirigent: Ole Schmidt. CPO 999 362-2.
+            &lt;/p&gt;&lt;p&gt;5. Wilhelm Peterson-Berger: Earina (1917). Olof Höjer, piano. Swedish Society SCD 1088.
+            &lt;/p&gt;&lt;p&gt;6. Carlo Gesualdo: Fyra madrigaler. Radiokören, Stockholm. Dirigent: Tõnu Kaljuste. Konsert 2002, Berwaldhallen.
+            &lt;/p&gt;&lt;p&gt;7. Libby Larsen: Deep summer music (1983). Colorados symfoniorkester. Dirigent: Marin Alsop. Koch 3-7520-2 H1.
+            &lt;/p&gt;&lt;p&gt;8. Ignaz Pleyel: Partita Ess-dur för blåsare. Blåsaroktetten Amphion, Basel. Accent ACC 24276.
+            &lt;/p&gt;&lt;p&gt;9. Dmitrij Sjostakovitj: Svit över finska folkvisor (1939). Solister: Anu Komsi, sopran och Tom Nyman, tenor. Österbottniska kammarorkestern, Karleby. Dirigent: Juha Kangas. BIS CD 1256.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6215490.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6197401</id>
-        <title type="text">Från minimalism till vokal/elektroimpro via jazz</title>
-        <summary type="html">&lt;p&gt;Några av Sveriges mest spännande akter stod på scen på&amp;nbsp;Nefertiti i Göteborg när det musikerdrivna skivbolaget Hoob Records firade 10-årsjubileum.&lt;/p&gt;</summary>
-        <published>2015-06-24T12:16:00+02:00</published>
-        <updated>2015-06-24T13:14:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6210200</id>
+        <title type="text">Idag bland annat: två skildringar av den amerikanska södern på sommaren, Barbers Knoxville: summer of 1915 och Delius Florida-svit.</title>
+        <summary type="html">med Paul Waltman. A Eriksson: Moose imitating moss,  S Barber: Knoxville: summer of 1915 (J Agee), Z Kodály: Sju pianostycken op 11,  Felix Mendelssohn: Stråkoktett Ess-dur, F Delius: Florida-svit, T Tallis: Suscipe quaeso Domine, E Andrée: Pianotrio c-moll.</summary>
+        <published>2015-07-11T20:24:00+02:00</published>
+        <updated>2015-07-11T20:29:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6197401" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3497210_1800_1013.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Per Störby Jutbring. Foto: Johannes Lundberg&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5368610&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Jazzkonsert från Göteborg&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Några av Sveriges mest spännande akter stod på scen på&amp;nbsp;Nefertiti i Göteborg när det musikerdrivna skivbolaget Hoob Records firade 10-årsjubileum.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6195826.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6197401;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6210200" />
+        <category term="" />
+        <content type="html">
+            &lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/2480/3533394.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Paul Waltman är 2:e konsertmästare i Norrköpings symfoniorkester och leder i sommar Klassisk förmiddag. Foto: Mattias Ahlm/Sveriges Radio&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;med Paul Waltman. A Eriksson: Moose imitating moss,  S Barber: Knoxville: summer of 1915 (J Agee), Z Kodály: Sju pianostycken op 11,  Felix Mendelssohn: Stråkoktett Ess-dur, F Delius: Florida-svit, T Tallis: Suscipe quaeso Domine, E Andrée: Pianotrio c-moll.&lt;p&gt;1. Anna Eriksson: Moose imitating moss (2007). Mats Bergström och Patrik Karlsson, gitarr.
+            &lt;/p&gt;&lt;p&gt;2. Samuel Barber: Knoxville: summer of 1915 (James Agee) (1950). Solist: Anne-Catherine Gillet, sopran. Lieges kungliga filharmoniska orkester. Dirigent: Paul Daniel. Aeon AECD 1113.
+            &lt;/p&gt;&lt;p&gt;3. Zoltán Kodály: Sju pianostycken op 11 (1918) spelas av Kornél Zempléni. White label HRC 142. Inspelad 1978.
+            &lt;/p&gt;&lt;p&gt;4. Felix Mendelssohn: Stråkoktett Ess-dur. Daniel Hope, violin och medlemmar ur the Chamber Orchestra of Europe. DGG 477 6634.
+            &lt;/p&gt;&lt;p&gt;5. Frederick Delius: Florida-svit. English Northern philharmonica, Leeds. Dirigent: David Lloyd-Jones. Naxos 8.553535.
+            &lt;/p&gt;&lt;p&gt;6. Thomas Tallis: Suscipe quaeso Domine. Monteverdikören. Dirigent: John Eliot Gardiner. Soli dei gloria SDG 720.
+            &lt;/p&gt;&lt;p&gt;7. Elfrida Andrée: Pianotrio c-moll. Trio Nordica. Intim musik IMCD 113.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6210200.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6196333</id>
-        <title type="text">Virtuos dragspelskonsert med Jörgen Sundeqvist</title>
-        <summary type="html">&lt;p&gt;Fredrik Högberg lät sig inspireras av dragspelstraditionen kring timmerflottarna på Ångermanälven när han skapade konserten "Dragspelskungen".&lt;/p&gt;</summary>
-        <published>2015-06-23T11:28:00+02:00</published>
-        <updated>2015-06-23T11:53:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6210198</id>
+        <title type="text">Beethovens ilska över en tappad slant inleder och Franz Berwalds Sinfonie sérieuse avslutar dagens program.</title>
+        <summary type="html">med Paul Waltman. L van Beethoven: Rondo G-dur, J S Bach: Kantat nr 80, J Brahms: Cellosonat nr 2 F-dur,  H Villa-Lobos: Uirapuru, P Tjajkovskij: Stråkkvartett nr 1 D-dur, A Beach: Three Shakespeare songs, Franz Berwald: ”Sinfonie sérieuse”. </summary>
+        <published>2015-07-11T20:19:00+02:00</published>
+        <updated>2015-07-11T20:24:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6196333" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/478/3467987_2048_1152.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Dragspelaren Jörgen Sundeqvist med Nordiska kammarorkestern. Foto: Niklas Axelsson, SR&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5367291&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Konsert från Kulturfestivalen Sundsvall&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Fredrik Högberg lät sig inspireras av dragspelstraditionen kring timmerflottarna på Ångermanälven när han skapade konserten "Dragspelskungen".&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6195764.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6196333;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6210198" />
+        <category term="" />
+        <content type="html">
+            &lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/2480/3533394.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Paul Waltman är 2:e konsertmästare i Norrköpings symfoniorkester och leder i sommar Klassisk förmiddag. Foto: Mattias Ahlm/Sveriges Radio&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;med Paul Waltman. L van Beethoven: Rondo G-dur, J S Bach: Kantat nr 80, J Brahms: Cellosonat nr 2 F-dur,  H Villa-Lobos: Uirapuru, P Tjajkovskij: Stråkkvartett nr 1 D-dur, A Beach: Three Shakespeare songs, Franz Berwald: ”Sinfonie sérieuse”. &lt;p&gt;1. Ludwig van Beethoven: Rondo G-dur, ”Ilska över en tappad slant”. Alice Sara Ott, piano. DGG 477 9291
+            &lt;/p&gt;&lt;p&gt;2. Johann Sebastian Bach: Kantat nr 80, ”Ein feste Burg ist unser Gott”. Solister: Joanne Lunn, sopran, William Towers, countertenor, James Gilchrist, tenor och Peter Harvey, bas. Monteverdikören och English Baroque soloists. Dirigent: John Eliot Gardiner. Soli dei gloria SDG 110.
+            &lt;/p&gt;&lt;p&gt;3. Johannes Brahms: Cellosonat nr 2 F-dur. Tanja Tetzlaff, cello och Gunilla Süssmann, piano. Avi Music 8553270.
+            &lt;/p&gt;&lt;p&gt;4. Heitor Villa-Lobos: Uirapuru. São Paulos symfoniorkester. Dirigent: Isaac Karabtchewsky. Från brasilianska radion.
+            &lt;/p&gt;&lt;p&gt;5. Peter Tjajkovskij: Stråkkvartett nr 1 D-dur. Prazakkvartetten. Harmonia mundi HM 90.
+            &lt;/p&gt;&lt;p&gt;6. Amy Beach: Three Shakespeare songs. Emma Kirkby, sopran och James Lisney, piano. BIS CD-1245.	&lt;/p&gt;&lt;p&gt;7. Franz Berwald: Symfoni nr 1 g-moll, ”Sinfonie sérieuse”. Danmarks radios symfoniorkester. Dirigent: Thomas Dausgaard. Chandos CHAN 10303.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6210198.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6196324</id>
-        <title type="text">Fyra verk av Arvo Pärt</title>
-        <summary type="html">&lt;p&gt;Radiokören under ledning av Peter Dijkstra och Stockholm sinfonietta framför fyra verk av Pärt, bland annat hans berömda "Te Deum".&lt;/p&gt;</summary>
-        <published>2015-06-23T11:28:00+02:00</published>
-        <updated>2015-06-23T11:36:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6210197</id>
+        <title type="text">Hörvärt idag: Mikis Theodorakis filmmusik till Zorba från 1964 och Brahms violinkonsert med Vilde Frang. </title>
+        <summary type="html">med Paul Waltman. I Karkoff: Tzivaéri, M Theodorakis: Ur ”Zorbas”, balettsvit, Konsert med Sveriges Radios Symfoniorkester: musik av Brahms, Brustad och Berlioz,  C Schumann: Tre romanser, L Söderlundh: Oboeconcertino.</summary>
+        <published>2015-07-11T20:14:00+02:00</published>
+        <updated>2015-07-11T20:19:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6196324" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3525796.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Arvo Pärt föddes i Paide i norra Estland 1935 och är idag en idag en av världens största gestalter inom samtida konstmusik. Foto: Kaupko Kikkas&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;Radiokören under ledning av Peter Dijkstra och Stockholm sinfonietta framför fyra verk av Pärt, bland annat hans berömda "Te Deum".&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6164504.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6196324;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6210197" />
+        <category term="" />
+        <content type="html">
+            &lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/2480/3533394.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Paul Waltman är 2:e konsertmästare i Norrköpings symfoniorkester och leder i sommar Klassisk förmiddag. Foto: Mattias Ahlm/Sveriges Radio&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;med Paul Waltman. I Karkoff: Tzivaéri, M Theodorakis: Ur ”Zorbas”, balettsvit, Konsert med Sveriges Radios Symfoniorkester: musik av Brahms, Brustad och Berlioz,  C Schumann: Tre romanser, L Söderlundh: Oboeconcertino.&lt;p&gt;1. Ingvar Karkoff: Tzivaéri (1995). Stockholms saxofonkvartett. Phono Suecia PSSACD 146.
+            &lt;/p&gt;&lt;p&gt;2. Mikis Theodorakis: Ur ”Zorbas”, balettsvit (1988). Solist: Ioanna Forti, sopran. Montreals kör och symfoniorkester. Dirigent: Charles Dutoit. Decca 475 6130.
+            &lt;/p&gt;&lt;p&gt;3. Konsert med Sveriges Radios Symfoniorkester (kl 10.30)
+            Solist: Vilde Frang, violin. Dirigent: Daniel Harding.
+            a) Johannes Brahms: Violinkonsert-D dur.
+            b) Bjarne Brustad: ur Äventyrssvit för soloviolin.
+            c) Hector Berlioz: Symphonie fantastique.
+            Konsert 24/4, Auditorium Manzoni, Bologna.
+            &lt;/p&gt;&lt;p&gt;4. Clara Schumann: Tre romanser för violin och piano. Lisa Batiasjvili, violin och Alice Sara Ott, piano. DGG 479 0086.
+            &lt;/p&gt;&lt;p&gt;5. Lille Bror Söderlundh: Oboeconcertino (1944). Solist: Alf Nilsson, oboe. Stockholm sinfonietta. Dirigent: Esa-Pekka Salonen. BIS CD 285.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6210197.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6195194</id>
-        <title type="text">Bob hund på Malmö opera</title>
-        <summary type="html">&lt;p&gt;Förra året&amp;nbsp;lånade&amp;nbsp;Bob hund&amp;nbsp;hela Malmö Opera med orkester och allt. Hör hela den fantastiska föreställning som blev resultatet!&lt;/p&gt;</summary>
-        <published>2015-06-22T10:08:00+02:00</published>
-        <updated>2015-06-22T10:12:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6210196</id>
+        <title type="text">Dagens guldkorn: Sergej Rachmaninovs pianopreludier op 23 och Rued Langgaards andra stråkkvartett.</title>
+        <summary type="html">med Paul Waltman. H Berlioz: Andra satsen ur Symphonie funèbre et triomphale, S Rachmaninov: Tio pianopreludier op 23, E Kallstenius: Dalarapsodi, C Saint-Saëns: Klarinettsonat Ess-dur,  R Langgaard: Stråkkvartett nr 2, S Corri Dussek: Harpsonat nr 3 c-moll,  Första akten ur J B Lullys opera ”Phaëton”.</summary>
+        <published>2015-07-11T20:09:00+02:00</published>
+        <updated>2015-07-11T20:14:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6195194" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3485023_1182_665.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Bob Hund intog Malmö Opera i augusti i fjol. Pressbild/Cesare Righetti&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5364460&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Bob hund på Malmö opera/Stockholm Syndrome Ensemble&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Förra året&amp;nbsp;lånade&amp;nbsp;Bob hund&amp;nbsp;hela Malmö Opera med orkester och allt. Hör hela den fantastiska föreställning som blev resultatet!&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6192922.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6195194;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6210196" />
+        <category term="" />
+        <content type="html">
+            &lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/2480/3533394.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Paul Waltman är 2:e konsertmästare i Norrköpings symfoniorkester och leder i sommar Klassisk förmiddag. Foto: Mattias Ahlm/Sveriges Radio&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;med Paul Waltman. H Berlioz: Andra satsen ur Symphonie funèbre et triomphale, S Rachmaninov: Tio pianopreludier op 23, E Kallstenius: Dalarapsodi, C Saint-Saëns: Klarinettsonat Ess-dur,  R Langgaard: Stråkkvartett nr 2, S Corri Dussek: Harpsonat nr 3 c-moll,  Första akten ur J B Lullys opera ”Phaëton”.&lt;p&gt;1. Hector Berlioz: Andra satsen ur Symphonie funèbre et triomphale. Solist: Christian Lindberg, trombon. Tokyo Kosei Wind Orchestra. Dirigent: Chikara Imamura. BIS CD 848.
+            &lt;/p&gt;&lt;p&gt;2. Sergej Rachmaninov: Tio pianopreludier op 23 (1903) spelas av Steven Osborne. Hyperion CDA 67700.
+            &lt;/p&gt;&lt;p&gt;3. Edvin Kallstenius: Dalarapsodi (1931). Sveriges Radios Symfoniorkester. Dirigent: B. Tommy Andersson. Phono Suecia PSCD 701.
+            &lt;/p&gt;&lt;p&gt;4. Camille Saint-Saëns: Klarinettsonat Ess-dur (1920). Håkan Rosengren, klarinett och Anne Epperson, piano. SMS Classical HR 9346.
+            &lt;/p&gt;&lt;p&gt;5. Rued Langgaard: Stråkkvartett nr 2 (1931). Nightinggalekvartetten. Dacapo 6.220575.	&lt;/p&gt;&lt;p&gt;6. Sophia Corri Dussek: Harpsonat nr 3 c-moll spelas av Masumi Nagasawa. Etcetera KTC 1439.
+            &lt;/p&gt;&lt;p&gt;7. Första akten ur Jean Baptiste Lullys opera ”Phaëton” (Philippe Quinault). Solister: Ingrid Perruche, Isabelle Druet, Gaelle Arquez och Thomas Virginie, sopran, Emiliano Gonzalez-Toro och Cyril Auvity, tenor, Andrew Foster-Williams, baryton, Frédéric Caton och Benoit Arnould, bas. Namurs kammarkör. Les talens lyriques. Dirigent: Christophe Rousset. Aparte AP 061.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6210196.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
     <entry>
-        <id>http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6192947</id>
-        <title type="text">The 7 Rays and Beyond med Jerry Bergonzi Quintet</title>
-        <summary type="html">&lt;p&gt;Hör en konsert med den amerikanska saxofonisten Jerry Bergonzi, som präglat jazzscenen under de senaste 35 åren.&lt;/p&gt;</summary>
-        <published>2015-06-17T17:25:00+02:00</published>
-        <updated>2015-06-17T17:31:00+02:00</updated>
+        <id>http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6210194</id>
+        <title type="text">Juniskymning av Rebecca Clarke och Beethovens stråkkvartett op 132, bland mycket annat idag!</title>
+        <summary type="html">med Paul Waltman. R Clarke: June twilight (John Masefield), W A Mozart: Violinkonsert nr 1 B-dur, W Stenhammar: Pianosonat nr 2 Ass-dur, L van Beethoven: Stråkkvartett nr 15 a-moll, G Mahler: Lieder eines fahrenden Gesellen, I Gotkovsky: Saxofonkvartett (1988), C P E Bach: Sinfonia G-dur W 173.</summary>
+        <published>2015-07-11T20:03:00+02:00</published>
+        <updated>2015-07-11T20:09:00+02:00</updated>
         <author>
-            <name>P2 Live</name>
+            <name>Klassisk förmiddag      </name>
         </author>
-        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=4427&amp;artikel=6192947" type="text/html"/>
-        <category term=""/>
-        <content type="html">&lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/4427/3489945_2048_1361.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Bergonzi. Foto: Miriam Aïda/Sveriges Radio  &lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Lyssna:&lt;/strong&gt; &lt;a href="/api/radio/radio.aspx?type=broadcast&amp;id=5361711&amp;codingformat=.m4a&amp;metafile=m3u"&gt;Jazz från Radiohuset i Malmö&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Hör en konsert med den amerikanska saxofonisten Jerry Bergonzi, som präglat jazzscenen under de senaste 35 åren.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/4427/6190690.gif" width="1px" height="1px" /&gt;</content>
-        <link href="http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect?artikel=6192947;tracelevel=9;proxy_data=False" rel="enclosure" type="audio/mp4"/>
+        <link href="http://sverigesradio.se/sida/artikel.aspx?programid=2480&amp;artikel=6210194" />
+        <category term="" />
+        <content type="html">
+            &lt;p&gt;&lt;div&gt;&lt;img src="http://sverigesradio.se/sida/images/2480/3533394.jpg?preset=api-default-rectangle" /&gt;&lt;p&gt;&lt;i&gt;Paul Waltman är 2:e konsertmästare i Norrköpings symfoniorkester och leder i sommar Klassisk förmiddag. Foto: Mattias Ahlm/Sveriges Radio&lt;/i&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;med Paul Waltman. R Clarke: June twilight (John Masefield), W A Mozart: Violinkonsert nr 1 B-dur, W Stenhammar: Pianosonat nr 2 Ass-dur, L van Beethoven: Stråkkvartett nr 15 a-moll, G Mahler: Lieder eines fahrenden Gesellen, I Gotkovsky: Saxofonkvartett (1988), C P E Bach: Sinfonia G-dur W 173.&lt;p&gt;1. Rebecca Clarke: June twilight (John Masefield) (1925). Giles Davies, baryton och Steven Devine, piano. Divine art DDA25048
+            &lt;/p&gt;&lt;p&gt;2. Wolfgang Amadeus Mozart: Violinkonsert nr 1 B-dur. Solist: Vilde Frang, violin. Arcangelo. Dirigent: Jonathan Cohen. Warner Bros 0825646276776.
+            &lt;/p&gt;&lt;p&gt;3. Wilhelm Stenhammar: Pianosonat nr 2 Ass-dur spelas av Martin Sturfält. Hyperion CDA 67689.
+            &lt;/p&gt;&lt;p&gt;4. Ludwig van Beethoven: Stråkkvartett nr 15 a-moll. Tokyokvartetten. Harmonia Mundi HMU 807481.83
+            &lt;/p&gt;&lt;p&gt;5. Gustav Mahler: Lieder eines fahrenden Gesellen. Solist: Katarina Karnéus, mezzosopran. Göteborgs symfoniker. Dirigent: Susanna Mälkki. BIS SACD 1600.
+            &lt;/p&gt;&lt;p&gt;6. Ida Gotkovsky: Saxofonkvartett (1988). Saxofon Concentus. Simax PSC 1123.
+            &lt;/p&gt;&lt;p&gt;7. Carl Philipp Emanuel Bach: Sinfonia G-dur W 173. Akademin för tidig musik, Berlin. Harmonia Mundi HMC 901711.&lt;/p&gt;&lt;img src="http://sverigesradio.se/topsy/publicering/2480/6210194.gif" width="1px" height="1px" /&gt;
+        </content>
     </entry>
 </feed>
-
