@@ -76,7 +76,7 @@ class SrFeed(object):
 
         if format.find('atom') >= 0 and self.format.find('rss') >= 0:
             self.trace(5, 'Translating atom-feed to rss')
-            rss = self.translate_atom_to_rss(et)
+            rss = self.translate_atom_to_rss(feed_et)
             self.context_type = 'application/rss+xml'
             return rss
         
@@ -229,14 +229,16 @@ class SrFeed(object):
             return y
 
         def media_url(x):
-            # returns http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect/6215532.m4a?programid=2480;artikel=6215532;tracelevel=9;proxy_data=False
-            y = self.base_url +'sr_redirect/' + x + '.m4a?' + 'programid=' + self.progid + ';artikel=' + x + ';tracelevel=' + str(self.tracelevel) + ';proxy_data=' + str(self.do_proxy)
+            # returns http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect/6215532.m4a?programid=2480;avsnitt=6215532;tracelevel=9;proxy_data=False
+            y = self.base_url +'sr_redirect/' + x + '.m4a?' + 'programid=' + self.progid + ';avsnitt=' + x + ';tracelevel=' + str(self.tracelevel) + ';proxy_data=' + str(self.do_proxy)
             self.trace(8, 'media_url(' + x + ') --> ' + y)
             return y
 
         page_parser = SrProgramPageParser(self.tracelevel)
         page_parser.html = self.dom
         episodes = page_parser.episodes()
+
+        self.trace(7, 'Got ' + str(len(episodes)) + ' from html-page\r\n', episodes)
 
         rss_gen = Page2RSS(text_url, media_url)
         timestamp = page_parser.timestamp

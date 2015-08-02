@@ -44,13 +44,13 @@ class SrRedirect(AppBase):
             return ['parameters artikel must be numbers!']
 
         
-        self.log(4, 'Attempt to find prog', programid, 'avsnitt', avsnitt, ' artikel', artikel, 'proxy_data', proxy_data)
+        self.log(4, 'Attempt to find prog='+ programid + ', avsnitt=' + str(avsnitt) + ' artikel=' + str(artikel) + ', proxy_data=' + str(proxy_data))
         url_finder=SrUrlFinder(programid, avsnitt, artikel)
 
         try:
             m4a_url =  url_finder.find()
         except urllib2.HTTPError, e:
-            self.log(2, 'Got HTTP error for prog', programid, 'avsnitt', avsnitt, ' artikel', artikel, 'proxy_data', proxy_data)
+            self.log(2, 'Got HTTP error for prog='+ programid + ', avsnitt=' + str(avsnitt) + ' artikel=' + str(artikel) + ', proxy_data=' + str(proxy_data))
             #self.log(2, 'code', e.code, 'msg', e.msg)
             self.log(2, e)
             self.start_response(str(e.code) + ' ' + e.msg, [])
