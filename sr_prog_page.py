@@ -11,7 +11,7 @@ import XmlHandler
 
 from urlparse import urlparse
 
-
+import Page2RSS
 import argparse
 
 #import xml.etree.ElementTree 
@@ -24,24 +24,44 @@ from common import is_none_or_empty
 from XmlHandler import get_namespace
 
 
-class SrProgramPage:
 
-    def __init__(self, program_id, tracelevel, url=None):
+class SrProgramPageParser:
+
+    def __init__(self, tracelevel):
         self.tracelevel = tracelevel
-        self.program_id = str(program_id)
-        self.url = url
+        self.url_ = None
+        self.html_ = None  
+        self.episodes_ = None
+
+
+    @property
+    def url(self):
+        return self.url_
+
+    @url.setter
+    def url(self, value):
+        self.url_ = value
+        self.fetch_page(self.url_)
+
+    @property
+    def html(self):
+        return ET.tostring(self.html_, pretty_print=True)
+
+    @html.setter
+    def html(self, value):
+        try:
+            self.html_ = EHTML.parse(value)
+            self.trace(9, 'got page \r\n', self.html)
+        except Exception, ex:
+            self.trace(5, 'Failed to parse html: ', ex)
+            raise
+
 
     def trace(self, level, *args):
-        common.trace(level, 'SrProgramPage: ', args)
-
-    def program_url(self):
-        if self.url is None:
-            self.url = 'http://sverigesradio.se/sida/avsnitt?programid=' + self.program_id
-        return self.url
+        common.trace(level, 'SrProgramPageParser: ', args)
 
 
-    def fetch_page(self):
-        url = self.program_url()
+    def fetch_page(self, url):
         self.trace(5, 'fetching ' + url)
         self.html = EHTML.parse(url)
         self.trace(9, 'got page \r\n', ET.tostring(self.html, pretty_print=True))
@@ -53,13 +73,19 @@ class SrProgramPage:
         # <a href="/sida/avsnitt/587231?programid=2480&amp;playepisode=587231" aria-label="Lyssna(161 min)" class="btn btn-solid play-symbol play-symbol-wide play" data-require="modules/play-on-click">&#13;
         # <a href="/sida/avsnitt/587242?programid=2480" class="btn2 btn2-image btn2-image-foldable" data-require="modules/play-on-click">
 
-        res = []
+        self.episodes_ = []
 
         # for timestamp_span in self.html.find('span class="page-render-timestamp hidden" data-timestamp="2015-07-28 19:11:25" />&#13;
         html_timestamp = datetime.datetime.today()
         timestamp_span = self.html.find('//span[@class="page-render-timestamp hidden"]')
         if not timestamp_span is None:
             html_timestamp = common.parse_datetime(timestamp_span.attrib['data-timestamp'])
+
+        author_meta = self.html.find('/html/head/meta[@name="author"]')        
+        self.author = author_meta.attrib['author'] if author_meta else ''
+
+        description_meta = self.html.find('/html/head/meta[@name="description"]')        
+        self.description = description_meta.attrib['description'] if description_meta else ''
 
 
         divs_to_search = self.html.findall('//div[@class="audio-box-content"]') + self.html.findall('//div[@class="audio-episode-content"]')
@@ -144,10 +170,10 @@ class SrProgramPage:
 
             avsnitt_description = find_desc(div)
 
-            avsnitt = next((e for e in res if e['avsnitt'] == avsnitt_id), None)
+            avsnitt = next((e for e in self.episodes_ if e['avsnitt'] == avsnitt_id), None)
             if avsnitt is None:
                 avsnitt = {'avsnitt': avsnitt_id }
-                res.append(avsnitt)
+                self.episodes_.append(avsnitt)
 
             if not avsnitt_timestamp is None:
                 avsnitt['timestamp'] = avsnitt_timestamp
@@ -158,12 +184,17 @@ class SrProgramPage:
             if not avsnitt_description is None:
                 avsnitt['description'] = avsnitt_description
 
-        return res
+        return self.episodes_
 
     def find_episodes(self):
-        self.fetch_page()
+        self.fetch_page(self.url)
         return self.parse_page()
         
+    def episodes(self):
+        if self.episodes_ is None:
+            self.find_episodes()        
+        return self.episodes_
+    
 
 
 def get_root(element_thing):
@@ -190,12 +221,14 @@ if __name__ == '__main__':
     parser.add_argument('--avsnitt', help='avsnitt', default=None, type=int, required=False)
     parser.add_argument('--progid', help='progid', default=None, type=int, required=False)
     parser.add_argument('--artikel', help='artikel', default=None, type=int, required=False)
-    parser.add_argument('--url', help='use url rather than deduce from progid', default=None, required=False)
+    parser.add_argument('--url', help='use url rather than deduce from progid', default=None, required=True)
 
     r = parser.parse_args(None)
 
     common.tracelevel = r.tracelevel
     
-    episodes = SrProgramPage(r.progid, common.tracelevel, r.url).find_episodes()
-    common.trace(3, 'SrProgramPage: result: ' , sorted(episodes, key=lambda ep: ep['avsnitt']))
+    parser = SrProgramPageParser(common.tracelevel)
+    parser.url = r.url
+    episodes = parser.episodes()
+    common.trace(3, 'SrProgramPageParser: result: ' , sorted(episodes, key=lambda ep: ep['avsnitt']))
     

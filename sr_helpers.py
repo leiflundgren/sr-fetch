@@ -75,7 +75,7 @@ def find_html_link_argument(html, rel_type="canonical", pos = 0):
 
 
 def urllib_open_feed(url):
-    u_request = urllib2.Request(url, headers={"Accept" : "application/atom+xml, application/rss+xml, application/xml, text/xml"})
+    u_request = urllib2.Request(url, headers={"Accept" : "application/atom+xml, application/rss+xml, application/xml, text/xml, text/html"})
     return urllib2.urlopen( u_request )
 
 def filename_from_html_content(html):
