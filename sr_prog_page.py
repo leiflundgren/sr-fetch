@@ -106,6 +106,24 @@ class SrProgramPage:
                 pass
             return None
 
+        def find_desc(div):
+            parent_div = div.getparent()
+            try:
+                audio_episode_body = XmlHandler.find_element_attribute(parent_div, 'div', 'class', "audio-episode-body")
+                p = XmlHandler.find_element_attribute(audio_episode_body, 'p', 'class', "preamble")
+                i = XmlHandler.find_element_attribute(p, 'i', 'class', "base-sprite arrow-right white")
+                return i.text().strip()
+            except AttributeError:
+                pass            
+            try:
+                audio_audiobox_body = XmlHandler.find_element_attribute(parent_div, 'div', 'class', "audio-box-body")
+                p = XmlHandler.find_element_attribute(audio_audiobox_body, 'p', 'class', "preamble")
+                i = XmlHandler.find_element_attribute(p, 'i', 'class', "base-sprite arrow-right white")
+                return i.text().strip()
+            except AttributeError:
+                pass
+            return None
+
         for div in divs_to_search:
 
             a_href = find_a_playonclick(div)
@@ -125,6 +143,8 @@ class SrProgramPage:
             avsnitt_timestamp = find_transmit_time(div)
 
             avsnitt_title = find_title(div)
+
+            #avsnitt_description = find_desc(div)
 
             avsnitt = next((e for e in res if e['avsnitt'] == avsnitt_id), None)
             if avsnitt is None:

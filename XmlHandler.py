@@ -148,22 +148,26 @@ def find_child_nodes(el, node_names, only_first = False):
     return res
 
 def find_element_attribute(root, tagname, attrib, avalue):
-    if root.tag == tagname and root.attrib.get(attrib) == avalue:
-        return root
+    q = [root]
+    while q:
+        e = q.pop()
+        if e.tag == tagname and e.attrib.get(attrib) == avalue:
+            return e
+        c = list(e)
+        q += ( c )
 
-    for c in root:
-        el = find_element_attribute(c, tagname, attrib, avalue)
-        if not el is None:
-            return el
     return None
 
 def findall_element_attribute(root, tagname, attrib, avalue):
-    if root.tag == tagname and root.attrib.get(attrib) == avalue:
-        return [root]
-
     res=[]
-    for c in root:
-        res += findall_element_attribute(c, tagname, attrib, avalue)
+
+    q = [root]
+    while q:
+        e = q.pop()
+        if e.tag == tagname and e.attrib.get(attrib) == avalue:
+            res.append(e)
+        q += list(e)
+
     return res
 
 
