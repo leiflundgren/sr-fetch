@@ -3,6 +3,7 @@ from common import trace
 from common import tracelevel
 import unittest
 import sys
+from fnmatch import fnmatch
 
 xml_loaded = False
 xml_minidom = False
@@ -147,11 +148,19 @@ def find_child_nodes(el, node_names, only_first = False):
             
     return res
 
+def check_right_element_exactly(e, tagname, attrib, avalue):
+    return e.tag == tagname and e.attrib.get(attrib) == avalue
+
+def check_right_element_wildcard(e, tagname, attrib, avalue):
+    return fnmatch(e.tag, tagname ) and fnmatch(e.attrib.get(attrib), avalue)
+
+
 def find_element_attribute(root, tagname, attrib, avalue):
+    matcher = check_right_element_wildcard if tagname.find('*') >=0 or avalue.find('*') >= 0 else check_right_element_exactly
     q = [root]
     while q:
         e = q.pop()
-        if e.tag == tagname and e.attrib.get(attrib) == avalue:
+        if matcher(e, tagname, attrib, avalue):
             return e
         c = list(e)
         q += ( c )
@@ -161,10 +170,11 @@ def find_element_attribute(root, tagname, attrib, avalue):
 def findall_element_attribute(root, tagname, attrib, avalue):
     res=[]
 
+    matcher = check_right_element_wildcard if tagname.find('*') >=0 or avalue.find('*') >= 0 else check_right_element_exactly
     q = [root]
     while q:
         e = q.pop()
-        if e.tag == tagname and e.attrib.get(attrib) == avalue:
+        if matcher(e, tagname, attrib, avalue):
             res.append(e)
         q += list(e)
 
