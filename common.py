@@ -1,13 +1,14 @@
 
 # -*- coding: iso-8859-1 -*-
 
+
 import sys
 import os
 import subprocess
 import argparse
 import datetime
 
-tracelevel = 9
+tracelevel = 4
 log_handle = None
 
 def trace(level, *args):
@@ -43,7 +44,7 @@ def trace(level, *args):
 
     msg = datetime.datetime.now().strftime("%H:%M:%S: ")
     for count, thing in enumerate(args):
-            msg += mystr(thing)
+        msg += mystr(thing)
 
     if log_handle is None:
         print >> sys.stderr, msg.rstrip()
@@ -59,24 +60,35 @@ def pretty(value,htchar="\t",lfchar="\n",indent=0):
     return repr(value)
 
 
-def run_child_process(cmd):
+def run_child_process(cmd, alt_path=None, get_stdout=True, get_stderr=True):
     """Start a child-process. Run it passing stdout-data to the main stdout."""
 
-    trace(6, 'Calling ', cmd)
-    #res = subprocess.call( cmd, stdout=sys.stdout, stderr=sys.stderr)
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    stdout_data = ''
-    while p.poll() is None:
-        line = p.stdout.readline()
-        stdout_data += line
-        trace(7, line.strip())
+    trace(6, 'Calling ', cmd, " alt_path:", alt_path)
+    if isinstance(cmd, basestring):
+        cmd = shlex.split(cmd)
+
+    
+    try:
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout_data, stderr_data = p.communicate()
+    except OSError, e:
+        if e.errno != 2 or alt_path is None:
+            raise e
+        cmd[0] = os.path.join(alt_path, os.path.basename(cmd[0]))
+        return run_child_process(cmd, None)
+
     if p.returncode == 0:
         trace(6, 'process terminated successfully')
     else:
-        trace(4, 'process failed ' + str(p.returncode) + "\r\n" + stdout_data )
-    
-    return (p.returncode, stdout_data)
+        trace(4, 'process failed ' + str(p.returncode) + "\r\n" + stdout_data + stderr_data)
 
+    trace(7, 'stdout:\r\n' + stdout_data)
+    trace(7, 'stderr:\r\n' + stderr_data)
+    
+    data = ''
+    if get_stdout: data += stdout_data 
+    if get_stderr: data += stderr_data
+    return (p.returncode, data)
 
 swe_weekdays = {'m&#229;ndag':0, u'måndag':0, 'tisdag':1, 'onsdag':2, 'torsdag':3, 'fredag':4, 'l#246;ndag':5, 'l#214;rdag':5, u'lördag':5, 'lördag':5, 's#246;ndag':6, 's#214;ndag':6, u'söndag':6, 'söndag':6 }
 
