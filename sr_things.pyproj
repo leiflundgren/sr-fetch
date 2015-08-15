@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{722fe784-6f26-4a7f-a483-0dca37683482}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>sr_feed.py</StartupFile>
+    <StartupFile>RssFromFiles.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -51,6 +51,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="lxml_testing.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RssFromFiles.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="sr_helpers.py">
