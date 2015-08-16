@@ -1,15 +1,18 @@
 import cgi
 import uwsgi_hello
+import re
+
 import env_test 
 import sr_redirect
 import sr_feed_app
-import re
+import rss_files_app
 
 known_apps = { 
     'hello_world': uwsgi_hello.UwsgiHello,
     'env_test': env_test.EnvTest,
     'sr_redirect' : sr_redirect.SrRedirect,
     'sr_feed': sr_feed_app.SrFeedApp,
+    'rss_files': rss_files_app.RssFilesApp,
 }
 
 

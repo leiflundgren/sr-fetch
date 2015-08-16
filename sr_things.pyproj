@@ -35,6 +35,9 @@
     <Compile Include="app_base.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="app_config.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="app_factory.py">
       <SubType>Code</SubType>
     </Compile>
@@ -56,6 +59,7 @@
     <Compile Include="RssFromFiles.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="rss_files_app.py" />
     <Compile Include="sr_helpers.py">
       <SubType>Code</SubType>
     </Compile>
