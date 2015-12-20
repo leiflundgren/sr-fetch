@@ -228,9 +228,26 @@ class SrProgramPageParser(object):
                 avsnitt['title'] = avsnitt_title
 
             if not avsnitt_description is None:
-                avsnitt['description'] = avsnitt_description
+                avsnitt['title'] = avsnitt_description
+
+        self.validate_episodes()
 
         return self.episodes_
+
+
+    def validate_episodes(self):
+        for avsnitt in self.episodes_:
+            avsnitt_id = avsnitt['avsnitt']
+            
+            if not 'timestamp' in avsnitt:
+                self.trace(2, "When parsing avsnitt " + str(avsnitt_id) + ", failed to find timestamp")
+                raise ValueError('Bad parse-data')
+            if not 'title' in avsnitt:
+                self.trace(2, "When parsing avsnitt " + str(avsnitt_id) + ", failed to find title")
+                raise ValueError('Bad parse-data')
+            if not 'title' in avsnitt:
+                self.trace(2, "When parsing avsnitt " + str(avsnitt_id) + ", failed to find title")
+                raise ValueError('Bad parse-data')
 
     def find_episodes(self):
         if self.html_ is None:
