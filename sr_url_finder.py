@@ -363,6 +363,7 @@ if __name__ == '__main__':
     parser.add_argument('--avsnitt', help='avsnitt', default=None, type=int, required=False)
     parser.add_argument('--progid', help='progid', default=None, type=int, required=False)
     parser.add_argument('--artikel', help='artikel', default=None, type=int, required=False)
+    parser.add_argument('--url', help='url to retreive html from', default=None, type=str, required=False)
 
     r = parser.parse_args(None)
 
