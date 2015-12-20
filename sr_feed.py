@@ -357,6 +357,7 @@ if __name__ == '__main__':
     parser.add_argument('--artikel', help='artikel', default=None, type=int, required=False)
     parser.add_argument('--feed', help='Full feed url', default=None, required=False)
     parser.add_argument('--url', help='Full feed url', default=None, required=False)
+    parser.add_argument('--source', help="Should parse rss or html. rss/html", default='rss', required=False)
     parser.add_argument('--format', help="rss/atom", default=None, required=False)
     parser.add_argument('--proxy', help="if urls should to proxy data", default=False, required=False)
 
@@ -368,7 +369,7 @@ if __name__ == '__main__':
     
     if r.feed:
         feed_url = r.feed
-    elif r.url and r.progid:
+    elif r.source=='html' and r.progid:
         feed_url = 'http://sverigesradio.se/sida/avsnitt?programid=' + str(r.progid)
     elif r.url:
         feed_url = r.url
