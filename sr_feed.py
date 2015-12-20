@@ -368,7 +368,9 @@ if __name__ == '__main__':
     
     if r.feed:
         feed_url = r.feed
-    if r.url:
+    elif r.url and r.progid:
+        feed_url = 'http://sverigesradio.se/sida/avsnitt?programid=' + str(r.progid)
+    elif r.url:
         feed_url = r.url
     elif r.progid:
         feed_url = 'http://api.sr.se/api/rss/program/' + str(r.progid)
@@ -383,4 +385,4 @@ if __name__ == '__main__':
     
     common.trace(2, common.pretty(feed))
              
-     
+      
