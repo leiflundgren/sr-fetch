@@ -157,6 +157,17 @@ class SrProgramPageParser(object):
                 return title_span.text_content().strip()
             except AttributeError:
                 pass
+            # <div class="latest-episode__playimage">
+            try:
+                episode_body = XmlHandler.find_element_attribute(root, 'div', 'class', "episode*-body")
+                episode__content = XmlHandler.find_element_attribute(episode_body, 'div', 'class', "*episode__content")
+                title_span = XmlHandler.find_element_attribute(episode__content, 'span', 'class', "screen-reader-description")
+                return title_span.text_content().strip()
+            except AttributeError:
+                pass
+
+            self.trace(8, 'Failed to find a title in div ' + ET.tostring(root, pretty_print=True))
+
             return None
 
         def find_desc(div):
@@ -173,6 +184,16 @@ class SrProgramPageParser(object):
                 return p.text_content().strip()
             except AttributeError:
                 pass
+            try:
+                episode_body = XmlHandler.find_element_attribute(div, 'div', 'class', "episode*-body")
+                episode__content = XmlHandler.find_element_attribute(episode_body, 'div', 'class', "*episode__content")
+                episode__body = XmlHandler.find_element_attribute(episode__content, 'div', 'class', "*episode__body")
+                p = XmlHandler.find_first_child(episode__body, 'p')
+                el = p if p is not None else episode__body
+                return el.text_content().strip()
+            except AttributeError:
+                pass
+
             return None
 
         for div in divs_to_search:
