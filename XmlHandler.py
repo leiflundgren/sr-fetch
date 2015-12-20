@@ -159,9 +159,11 @@ def check_right_element_wildcard(e, tagname, attrib, avalue):
 
 def find_element_attribute(root, tagname, attrib, avalue):
     matcher = check_right_element_wildcard if tagname.find('*') >=0 or avalue.find('*') >= 0 else check_right_element_exactly
-    q = [root]
+    q = root if isinstance(root, list) else [root]
+
     while q:
         e = q.pop()
+        # html = None if e is None else lxml.etree.tostring(e, pretty_print=True)
         if e.tag != lxml.etree.Comment and matcher(e, tagname, attrib, avalue):
             return e
         c = list(e)
