@@ -7,6 +7,7 @@ import os
 import subprocess
 import argparse
 import datetime
+import warnings
 
 tracelevel = 4
 log_handle = None
@@ -90,7 +91,10 @@ def run_child_process(cmd, alt_path=None, get_stdout=True, get_stderr=True):
     if get_stderr: data += stderr_data
     return (p.returncode, data)
 
-swe_weekdays = {'m&#229;ndag':0, u'måndag':0, 'tisdag':1, 'onsdag':2, 'torsdag':3, 'fredag':4, 'l#246;ndag':5, 'l#214;rdag':5, u'lördag':5, 'lördag':5, 's#246;ndag':6, 's#214;ndag':6, u'söndag':6, 'söndag':6 }
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+    swe_weekdays = {'m&#229;ndag':0, u'måndag':0, 'tisdag':1, 'onsdag':2, 'torsdag':3, 'fredag':4, 'l#246;ndag':5, 'l#214;rdag':5, u'lördag':5, 'lördag':5, 's#246;ndag':6, 's#214;ndag':6, u'söndag':6, 'söndag':6 }
+
 
 # make sure januari is month 1
 swe_months = [None, 'januari', 'februari', 'mars', 'april', 'maj', 'juni', 'juli', 'augusti', 'september', 'oktober', 'november', 'december']
