@@ -187,9 +187,9 @@ def parse_sr_time_string(s, today):
 class TestHelpers(unittest.TestCase):
     def test_parse_sr_time_string(self):
 
-        t = parse_sr_time_string('klockan 10:03') # Just check no exception
-
         base_day = datetime.datetime(2015,7,29)
+        t = parse_sr_time_string('klockan 10:03', base_day) # Just check no exception
+
 
         self.assertEqual(datetime.datetime(2015,7,29, 10,3,0), parse_sr_time_string('klockan 10:03', base_day))
         self.assertEqual(datetime.datetime(2015,7,28, 10,3,0), parse_sr_time_string('Ig&#229;r klockan 10:03', base_day))

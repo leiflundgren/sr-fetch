@@ -45,7 +45,7 @@ class SrProgramPageParser(object):
 
     @property
     def html_text(self):
-        return ET.tostring(self.html_, pretty_print=True)
+        return ET.tostring(self.html_, pretty_print=True).decode('utf-8')
 
     @property
     def html(self):

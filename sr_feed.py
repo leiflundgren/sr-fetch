@@ -53,11 +53,12 @@ class SrFeed(object):
 
         conv_et = self.translate_format(format, feed_et)
 
-        xmlstr = ET.tostring(conv_et, encoding='utf-8', method='xml')
+        xmlstr = ET.tostring(conv_et, encoding='utf-8', method='xml').decode('utf-8')
         if self.content_type.find('charset') < 0:
             self.content_type = self.content_type + '; charset=utf-8'
         # ElementTree thinks it has to explicitly state namespace on all nodes. Some readers might have problem with that.
         # This is a hack to remove the namespace
+        self.trace(9, 'feed aquired. content-type="' + self.content_type + "\" len=" + str(len(xmlstr)) + " type=" + str(type(xmlstr)))
         xmlstr = xmlstr.replace('<ns0:', '<').replace('</ns0:', '</').replace('xmlns:ns0="','xmlns="') 
         self.trace(9, 'feed aquired. content-type="' + self.content_type + "\" len=" + str(len(xmlstr)) + " \r\n" + xmlstr)
         

@@ -32,6 +32,8 @@ def trace(level, *args):
             return thing.strftime("%Y-%m-%d %H:%M:%S")
         elif isinstance(thing, datetime.date):
             return thing.strftime("%Y-%m-%d")
+        #elif isinstance(thing, bytes):
+        #    return bytes.decode('utf-8')
         else:
             try:
                 return str(thing)
