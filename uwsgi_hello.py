@@ -9,6 +9,6 @@ class UwsgiHello(AppBase):
     def application(self):
         self.start_response("200 OK", [("Content-Type", "text/html")])
         message = self.qs_get('message', 'unknown')[0]
-        self.log('raw message:' + str(message))
+        self.log(3, 'raw message:' + str(message))
         return ["hello there. You said &quot;" + cgi.escape(message) + "&quot;"]
 

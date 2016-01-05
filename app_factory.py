@@ -7,6 +7,7 @@ import env_test
 import sr_redirect
 import sr_feed_app
 import rss_files_app
+import common
 
 known_apps = { 
     'hello_world': uwsgi_hello.UwsgiHello,
@@ -24,9 +25,12 @@ def application(environ, start_response):
 
     log = environ['wsgi.errors']
 
-    for k, v in known_apps.iteritems():
+    common.log_handle = log
+    common.tracelevel = 5
+
+    for k, v in known_apps.items():
         if k in path_parts:
-            print >> log, 'Running requested app ' + k
+            common.trace(4, 'Running requested app ' + k)
             return v(environ, start_response).application()
 
     # Sorting and stringifying the environment key, value pairs

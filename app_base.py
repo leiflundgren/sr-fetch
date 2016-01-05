@@ -14,7 +14,7 @@ class AppBase(object):
         try:
             common.log_handle = self.log_handle
         except Exception as ex:
-            self.log(1, 'while looking at logging, fail, fail, fail: ' + str(ex))
+            raise Exception(1, 'while looking at logging, fail, fail, fail: ' + str(ex), ex)
         try:
             common.tracelevel = int(self.qs_get('tracelevel'))
         except Exception as ex:
