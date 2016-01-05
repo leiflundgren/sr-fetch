@@ -1,3 +1,4 @@
+import io
 import cgi
 import uwsgi_hello
 import re
