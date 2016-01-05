@@ -42,8 +42,8 @@ def trace(level, *args):
             except ex as Exception:
                 return 'Failed to format thing as string caught ' + str(ex)
 
-    if tracelevel < level:
-        return
+    #if tracelevel < level:
+    #    return
 
     msg = datetime.datetime.now().strftime("%H:%M:%S: ")
     for count, thing in enumerate(args):

@@ -24,6 +24,7 @@ def application(environ, start_response):
     path_parts = re.findall('[^/\.]+', path)
 
     log = environ['wsgi.errors']
+    print('a am ammy', file=log)
 
     common.log_handle = log
     common.tracelevel = 5
