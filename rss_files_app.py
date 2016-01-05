@@ -2,7 +2,7 @@ import cgi
 from app_base import AppBase
 import sr_feed
 import app_config
-import urlparse
+import urllib.parse
 
 class RssFilesApp(AppBase):
     """A class that takes a request and returns an RSS feed of the available files."""
@@ -12,8 +12,8 @@ class RssFilesApp(AppBase):
         
     def application(self):
 
-        u = urlparse.urlsplit(self.base_url)
-        url = urlparse.urlunsplit((u[0], u[1], app_config.rss_files_webpath, u[3], u[4]))
+        u = urllib.parse.urlsplit(self.base_url)
+        url = urllib.parse.urlunsplit((u[0], u[1], app_config.rss_files_webpath, u[3], u[4]))
         self.log(5, 'Will look at directory ' + app_config.rss_files_path + ' and extensions ', app_config.rss_files_ext, '\nweb is at ' + url)
 
 
@@ -24,7 +24,7 @@ class RssFilesApp(AppBase):
             ("Content-Length", str(len(feed_data)))
         ]
         self.start_response("200 OK", headers)
-        return [feed_data]
+        return [feed_data.encode()]
 
 
      

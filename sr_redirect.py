@@ -1,7 +1,7 @@
 import cgi
 from app_base import AppBase
 from sr_url_finder import SrUrlFinder
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 class SrRedirect(AppBase):
     """A class that takes a request un query-string, finds the appropriate SR episode and redirects to the download URL"""
@@ -32,16 +32,16 @@ class SrRedirect(AppBase):
         if (not avsnitt or not programid) and not artikel:
             self.log(3, 'query-string: ', self.qs)
             self.start_response("500", [("Content-Type", "text/plain")])
-            return ['parameters avsnitt and programid or artikel is required!']
+            return ['parameters avsnitt and programid or artikel is required!'.encode()]
         if avsnitt and not avsnitt.isdigit():
             self.start_response("500", [("Content-Type", "text/plain")])
-            return ['parameters avsnitt must be numbers!']
+            return ['parameters avsnitt must be numbers!'.encode()]
         if programid and not programid.isdigit():
             self.start_response("500", [("Content-Type", "text/plain")])
-            return ['parameters programid must be numbers!']
+            return ['parameters programid must be numbers!'.encode()]
         if artikel and not artikel.isdigit():
             self.start_response("500", [("Content-Type", "text/plain")])
-            return ['parameters artikel must be numbers!']
+            return ['parameters artikel must be numbers!'.encode()]
 
         
         self.log(4, 'Attempt to find prog='+ programid + ', avsnitt=' + str(avsnitt) + ' artikel=' + str(artikel) + ', proxy_data=' + str(proxy_data))
@@ -49,7 +49,7 @@ class SrRedirect(AppBase):
 
         try:
             m4a_url =  url_finder.find()
-        except urllib2.HTTPError, e:
+        except urllib.error.HTTPError as e:
             self.log(2, 'Got HTTP error for prog='+ programid + ', avsnitt=' + str(avsnitt) + ' artikel=' + str(artikel) + ', proxy_data=' + str(proxy_data))
             #self.log(2, 'code', e.code, 'msg', e.msg)
             self.log(2, e)

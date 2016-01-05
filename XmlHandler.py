@@ -90,7 +90,7 @@ class XmlHandler(object):
     def load_from_string_minidom(self, s):
         if isinstance(s, str):
             self.xml = xml.dom.minidom.parseString(s)
-        elif isinstance(s, unicode):
+        elif isinstance(s, str):
             self.xml = xml.dom.minidom.parseString(s.encode('utf-8'))
         else:
             raise Exception('unknown string  type ' + str(type(s)))
@@ -119,7 +119,7 @@ def find_child_nodes(el, node_names, only_first = False):
     name = node_names[0]
     if name[0] == '@':
         aname = name[1:]
-        for n,v in el.attrib.iteritems():
+        for n,v in el.attrib.items():
             if n[0] == '{' and aname[0] != '{':
                 n= n[n.index('}')+1:]
 
@@ -189,7 +189,7 @@ class TestXmlHandler(unittest.TestCase):
     def test_xml_load(self):
         string = '<xml_ex><hello target="World"><foo><bar>fubar</bar></foo> there</hello></xml_ex>'
         xml = XmlHandler().load_from_string(string)
-        print 'got xml object ' + str(xml) + ' of type ' + str(type(xml))
+        print('got xml object ' + str(xml) + ' of type ' + str(type(xml)))
                 
         hello_ls = find_child_nodes(xml, ['hello'])
         self.assertEqual(1, len(hello_ls))

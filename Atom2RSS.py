@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: iso-8859-1 -*-
 
 import lxml.etree as ET
@@ -132,7 +132,7 @@ class Atom2RssNodePerNode(Atom2RSS):
 
                     ET.SubElement(rss_item, 'link').text = media_url
 
-                except AttributeError, e:
+                except AttributeError as e:
                     trace(1, 'atom_enclosure="', atom_enclosure, '"')
                     raise
             else:
@@ -146,5 +146,5 @@ class Atom2RssNodePerNode(Atom2RSS):
 if __name__ == '__main__':
     dom = ET.parse('sample.atom.xml')
     rss = Atom2RssNodePerNode().transform(dom)
-    print ET.tostring(rss, pretty_print=True)
+    print(ET.tostring(rss, pretty_print=True))
     pass

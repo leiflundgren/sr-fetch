@@ -10,10 +10,13 @@ class EnvTest(AppBase):
                         for key, value in sorted(self.environ.items())]
        response_body = '\n'.join(response_body)
 
+       self.log(5, "response-type: ", type(response_body))
+       self.log(5, "Environment:\n" + response_body)
+
        status = '200 OK'
        response_headers = [('Content-Type', 'text/plain'),
                       ('Content-Length', str(len(response_body)))]
        self.start_response(status, response_headers)
 
-       return [response_body]
+       return [response_body.encode()]
 

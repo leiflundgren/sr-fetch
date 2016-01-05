@@ -1,16 +1,16 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import sys
 import os
 import glob
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import subprocess
 import unittest
 import argparse
 import datetime
 import re
-import urllib2
-import urllib
+import urllib.request, urllib.error, urllib.parse
+import urllib.request, urllib.parse, urllib.error
 import errno
 from xml.dom import minidom 
 from xml.dom import minidom 
@@ -119,7 +119,7 @@ class SrUrlFinder(object):
 
     def handle_m3u_url(self, url):
         self.trace(8, 'Processing m3u ' + url)
-        u_thing = urllib2.urlopen(urllib2.Request(url))
+        u_thing = urllib.request.urlopen(urllib.request.Request(url))
         content_type = u_thing.headers['content-type']
         if content_type.find(';') > 0:
             content_type = content_type[0:content_type.find(';')].strip()
@@ -132,7 +132,8 @@ class SrUrlFinder(object):
                 res = self.handle_m4a_url( self.make_hidef( s.strip()) )
                 if not res is None:
                     return res
-        raise self.trace(1, 'Could not find any http-url in body: \n', body)
+        self.trace(1, 'Could not find any http-url in body: \n', body)
+        raise ValueError('Could not find any http-url in body')
 
 
     def handle_html_url(self, url):
@@ -152,7 +153,7 @@ class SrUrlFinder(object):
             
     
         self.trace(8, 'Processing html ' + url)
-        u_thing = urllib2.urlopen(urllib2.Request(url))
+        u_thing = urllib.request.urlopen(urllib.request.Request(url))
         content_type = u_thing.headers['content-type']
         if content_type.find(';') > 0:
             content_type = content_type[0:content_type.find(';')].strip()
@@ -184,23 +185,23 @@ class SrUrlFinder(object):
             http://sverigesradio.se/sida/avsnitt?programid=4490
         """
         self.trace(6, 'handle_sr_program_page(' + url + ')' )
-        response = urllib2.urlopen(url)
+        response = urllib.request.urlopen(url)
         html = response.read()
         
         pos = html.find('<span>Lyssna</span>')
         if pos < 0:
-            raise 'SR program page lacks Lyssna-tag'
+            raise ValueError('SR program page lacks Lyssna-tag')
         self.trace(9, 'clip ' + str(pos) + ': ' + html[pos:pos+50])
         
         href= html.rfind('href="', 0, pos)
         if pos < 0:
-            raise 'SR program page has, Lyssna-tag but href is missing'
+            raise ValueError('SR program page has, Lyssna-tag but href is missing')
         href = href + 6
         self.trace(9, 'href=' + html[href:href+50])
         
         endp = html.find('"', href)
         self.trace(9, 'href=' + str(href) + '  endp=' + str(endp))
-        page_url = urllib.unquote(html[href:endp]).replace('&amp;', '&')
+        page_url = urllib.parse.unquote(html[href:endp]).replace('&amp;', '&')
         self.trace(8, 'page_url: ' + page_url)
             
         # Create a list of each bit between slashes
@@ -235,9 +236,10 @@ class SrUrlFinder(object):
             
             return self.handle_url_check_result(url)
 
-        response = urllib2.urlopen(url)
+        response = urllib.request.urlopen(url)
         content_type = response.headers['content-type']
-        html = response.read()
+        enc = response.headers['content-encoding'] if 'content-encoding' in response.headers else 'utf-8'
+        html = response.read().decode(enc)
 
         # look for <meta name="twitter:player:stream" content="http://sverigesradio.se/topsy/ljudfil/5032268" />
         
@@ -277,7 +279,7 @@ class SrUrlFinder(object):
         self.trace(5, "looking at SR laddaner " + url)
          
 
-        rsp = urllib2.urlopen(urllib2.Request(url))
+        rsp = urllib.request.urlopen(urllib.request.Request(url))
         redirect_url = rsp.geturl()
         if redirect_url == url:
             redirect_url = rsp.info().getheader('Location')

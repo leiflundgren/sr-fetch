@@ -39,7 +39,7 @@ class SrFeedApp(AppBase):
         ]
         self.log(4, 'Result ', feed_data, headers)
         self.start_response("200 OK", headers)
-        return [feed_data]
+        return [feed_data.encode()]
 
 
      
