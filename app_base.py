@@ -1,6 +1,7 @@
 import cgi
 import common
 import sys
+import wsgiref
 
 class AppBase(object):
     """Base class for my python web stuff"""
@@ -40,12 +41,14 @@ class AppBase(object):
     @staticmethod
     def UwsgiScheme(environ):
         try:
-            return environ['UWSGI_SCHEME']
-        except KeyError:
-            return environ['wsgi.url_scheme']
+            return wsgiref.util.guess_scheme(environ)
+        except Exception:
+            try:
+                return environ['UWSGI_SCHEME']
+            except KeyError:
+                return environ['wsgi.url_scheme']
 
     def log(self, level, *args):
-        # print >> self.log_handle, s
         common.trace(level, self.app_name, ': ', args)
 
     def trace(self, level, *args):
