@@ -238,7 +238,8 @@ class SrUrlFinder(object):
 
         response = urllib.request.urlopen(url)
         content_type = response.headers['content-type']
-        html = response.read()
+        enc = response.headers['content-encoding'] if 'content-encoding' in response.headers else 'utf-8'
+        html = response.read().decode(enc)
 
         # look for <meta name="twitter:player:stream" content="http://sverigesradio.se/topsy/ljudfil/5032268" />
         
