@@ -24,7 +24,7 @@ class RssFilesApp(AppBase):
             ("Content-Length", str(len(feed_data)))
         ]
         self.start_response("200 OK", headers)
-        return [feed_data]
+        return [feed_data.encode()]
 
 
      

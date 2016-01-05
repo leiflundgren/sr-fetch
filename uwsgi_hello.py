@@ -10,5 +10,5 @@ class UwsgiHello(AppBase):
         self.start_response("200 OK", [("Content-Type", "text/html")])
         message = self.qs_get('message', 'unknown')[0]
         self.log(3, 'raw message:' + str(message))
-        return ["hello there. You said &quot;" + cgi.escape(message) + "&quot;"]
+        return [("hello there. You said &quot;" + cgi.escape(message) + "&quot;").encode()]
 

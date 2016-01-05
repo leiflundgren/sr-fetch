@@ -1,4 +1,5 @@
 import io
+import sys
 import cgi
 import uwsgi_hello
 import re
@@ -23,8 +24,12 @@ def application(environ, start_response):
 
     path_parts = re.findall('[^/\.]+', path)
 
+    print('this is the beginning', file=sys.stderr)
+    print('environ[wsgi.errors] is ' + str(type(environ['wsgi.errors'])) + ': ' + str(environ['wsgi.errors']), file=sys.stderr)
+
     log = environ['wsgi.errors']
     print('a am ammy', file=log)
+    log=sys.stderr
 
     common.log_handle = log
     common.tracelevel = 5
@@ -42,4 +47,4 @@ def application(environ, start_response):
                     ('Content-Length', str(len(response_body)))]
     start_response(status, response_headers)
 
-    return [response_body]
+    return [response_body.encode()]
