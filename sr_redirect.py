@@ -1,7 +1,7 @@
 import cgi
 from app_base import AppBase
 from sr_url_finder import SrUrlFinder
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 class SrRedirect(AppBase):
     """A class that takes a request un query-string, finds the appropriate SR episode and redirects to the download URL"""
@@ -49,7 +49,7 @@ class SrRedirect(AppBase):
 
         try:
             m4a_url =  url_finder.find()
-        except urllib2.HTTPError, e:
+        except urllib.error.HTTPError as e:
             self.log(2, 'Got HTTP error for prog='+ programid + ', avsnitt=' + str(avsnitt) + ' artikel=' + str(artikel) + ', proxy_data=' + str(proxy_data))
             #self.log(2, 'code', e.code, 'msg', e.msg)
             self.log(2, e)

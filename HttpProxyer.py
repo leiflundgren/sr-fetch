@@ -1,5 +1,5 @@
 import common
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import unittest
 import sys
 
@@ -29,7 +29,7 @@ class HttpProxyer(object):
     def fetch_headers(self):
         if not self.url_thingy is None: return
 
-        self.url_thingy = urllib2.urlopen(self.url)
+        self.url_thingy = urllib.request.urlopen(self.url)
         self._content_type = self.url_thingy.headers['content-type']
         self._content_length = self.url_thingy.headers['content-length']
 
@@ -37,7 +37,7 @@ class HttpProxyer(object):
         self.fetch_headers()
         return self
 
-    def next(self):
+    def __next__(self):
         raise NotImplementedError('buuuu')
 
     def close(self):

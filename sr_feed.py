@@ -5,9 +5,9 @@ import os
 import subprocess
 import unittest
 import re
-import urllib2
-import urllib
-import urlparse
+import urllib.request, urllib.error, urllib.parse
+import urllib.request, urllib.parse, urllib.error
+import urllib.parse
 import argparse
 import datetime
 
@@ -124,7 +124,7 @@ class SrFeed(object):
             # self.trace(8, 'dom thing ', type(self.dom), dir(self.dom))
             self.xml = get_root(self.dom)
             self.trace(6, 'Successfully parsed urllib-response directly to xml')
-        except Exception, ex:
+        except Exception as ex:
             self.trace(3, 'Failed to parse urllib directly, caught ' + str(ex))
             raise
 
@@ -188,7 +188,7 @@ class SrFeed(object):
             try:
                 #return el.xpath(xp)
                 return el.xpath(xp, namespaces=ns)
-            except ET.XPathEvalError, e:
+            except ET.XPathEvalError as e:
                 self.trace(2, 'XPath failed ', xp, e)
                 raise
 
@@ -263,7 +263,7 @@ class SrFeed(object):
         if qmark < 0:
             self.trace(1, 'Url ' + url + ' missing querystring!')
             raise ValueError('Url ' + url + ' missing querystring!')
-        qs = urlparse.parse_qs(url[qmark+1:])
+        qs = urllib.parse.parse_qs(url[qmark+1:])
 
         params=[]
         id = 'unknown'
@@ -294,7 +294,7 @@ class SrFeed(object):
 
         
         self.trace(8, 'Processing fetching ' + url)
-        u_thing = urllib2.urlopen(urllib2.Request(url))
+        u_thing = urllib.request.urlopen(urllib.request.Request(url))
         content_type = u_thing.headers['content-type']
         if content_type.find(';') > 0:
             content_type = content_type[0:content_type.find(';')].strip()
@@ -304,7 +304,7 @@ class SrFeed(object):
         if u_thing.geturl() != url:
             url = u_thing.geturl()
             self.trace(5, 'seems like redirect to ' + url)
-            qs = urlparse.parse_qs(url[qmark+1:])
+            qs = urllib.parse.parse_qs(url[qmark+1:])
             if 'avsnitt' in qs and 'programid' in qs:
                 return self.fetch_media_url_for_entry(url, old_urls.append(orginal_url))
             if 'artikel' in qs and 'programid' in qs:
@@ -340,7 +340,7 @@ class TestSrFetch(unittest.TestCase):
 
 #args 4430 12 
 if __name__ == '__main__':
-    print sys.argv
+    print(sys.argv)
 
     do_proxy = False
 

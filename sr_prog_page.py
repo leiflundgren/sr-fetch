@@ -9,7 +9,7 @@ import sr_helpers
 import datetime
 import XmlHandler
 
-from urlparse import urlparse
+from urllib.parse import urlparse
 
 import Page2RSS
 import argparse
@@ -54,14 +54,14 @@ class SrProgramPageParser(object):
     @html.setter
     def html(self, value):
         try:
-            if isinstance(value, basestring):
+            if isinstance(value, str):
                 self.html_ = EHTML.parse(value)
             elif isinstance(value, ET._ElementTree):
                 self.html_ = value
             else:
                 raise ValueError('html set to unknown type: ' + str(typeof(value)))
             self.trace(9, 'got page \r\n', self.html)
-        except Exception, ex:
+        except Exception as ex:
             self.trace(5, 'Failed to parse html: ', ex)
             raise
 
@@ -135,7 +135,7 @@ class SrProgramPageParser(object):
             for span in XmlHandler.findall_element_attribute(root, 'span', 'class', 'tiny-text'):
                 # 2nd attempt, check text-context                
                 try:
-                    if span.text.find('S&#228;ndes') >= 0 or span.text.find(u'S\xe4ndes') >= 0:
+                    if span.text.find('S&#228;ndes') >= 0 or span.text.find('S\xe4ndes') >= 0:
                         abbr = span.find('abbr[@title]')
                         return sr_helpers.parse_sr_time_string(abbr.attrib['title'], html_timestamp)
                 except ValueError:

@@ -36,7 +36,7 @@ def trace(level, *args):
             try:
                 return str(thing)
             except UnicodeEncodeError:
-                return unicode(thing).encode('ascii', 'ignore')
+                return str(thing).encode('ascii', 'ignore')
             except ex as Exception:
                 return 'Failed to format thing as string caught ' + str(ex)
 
@@ -48,9 +48,9 @@ def trace(level, *args):
         msg += mystr(thing)
 
     if log_handle is None:
-        print >> sys.stderr, msg.rstrip()
+        print(msg.rstrip(), file=sys.stderr)
     else:
-        print >> log_handle, msg.rstrip()
+        print(msg.rstrip(), file=log_handle)
 
 def pretty(value,htchar="\t",lfchar="\n",indent=0):
   if type(value) in [dict]:
@@ -65,14 +65,14 @@ def run_child_process(cmd, alt_path=None, get_stdout=True, get_stderr=True):
     """Start a child-process. Run it passing stdout-data to the main stdout."""
 
     trace(6, 'Calling ', cmd, " alt_path:", alt_path)
-    if isinstance(cmd, basestring):
+    if isinstance(cmd, str):
         cmd = shlex.split(cmd)
 
     
     try:
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout_data, stderr_data = p.communicate()
-    except OSError, e:
+    except OSError as e:
         if e.errno != 2 or alt_path is None:
             raise e
         cmd[0] = os.path.join(alt_path, os.path.basename(cmd[0]))
@@ -93,7 +93,7 @@ def run_child_process(cmd, alt_path=None, get_stdout=True, get_stderr=True):
 
 with warnings.catch_warnings():
     warnings.simplefilter("ignore")
-    swe_weekdays = {'m&#229;ndag':0, u'måndag':0, 'tisdag':1, 'onsdag':2, 'torsdag':3, 'fredag':4, 'l#246;ndag':5, 'l#214;rdag':5, u'lördag':5, 'lördag':5, 's#246;ndag':6, 's#214;ndag':6, u'söndag':6, 'söndag':6 }
+    swe_weekdays = {'m&#229;ndag':0, 'måndag':0, 'tisdag':1, 'onsdag':2, 'torsdag':3, 'fredag':4, 'l#246;ndag':5, 'l#214;rdag':5, 'lördag':5, 'lördag':5, 's#246;ndag':6, 's#214;ndag':6, 'söndag':6, 'söndag':6 }
 
 
 # make sure januari is month 1

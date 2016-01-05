@@ -16,7 +16,7 @@ from XmlHandler import find_child_nodes
 
 
 
-import urlparse
+import urllib.parse
 
 class Page2RSS(object):
     def __init__(self, text_url_formater, media_url_formater):
@@ -86,13 +86,13 @@ class Page2RSS(object):
             
             try:
                 media_url = self.media_url_formater(episode_dict['avsnitt'])
-                filename, file_ext = os.path.splitext(os.path.basename(urlparse.urlparse(media_url).path))
+                filename, file_ext = os.path.splitext(os.path.basename(urllib.parse.urlparse(media_url).path))
                 enclosure_link = ET.SubElement(rss_item, 'enclosure', type='audio/'+file_ext.strip('.'), url=media_url)
                 trace(7, 'rss enclosure ', ET.tostring(enclosure_link, pretty_print=True))
 
                 ET.SubElement(rss_item, 'link').text = media_url
 
-            except AttributeError, e:
+            except AttributeError as e:
                 trace(1, 'atom_enclosure="', atom_enclosure, '"')
                 raise
 
@@ -103,5 +103,5 @@ class Page2RSS(object):
 if __name__ == '__main__':
     dom = ET.parse('sample.atom.xml')
     rss = Page2RSSNodePerNode().transform(dom)
-    print ET.tostring(rss, pretty_print=True)
+    print(ET.tostring(rss, pretty_print=True))
     pass

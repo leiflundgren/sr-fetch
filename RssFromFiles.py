@@ -125,6 +125,6 @@ class RssFromFiles(object):
 
 if __name__ == '__main__':
     common.tracelevel = 9
-    rss =  RssFromFiles('http://leifdev.leiflundgren.com:8891/py-cgi/', 'C:\Users\llundgren\Downloads').rss
-    print  ET.tostring(rss, pretty_print=True)
+    rss =  RssFromFiles('http://leifdev.leiflundgren.com:8891/py-cgi/', 'C:\\Users\llundgren\Downloads').rss
+    print(ET.tostring(rss, pretty_print=True))
 

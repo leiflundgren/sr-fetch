@@ -3,7 +3,7 @@
 
 
 import common
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import re
 import datetime
 import time
@@ -75,8 +75,8 @@ def find_html_link_argument(html, rel_type="canonical", pos = 0):
 
 
 def urllib_open_feed(url):
-    u_request = urllib2.Request(url, headers={"Accept" : "application/atom+xml, application/rss+xml, application/xml, text/xml, text/html"})
-    return urllib2.urlopen( u_request )
+    u_request = urllib.request.Request(url, headers={"Accept" : "application/atom+xml, application/rss+xml, application/xml, text/xml, text/html"})
+    return urllib.request.urlopen( u_request )
 
 def filename_from_html_content(html):
     trace(8, 'Trying to deduce filename from html-content.')
@@ -159,7 +159,7 @@ def parse_sr_time_string(s, today):
             second = int(n[2]) if len(n) > 2 else 0
             t = datetime.datetime.combine(t.date(), datetime.time(hour, minute, second))
             i += 2
-        elif parts[i] == 'Ig&#229;r' or parts[i] == u'Ig\xe5r':
+        elif parts[i] == 'Ig&#229;r' or parts[i] == 'Ig\xe5r':
             t -= datetime.timedelta(days=1)
             i += 1
         elif common.is_swe_weekday(parts[i]):
@@ -195,7 +195,7 @@ class TestHelpers(unittest.TestCase):
         self.assertEqual(datetime.datetime(2015,7,28, 10,3,0), parse_sr_time_string('Ig&#229;r klockan 10:03', base_day))
         self.assertEqual(datetime.datetime(2015,7,24, 10,3,0), parse_sr_time_string('fredag 24 juli klockan 10:03', base_day))
         self.assertEqual(datetime.datetime(2015,7,24, 10,3,0), parse_sr_time_string('m&#229;ndag 24 juli klockan 10:03', base_day))
-        self.assertEqual(datetime.datetime(2015,7,24, 10,3,0), parse_sr_time_string(u'söndag 24 juli klockan 10:03', base_day))
+        self.assertEqual(datetime.datetime(2015,7,24, 10,3,0), parse_sr_time_string('söndag 24 juli klockan 10:03', base_day))
     pass
 
 if __name__ == '__main__':

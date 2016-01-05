@@ -13,11 +13,11 @@ class AppBase(object):
 
         try:
             common.log_handle = self.log_handle
-        except Exception, ex:
+        except Exception as ex:
             self.log(1, 'while looking at logging, fail, fail, fail: ' + str(ex))
         try:
             common.tracelevel = int(self.qs_get('tracelevel'))
-        except Exception, ex:
+        except Exception as ex:
             pass
         self.tracelevel = common.tracelevel
         self.remote_addr =  environ.get('REMOTE_ADDR')
@@ -29,7 +29,7 @@ class AppBase(object):
             req = req[0:s2+1]
             self.base_url = environ['UWSGI_SCHEME'] + '://' + environ['HTTP_HOST'] + req
             self.trace(6, 'base_url = ' + self.base_url)
-        except Exception, ex:
+        except Exception as ex:
             self.trace(3, 'Failed to extract base_url ', ex)
 
     def log(self, level, *args):
