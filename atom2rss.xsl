@@ -78,8 +78,13 @@
 </x:template>
 
 <x:template match="atom:link[@rel='enclosure']">
-    <x:if test="generate-id(.) = generate-id(../atom:link[@rel='enclosure'][1])">
+    <x:if test="generate-id(.) = generate-id(../atom:link[@rel='enclosure'][1]) and ../atom:link[@length]">
         <enclosure url="{@href}" type="{@type}" length="{@length}"/>
+    </x:if>
+</x:template>
+<x:template match="atom:link[@rel='enclosure'] ">
+    <x:if test="generate-id(.) = generate-id(../atom:link[@rel='enclosure'][1]) and not(../atom/link[@length])">
+        <enclosure url="{@href}" type="{@type}"/>
     </x:if>
 </x:template>
 
@@ -157,11 +162,24 @@
     <x:if test="not(atom:source) and /atom:feed/atom:link[@rel='self']">
         <source url="{/atom:feed/atom:link[@rel='self']/@href}">
             <x:choose>
-                <x:when test="/atom:feed/atom:link[@rel='self' and @title]"><x:value-of select="/atom:feed/atom:link[@rel='self']/@title"/></x:when>
-                <x:otherwise><x:apply-templates select="/atom:feed/atom:title" mode="asText"/></x:otherwise>
+                <x:when test="/atom:feed/atom:link[@rel='self' and @title]">
+                    <x:value-of select="/atom:feed/atom:link[@rel='self']/@title"/>
+                </x:when>
+                <x:otherwise>
+                    <x:apply-templates select="/atom:feed/atom:title" mode="asText"/>
+                </x:otherwise>
             </x:choose>
         </source>
     </x:if>
+    <!--<x:if test="/atom:feed/atom:entry/atom:link[@rel='enclosure']">
+        <enclosure 
+            type="{/atom:feed/atom:link[@rel='enclosure']/@type}"
+            rel="enclosure"             
+            url="{/atom:feed/atom:link[@rel='enclosure']/@href}"
+            hello="world"
+                   >
+        </enclosure>
+    </x:if>-->
     <x:apply-templates select="atom:source/atom:category"/>
     <x:if test="not(atom:copyright)"><x:apply-templates select="atom:source/atom:copyright"/></x:if>
     <x:if test="not(atom:author)"><x:apply-templates select="atom:source/atom:author"/></x:if>

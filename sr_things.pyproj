@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{722fe784-6f26-4a7f-a483-0dca37683482}</ProjectGuid>
+    <ProjectGuid>{03b757ec-c789-4ea6-b6ac-3add94539289}</ProjectGuid>
     <ProjectHome />
     <StartupFile>sr_feed.py</StartupFile>
     <SearchPath />
@@ -12,9 +12,9 @@
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
     <InterpreterId>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</InterpreterId>
-    <InterpreterVersion>2.7</InterpreterVersion>
+    <InterpreterVersion>3.4</InterpreterVersion>
     <IsWindowsApplication>False</IsWindowsApplication>
-    <CommandLineArguments> 4430 12 </CommandLineArguments>
+    <CommandLineArguments>-l 9 --format rss --progid 4426 --source html</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <DebugStdLib>False</DebugStdLib>
   </PropertyGroup>
@@ -25,15 +25,23 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="atom2rss.xsl" />
+    <Content Include="my_Atom_output.xml" />
+    <Content Include="sample.atom.xml" />
+    <Content Include="sample.rss_2.xml" />
     <Content Include="uwsgi.ini" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="app_base.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="app_config.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="app_factory.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Page2RSS.py" />
     <Compile Include="Atom2RSS.py">
       <SubType>Code</SubType>
     </Compile>
@@ -48,6 +56,14 @@
     <Compile Include="lxml_testing.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="RssFromFiles.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="rss_files_app.py" />
+    <Compile Include="sr_helpers.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="sr_prog_page.py" />
     <Compile Include="sr_feed.py" />
     <Compile Include="sr_feed_app.py" />
     <Compile Include="sr_url_finder.py" />
@@ -63,10 +79,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\2.7" />
-    <InterpreterReference Include="{6830c6cc-d1f0-4f78-9fd4-b6df460ac8bc}\2.7" />
-    <InterpreterReference Include="{683a85ba-62a4-4fa1-bfbc-3dddfcace987}\2.7" />
-    <InterpreterReference Include="{fcc291aa-427c-498c-a4d7-4502d6449b8c}\2.7" />
+    <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\3.4" />
+    <InterpreterReference Include="{358e2312-515c-4998-83cd-d4036ee432d1}\3.4" />
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />

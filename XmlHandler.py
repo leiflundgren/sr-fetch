@@ -3,6 +3,7 @@ from common import trace
 from common import tracelevel
 import unittest
 import sys
+from fnmatch import fnmatch
 
 xml_loaded = False
 xml_minidom = False
@@ -27,6 +28,8 @@ try:
 except ImportError:
     pass
 
+import lxml.etree
+
 try:
     import lxml.etree.ElementTree
     x = lxml.etree.ElementTree.fromstring('<hello target="World">there</hello>') 
@@ -47,11 +50,30 @@ if not xml_loaded:
     raise Exception('Failed to load *ANY* XML library!!!')
 
 
-       
+def get_namespace(el):
+    type_name = type(el).__name__
+    if isinstance(el, str):
+        tag = el
+    elif type_name == 'lxml.etree.Element':
+        tag = el.tag
+    else:
+        raise ValueError('el is type unknown type ' + type_name)
+
+    c = tag.find('}')
+    if c < 0:
+        return ''
+    else:
+        return tag[0:c+1]       
 
 class XmlHandler(object):
     """description of class"""
 
+    xml = None
+
+    def __init__(self, string=None):
+        if not string is None:
+            self.xml = self.load_from_string(string)
+             
     def load_from_string(self, string):
         if xml_cxml:
             self.xml = xml.etree.CElementTree.fromstring(string)
@@ -68,7 +90,7 @@ class XmlHandler(object):
     def load_from_string_minidom(self, s):
         if isinstance(s, str):
             self.xml = xml.dom.minidom.parseString(s)
-        elif isinstance(s, unicode):
+        elif isinstance(s, str):
             self.xml = xml.dom.minidom.parseString(s.encode('utf-8'))
         else:
             raise Exception('unknown string  type ' + str(type(s)))
@@ -80,18 +102,36 @@ class XmlHandler(object):
     def load_from_string_lxml(self, str):
         self.xml = lxml.etree.fromstring(str)
 
-def find_child_nodes(el, node_names):
+def find_first_child(el, node_names):
+    return find_child_nodes(el, node_names, True)
+
+def find_child_nodes(el, node_names, only_first = False):
+
     #: :type el: xml.etree.ElementTree.Element
     #: :type node_names: list
                         
-    trace(7, 'xml type ' + str(type(el)))
+    if isinstance(node_names , str):
+        return find_child_nodes(el, node_names.split('/'), only_first)
 
-
+    # trace(7, 'xml type ' + str(type(el)))
     if len(node_names) == 0:
-        return [el]
+        return el
     name = node_names[0]
-    # if name[0] == '@':
+    if name[0] == '@':
+        aname = name[1:]
+        for n,v in el.attrib.items():
+            if n[0] == '{' and aname[0] != '{':
+                n= n[n.index('}')+1:]
 
+            if n==aname:
+                return v
+        return None
+
+    if name[0] == '[':
+        pass
+
+    if name == 'text()':
+        return el.text
 
     res = []
     #sub = el.
@@ -104,40 +144,67 @@ def find_child_nodes(el, node_names):
             tag = tag[tag.index('}')+1:]
 
         if tag == name:
-            res = res + find_child_nodes(c, node_names[1:] )
+            res.append(find_child_nodes(c, node_names[1:], only_first))
+            if only_first and len(res) > 0:
+                return res[0]
+            
+    return res
+
+def check_right_element_exactly(e, tagname, attrib, avalue):
+    return e.tag == tagname and e.attrib.get(attrib, '') == avalue
+
+def check_right_element_wildcard(e, tagname, attrib, avalue):
+    return fnmatch(e.tag, tagname ) and fnmatch(e.attrib.get(attrib, ''), avalue)
+
+
+def find_element_attribute(root, tagname, attrib, avalue):
+    matcher = check_right_element_wildcard if tagname.find('*') >=0 or avalue.find('*') >= 0 else check_right_element_exactly
+    q = root if isinstance(root, list) else [root]
+
+    while q:
+        e = q.pop()
+        # html = None if e is None else lxml.etree.tostring(e, pretty_print=True)
+        if e.tag != lxml.etree.Comment and matcher(e, tagname, attrib, avalue):
+            return e
+        c = list(e)
+        q += ( c )
+
+    return None
+
+def findall_element_attribute(root, tagname, attrib, avalue):
+    res=[]
+
+    matcher = check_right_element_wildcard if tagname.find('*') >=0 or avalue.find('*') >= 0 else check_right_element_exactly
+    q = [root]
+    while q:
+        e = q.pop()
+        if matcher(e, tagname, attrib, avalue):
+            res.append(e)
+        q += list(e)
+
     return res
 
 
 class TestXmlHandler(unittest.TestCase):
     def test_xml_load(self):
-        string = '<hello target="World">there</hello>'
+        string = '<xml_ex><hello target="World"><foo><bar>fubar</bar></foo> there</hello></xml_ex>'
         xml = XmlHandler().load_from_string(string)
-        print 'got xml object ' + str(xml) + ' of type ' + str(type(xml))
+        print('got xml object ' + str(xml) + ' of type ' + str(type(xml)))
+                
+        hello_ls = find_child_nodes(xml, ['hello'])
+        self.assertEqual(1, len(hello_ls))
 
+        foo = find_first_child(xml, 'hello/foo')
+        self.assertEqual('foo', foo.tag)
+
+        fubar = find_first_child(xml, 'hello/foo/bar/text()')
+        self.assertEqual('fubar', fubar)
+        world = find_first_child(xml, 'hello/@target')
+        self.assertEqual('World', world)
     pass
 
 if __name__ == '__main__':
-    for a in sys.argv:
-        if a.find('unittest') >= 0:            
-            common.tracelevel = 8
-            sys.argv = ['-v']
-            sys.exit(unittest.main())
+    common.tracelevel = 8
+    sys.argv = ['-v']
+    sys.exit(unittest.main())
 
-    if len(sys.argv) == 1 or sys.argv[1][0] == '-' and sys.argv[1].find('h') > 0:
-        print(sys.argv[0] + ' feed_url / sr-programid [tracelevel=8]')
-        sys.exit(0)
-
-    feed_url = sys.argv[1] if sys.argv[1].find('http') == 0 else 'http://api.sr.se/api/rss/program/' + sys.argv[1]
-    
-    if len(sys.argv) >= 3:
-        common.tracelevel = int(sys.argv[2])
-    else:
-        common.tracelevel = 8
-
-    sr_feed = SrFeed(feed_url, common.tracelevel)
-
-
-    feed = sr_feed.get_feed()
-
-    print(feed)
-             
