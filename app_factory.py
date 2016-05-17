@@ -1,14 +1,22 @@
 import io
 import sys
 import cgi
-import uwsgi_hello
 import re
+import os
 
+import common
+
+import uwsgi_hello
 import env_test 
 import sr_redirect
 import sr_feed_app
 import rss_files_app
-import common
+
+from flask import Flask, after_this_request
+
+app = Flask(__name__)
+
+
 
 known_apps = { 
     'hello_world': uwsgi_hello.UwsgiHello,
@@ -18,6 +26,14 @@ known_apps = {
     'rss_files': rss_files_app.RssFilesApp,
 }
 
+@app.route('/hello')
+def hello():
+    return 'hello world'
+    
+@app.route('/env')
+def env_tester():
+    return env_test.EnvTest().application()
+    
 
 def application(environ, start_response):
     path = environ['PATH_INFO']
@@ -48,3 +64,15 @@ def application(environ, start_response):
     start_response(status, response_headers)
 
     return [response_body.encode()]
+
+
+if __name__ == '__main__':
+
+    debug=False
+    for a in sys.argv:
+       if a.find('debug') >= 0:
+           debug=True
+            
+    # Bind to PORT if defined, otherwise default to 5000.
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=debug)
