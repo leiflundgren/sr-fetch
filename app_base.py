@@ -1,7 +1,7 @@
 import cgi
 import common
 import sys
-from flask import request
+import flask 
 
 class AppBase(object):
     """Base class for my python web stuff"""
@@ -26,11 +26,11 @@ class AppBase(object):
             pass
         self.log(7, 'creating ' + app_name +  ' tracelevel=' + str(common.tracelevel))
         self.tracelevel = common.tracelevel
-        self.remote_addr =  request.remote_addr
+        self.remote_addr =  flask.request.remote_addr
         self.log(4, 'tracelevel is ' + str(common.tracelevel) + " request from " + self.remote_addr)
 
         try:
-            req = requrest.url
+            req = request.url
             s2 = req.find('/',1)
             req = req[0:s2+1]
             self.base_url = AppBase.UwsgiScheme(environ) + '://' + environ['HTTP_HOST'] + req
@@ -62,11 +62,12 @@ class AppBase(object):
         self.start_response("501 not implemented", [("Content-Type", "text/html")])
         return ["Not implemented. Should be overriden in subclass".encode()] 
 
-    def make_response(statuscode, body, content_type = None):
+    def make_response(self, statuscode, body, content_type = None):
         if statuscode >= 300 and statuscode < 400:
             self.log(5, 'redirecting ', statuscode, ' to ', body)
-            return redirect(body, statuscode)
+            return flask.redirect(body, statuscode)
+        r = flask.make_response(body)
         if content_type:
-            header("Content-type: " + content_type)
-        return body
+            r.headers['Content-Type'] = content_type
+        return r
      

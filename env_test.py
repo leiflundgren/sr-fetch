@@ -7,7 +7,7 @@ class EnvTest(AppBase):
         
     def application(self):
         # Sorting and stringifying the environment key, value pairs
-       response_body = request.query_string
+       response_body = request.query_string.decode(encoding='UTF-8')
 
        self.log(5, "response-type: ", type(response_body))
        self.log(5, "Environment:\n" + response_body)
