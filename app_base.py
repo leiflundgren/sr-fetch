@@ -1,19 +1,19 @@
 import cgi
 import common
 import sys
-import wsgiref
+from flask import request
 
 class AppBase(object):
     """Base class for my python web stuff"""
-    def __init__(self, app_name, environ, start_response):
+    def __init__(self, app_name):
         self.app_name = app_name
-        self.environ = environ
-        self.start_response = start_response
+#        self.environ = environ
+#        self.start_response = start_response
 
 
-        self.log_handle = environ['wsgi.errors']
-        self.log_handle = sys.stderr
-        self.qs = cgi.parse_qs(environ['QUERY_STRING'])        
+ #       self.log_handle = environ['wsgi.errors']
+        self.log_handle = sys.stdout
+#        self.qs = cgi.parse_qs(environ['QUERY_STRING'])        
 
         
         try:
@@ -26,11 +26,11 @@ class AppBase(object):
             pass
         self.log(7, 'creating ' + app_name +  ' tracelevel=' + str(common.tracelevel))
         self.tracelevel = common.tracelevel
-        self.remote_addr =  environ.get('REMOTE_ADDR')
+        self.remote_addr =  request.remote_addr
         self.log(4, 'tracelevel is ' + str(common.tracelevel) + " request from " + self.remote_addr)
 
         try:
-            req = environ['REQUEST_URI']
+            req = requrest.url
             s2 = req.find('/',1)
             req = req[0:s2+1]
             self.base_url = AppBase.UwsgiScheme(environ) + '://' + environ['HTTP_HOST'] + req
@@ -62,4 +62,11 @@ class AppBase(object):
         self.start_response("501 not implemented", [("Content-Type", "text/html")])
         return ["Not implemented. Should be overriden in subclass".encode()] 
 
-
+    def make_response(statuscode, body, content_type = None):
+        if statuscode >= 300 and statuscode < 400:
+            self.log(5, 'redirecting ', statuscode, ' to ', body)
+            return redirect(body, statuscode)
+        if content_type:
+            header("Content-type: " + content_type)
+        return body
+     
