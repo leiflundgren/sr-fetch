@@ -9,14 +9,12 @@ class EnvTest(AppBase):
         # Sorting and stringifying the environment key, value pairs
         self.log(5, "args-type: ", type(flask.request.args))
         
-        response_body = ''
-        self.log(5, "response : ", str(response_body))
-        for (d, k, v) in flask.request.args:
-            self.log(5, "d-type= ", type(d), '  k-type=', type(k), '  v-type=', type(v))
-            response_body += str(k) + ": " + str(v)
+        response_body = 'here are all the ' + str(len(flask.request.args)) + ' args \n'
+        for (k, v) in flask.request.args.items():
+            self.log(5, k , "= ", v)
+            #self.log(5, "d-type= ", type(d), '  k-type=', type(k), '  v-type=', type(v))
+            response_body += k + ": " + str(v) + "\n"
 
         self.log(5, "Environment:\n" + response_body)
        
         return self.make_response(200, response_body, 'text/plain')
-
-
