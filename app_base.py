@@ -47,12 +47,13 @@ class AppBase(object):
 
     def qs_get(self, keyname, default=None):
         try:
-            return self.flask.request.args[keyname]
-        except AttributeError:
+            return flask.request.args[keyname]
+        except AttributeError as ex:
+            # self.log(3, 'QueryString ' + keyname + ' not set. Returning default ' + str(default) + " ex: ", ex)
             return default
         
     def application(self):
-        self.log('Not implemented. Should be overriden in subclass')
+        self.log(0, 'Not implemented. Should be overriden in subclass')
         return self.make_response(501, "Not implemented. Should be overriden in subclass", "text/html")
 
     def make_response(self, statuscode, body, content_type = None, headers = []):
