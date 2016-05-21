@@ -16,5 +16,11 @@ class EnvTest(AppBase):
             response_body += k + ": " + str(v) + "\n"
 
         self.log(5, "Environment:\n" + response_body)
+
+        response_body += "\nbase_url: " + self.base_url
+        response_body += "\napp_url: " + self.app_url
+        response_body += "\nremote_addr: " + self.remote_addr
+        
+
        
         return self.make_response(200, response_body, 'text/plain')

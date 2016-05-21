@@ -43,6 +43,7 @@
     <Compile Include="app_factory.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="index_app_page.py" />
     <Compile Include="Page2RSS.py" />
     <Compile Include="Atom2RSS.py">
       <SubType>Code</SubType>

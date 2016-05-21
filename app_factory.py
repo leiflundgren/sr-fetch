@@ -6,25 +6,16 @@ import os
 
 import common
 
-import uwsgi_hello
 import env_test 
+import index_app_page
 import sr_redirect
 import sr_feed_app
 import rss_files_app
 
+
 from flask import Flask, after_this_request
 
 app = Flask(__name__)
-
-
-
-known_apps = { 
-    'hello_world': uwsgi_hello.UwsgiHello,
-    'env_test': env_test.EnvTest,
-    'sr_redirect' : sr_redirect.SrRedirect,
-    'sr_feed': sr_feed_app.SrFeedApp,
-    'rss_files': rss_files_app.RssFilesApp,
-}
 
 @app.route('/hello')
 def hello():
@@ -34,10 +25,13 @@ def hello():
 def env_tester():
     return env_test.EnvTest().application()
 
-@app.route('/rss')
+@app.route('/feed')
 def sr_feed_starter():
     return sr_feed_app.SrFeedApp().application()    
 
+@app.route('/')
+def index_page():
+    return index_app_page.IndexApp().application()
 
 if __name__ == '__main__':
 

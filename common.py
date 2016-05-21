@@ -159,6 +159,9 @@ def unescape_html(html):
         last = sc+1
     return res.replace(':', ' ').replace('  ', ' ').replace('  ', ' ').replace('  ', ' ').replace('  ', ' ')
 
+def combine_http_path(x, y):
+    return (x[:-1] if x[-1] == '/' else x) + '/' + (y[1:] if y[0] == '/' else y)
+
 """ 
     Parses a datetime like 2000-01-01T23:45:00
     Timezone is ignored 

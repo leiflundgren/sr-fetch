@@ -35,7 +35,11 @@ class AppBase(object):
         self.log(6, 'request.url: ' + req)
    #     p = req.indexof('/',9)
         self.base_url = req
-        self.trace(6, 'base_url = ' + self.base_url)
+        self.app_url = flask.request.url
+        qmark = self.app_url.find('?')
+        if qmark > 0:
+            self.app_url = self.app_url[:qmark]
+        self.trace(6, 'base_url = ' + self.base_url  + '   app_url=' + self.app_url)
   #  except Exception as ex:
   #          self.trace(3, 'Failed to extract base_url ', type(ex), ex)
 
@@ -47,10 +51,15 @@ class AppBase(object):
 
     def qs_get(self, keyname, default=None):
         try:
-            return flask.request.args[keyname]
+            v = flask.request.args.get(keyname)
+            return default if v is None else v
         except AttributeError as ex:
             # self.log(3, 'QueryString ' + keyname + ' not set. Returning default ' + str(default) + " ex: ", ex)
             return default
+        except Exception as ex:
+            self.log(1, 'Failed to get querystring arg:', ex)
+            raise
+        
         
     def application(self):
         self.log(0, 'Not implemented. Should be overriden in subclass')
