@@ -1,7 +1,7 @@
 import cgi
 import common
 import sys
-import flask 
+import flask
 
 class AppBase(object):
     """Base class for my python web stuff"""
@@ -21,32 +21,23 @@ class AppBase(object):
         except Exception as ex:
             raise Exception(1, 'while looking at logging, fail, fail, fail: ' + str(ex), ex)
         try:
-            common.tracelevel = int(self.qs_get('tracelevel'))
+            common.tracelevel = int(self.qs_get('tracelevel', 3))
         except Exception as ex:
-            pass
+            common.tracelevel=3
+            self.log(3, 'Failed to get tracelevel from args. Using level 3', ex )
         self.log(7, 'creating ' + app_name +  ' tracelevel=' + str(common.tracelevel))
         self.tracelevel = common.tracelevel
         self.remote_addr =  flask.request.remote_addr
         self.log(4, 'tracelevel is ' + str(common.tracelevel) + " request from " + self.remote_addr)
 
-        try:
-            req = request.url
-            s2 = req.find('/',1)
-            req = req[0:s2+1]
-            self.base_url = AppBase.UwsgiScheme(environ) + '://' + environ['HTTP_HOST'] + req
-            self.trace(6, 'base_url = ' + self.base_url)
-        except Exception as ex:
-            self.trace(3, 'Failed to extract base_url ', type(ex), ex)
-
-    @staticmethod
-    def UwsgiScheme(environ):
-        try:
-            return wsgiref.util.guess_scheme(environ)
-        except Exception:
-            try:
-                return environ['UWSGI_SCHEME']
-            except KeyError:
-                return environ['wsgi.url_scheme']
+ #       try:
+        req = flask.request.url_root
+        self.log(6, 'request.url: ' + req)
+   #     p = req.indexof('/',9)
+        self.base_url = req
+        self.trace(6, 'base_url = ' + self.base_url)
+  #  except Exception as ex:
+  #          self.trace(3, 'Failed to extract base_url ', type(ex), ex)
 
     def log(self, level, *args):
         common.trace(level, self.app_name, ': ', args)
@@ -55,19 +46,23 @@ class AppBase(object):
         return self.log(level, args)
 
     def qs_get(self, keyname, default=None):
-        return self.qs.get(keyname, [default])[0]
-
+        try:
+            return self.flask.request.args[keyname]
+        except AttributeError:
+            return default
+        
     def application(self):
         self.log('Not implemented. Should be overriden in subclass')
-        self.start_response("501 not implemented", [("Content-Type", "text/html")])
-        return ["Not implemented. Should be overriden in subclass".encode()] 
+        return self.make_response(501, "Not implemented. Should be overriden in subclass", "text/html")
 
-    def make_response(self, statuscode, body, content_type = None):
+    def make_response(self, statuscode, body, content_type = None, headers = []):
         if statuscode >= 300 and statuscode < 400:
             self.log(5, 'redirecting ', statuscode, ' to ', body)
             return flask.redirect(body, statuscode)
         r = flask.make_response(body)
         if content_type:
             r.headers['Content-Type'] = content_type
+        for (h, v) in headers:
+            r.headers[h] = v
         return r
      
