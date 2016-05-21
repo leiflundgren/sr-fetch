@@ -48,6 +48,24 @@ class SrFeed(object):
     def trace(self, level, *args):
         common.trace(level, 'SrFeed: ', args)
 
+    def build_episode_url(self, avsnitt='', artikel=''):
+        
+        if avsnitt:
+            a_or_a = 'avsnitt=' + avsnitt
+        elif artikel:
+            a_or_a = 'artikel=' + artikel
+        else:
+            raise ValueError('must specify either "avsnitt" or "artikel"')
+
+        url = "{url}?programid={programid}&{a_or_a}&tracelevel={tracelevel}&proxy_data={proxy_data}".format(
+            url = common.combine_http_path(self.base_url, 'episode'),
+            programid = self.progid,
+            a_or_a = a_or_a,
+            tracelevel = str(self.tracelevel),
+            proxy_data = str(self.do_proxy)
+            )
+        return url 
+    
     def get_feed(self):
         (format, feed_et) = self.handle_feed_url(self.feed_url)
 
@@ -231,7 +249,7 @@ class SrFeed(object):
 
         def media_url(x):
             # returns http://leifdev.leiflundgren.com:8091/py-cgi/sr_redirect/6215532.m4a?programid=2480;avsnitt=6215532;tracelevel=9;proxy_data=False
-            y = self.base_url +'sr_redirect/' + x + '.m4a?' + 'programid=' + self.progid + ';avsnitt=' + x + ';tracelevel=' + str(self.tracelevel) + ';proxy_data=' + str(self.do_proxy)
+            y = self.build_episode_url(x)
             self.trace(8, 'media_url(' + x + ') --> ' + y)
             return y
 
@@ -266,34 +284,16 @@ class SrFeed(object):
             raise ValueError('Url ' + url + ' missing querystring!')
         qs = urllib.parse.parse_qs(url[qmark+1:])
 
-        params=[]
-        id = 'unknown'
-        if 'programid' in qs:
-            id = qs['programid'][0]
-            params.append('programid=' + id)
-        if 'avsnitt' in qs:
-            id = qs['avsnitt'][0]
-            params.append('avsnitt=' + id)
-        if 'artikel' in qs:
-            id = qs['artikel'][0]
-            params.append('artikel=' + id)
+        programid = qs['programid'][0] if 'programid' in qs else ''
+        avsnitt = qs['avsnitt'][0] if 'avsnitt' in qs else ''
+        artikel = qs['artikel'][0] if 'artikel' in qs else ''
 
         # http://sverigesradio.se/sida/artikel.aspx?programid=4427&artikel=6143755
-        if 'avsnitt' in qs or 'artikel' in qs:
-            qs_params = ';'.join(params)
-            url = self.base_url +'sr_redirect/' + id + '.m4a?' + qs_params + ';tracelevel=' + str(self.tracelevel) + ';proxy_data=' + str(self.do_proxy)
+        if avsnitt or artikel:
+            url = self.build_episode_url(avsnitt, artikel)
             self.trace(7, 'created sr_redirect url: ' + url)
             return url
 
-        #if 'avsnitt' in qs and 'artikel' in qs:
-        #    artikel = qs['artikel']
-        #    programid = qs['programid']
-        ##    artikel = m.group(1)
-        #    url = self.base_url +'sr_redirect.m4a?artikel=' + artikel + ';tracelevel=' + str(self.tracelevel) + ';proxy_data=' + str(self.do_proxy)
-        #    self.trace(7, 'created sr_redirect url for artikel=' + artikel + ": " + url)
-        #    return url
-
-        
         self.trace(8, 'Processing fetching ' + url)
         u_thing = urllib.request.urlopen(urllib.request.Request(url))
         content_type = u_thing.headers['content-type']

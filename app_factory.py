@@ -29,6 +29,10 @@ def env_tester():
 def sr_feed_starter():
     return sr_feed_app.SrFeedApp().application()    
 
+@app.route('/episode')
+def sr_episode():
+    return sr_redirect.SrRedirect().application()
+
 @app.route('/')
 def index_page():
     return index_app_page.IndexApp().application()

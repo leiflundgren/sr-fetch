@@ -62,6 +62,6 @@ class SrRedirect(AppBase):
             self.log(4, 'Proxy mode is one, start proxying...')
             return self.make_response(501, "Not implemented proxying")
         else:
-            return self.make_response(301, "moved permanently", Nothing, [("Location", m4a_url)])
+            return self.make_response(301, m4a_url)
 
      
