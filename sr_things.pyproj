@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{03b757ec-c789-4ea6-b6ac-3add94539289}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>sr_feed.py</StartupFile>
+    <StartupFile>app_factory.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -14,9 +14,10 @@
     <InterpreterId>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</InterpreterId>
     <InterpreterVersion>3.4</InterpreterVersion>
     <IsWindowsApplication>False</IsWindowsApplication>
-    <CommandLineArguments>-l 9 --format rss --progid 4426 --source html</CommandLineArguments>
+    <CommandLineArguments>debug</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <DebugStdLib>False</DebugStdLib>
+    <InterpreterArguments>debug</InterpreterArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
@@ -27,6 +28,7 @@
   <ItemGroup>
     <Content Include="atom2rss.xsl" />
     <Content Include="my_Atom_output.xml" />
+    <Content Include="requirements.txt" />
     <Content Include="sample.atom.xml" />
     <Content Include="sample.rss_2.xml" />
     <Content Include="uwsgi.ini" />
@@ -41,6 +43,7 @@
     <Compile Include="app_factory.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="index_app_page.py" />
     <Compile Include="Page2RSS.py" />
     <Compile Include="Atom2RSS.py">
       <SubType>Code</SubType>
@@ -80,7 +83,8 @@
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\3.4" />
-    <InterpreterReference Include="{358e2312-515c-4998-83cd-d4036ee432d1}\3.4" />
+    <InterpreterReference Include="{9a7a9026-48c1-4688-9d5d-e5699d47d074}\2.7" />
+    <InterpreterReference Include="{9a7a9026-48c1-4688-9d5d-e5699d47d074}\3.5" />
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />

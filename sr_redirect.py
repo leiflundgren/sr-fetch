@@ -5,8 +5,8 @@ import urllib.request, urllib.error, urllib.parse
 
 class SrRedirect(AppBase):
     """A class that takes a request un query-string, finds the appropriate SR episode and redirects to the download URL"""
-    def __init__(self, environ, start_response):
-        AppBase.__init__(self, 'SrRedirect', environ, start_response)
+    def __init__(self):
+        AppBase.__init__(self, 'SrRedirect')
         
     def application(self):
 
@@ -31,24 +31,22 @@ class SrRedirect(AppBase):
 
         if (not avsnitt or not programid) and not artikel:
             self.log(3, 'query-string: ', self.qs)
-            self.start_response("500", [("Content-Type", "text/plain")])
-            return ['parameters avsnitt and programid or artikel is required!'.encode()]
-        if avsnitt and not avsnitt.isdigit():
-            self.start_response("500", [("Content-Type", "text/plain")])
-            return ['parameters avsnitt must be numbers!'.encode()]
-        if programid and not programid.isdigit():
-            self.start_response("500", [("Content-Type", "text/plain")])
-            return ['parameters programid must be numbers!'.encode()]
-        if artikel and not artikel.isdigit():
-            self.start_response("500", [("Content-Type", "text/plain")])
-            return ['parameters artikel must be numbers!'.encode()]
+            return self.make_response("500", 'parameters avsnitt and programid or artikel is required!', "text/plain")
 
+        if avsnitt and not avsnitt.isdigit():
+            return self.make_response("500", 'parameters avsnitt must be digit!', "text/plain")
+
+        if programid and not programid.isdigit():
+            return self.make_response("500", 'parameters programid must be digit!', "text/plain")
+
+        if artikel and not artikel.isdigit():
+            return self.make_response("500", 'parameters artikel must be digit!', "text/plain")
         
         self.log(4, 'Attempt to find prog='+ programid + ', avsnitt=' + str(avsnitt) + ' artikel=' + str(artikel) + ', proxy_data=' + str(proxy_data))
         url_finder=SrUrlFinder(programid, avsnitt, artikel)
 
         try:
-            m4a_url =  url_finder.find()
+            m4a_url = url_finder.find()
         except urllib.error.HTTPError as e:
             self.log(2, 'Got HTTP error for prog='+ programid + ', avsnitt=' + str(avsnitt) + ' artikel=' + str(artikel) + ', proxy_data=' + str(proxy_data))
             #self.log(2, 'code', e.code, 'msg', e.msg)
@@ -59,13 +57,11 @@ class SrRedirect(AppBase):
 
         self.log(5, 'Result ', m4a_url, ' ', type(m4a_url))
         if m4a_url is None:
-            self.start_response("503 Media not available yet", [])
+            return self.make_response(503, 'Media not available yet')
         elif proxy_data is None:
             self.log(4, 'Proxy mode is one, start proxying...')
-            self.start_response("501 Not implemented proxying", [])
+            return self.make_response(501, "Not implemented proxying")
         else:
-            self.start_response("301 moved permanently", [("Location", m4a_url)])
-        #return [cgi.escape(m4a_url)]
-        return []
+            return self.make_response(301, m4a_url)
 
      

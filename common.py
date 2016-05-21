@@ -49,10 +49,13 @@ def trace(level, *args):
     for count, thing in enumerate(args):
         msg += mystr(thing)
 
-    if log_handle is None:
-        print(msg.rstrip(), file=sys.stderr)
-    else:
-        print(msg.rstrip(), file=log_handle)
+    msg = msg.rstrip()
+    handle = sys.stderr if log_handle is None else log_handle
+
+    try:
+        print(msg, file=handle)
+    except UnicodeEncodeError:
+        print(msg.encode('cp850', errors='replace'), file=handle)
 
 def pretty(value,htchar="\t",lfchar="\n",indent=0):
   if type(value) in [dict]:
@@ -158,6 +161,9 @@ def unescape_html(html):
 
         last = sc+1
     return res.replace(':', ' ').replace('  ', ' ').replace('  ', ' ').replace('  ', ' ').replace('  ', ' ')
+
+def combine_http_path(x, y):
+    return x.rstrip('/') + '/' + y.lstrip('/')
 
 """ 
     Parses a datetime like 2000-01-01T23:45:00
