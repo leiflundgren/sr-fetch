@@ -7,8 +7,8 @@ import urllib.parse
 class RssFilesApp(AppBase):
     """A class that takes a request and returns an RSS feed of the available files."""
 
-    def __init__(self, environ, start_response):
-        AppBase.__init__(self, 'RssFiles', environ, start_response)
+    def __init__(self):
+        AppBase.__init__(self, 'RssFiles')
         
     def application(self):
 
@@ -20,11 +20,10 @@ class RssFilesApp(AppBase):
         feed_data =  RssFromFiles(url, app_config.rss_files_path + ' and extensions ', app_config.rss_files_ext).rss
         self.log(7, 'Got RSS\n' +  ET.tostring(feed_data, pretty_print=True))
         headers = [     
-            ("Content-Type", 'application/rss+xm'),
+            ("Content-Type", 'application/rss+xml'),
             ("Content-Length", str(len(feed_data)))
         ]
-        self.start_response("200 OK", headers)
-        return [feed_data.encode()]
+        return self.make_response(200, feed_data, 'application/rss+xml')
 
 
      
