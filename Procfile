@@ -1,1 +1,1 @@
-web: uwsgi uwsgi-heroku.ini
+web: python app_factory.py
