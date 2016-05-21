@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{03b757ec-c789-4ea6-b6ac-3add94539289}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>sr_feed.py</StartupFile>
+    <StartupFile>app_factory.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -14,9 +14,10 @@
     <InterpreterId>{9a7a9026-48c1-4688-9d5d-e5699d47d074}</InterpreterId>
     <InterpreterVersion>3.5</InterpreterVersion>
     <IsWindowsApplication>False</IsWindowsApplication>
-    <CommandLineArguments>-l 9 --format rss --progid 4426 --source html</CommandLineArguments>
+    <CommandLineArguments>debug</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <DebugStdLib>False</DebugStdLib>
+    <InterpreterArguments>debug</InterpreterArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
@@ -27,6 +28,7 @@
   <ItemGroup>
     <Content Include="atom2rss.xsl" />
     <Content Include="my_Atom_output.xml" />
+    <Content Include="requirements.txt" />
     <Content Include="sample.atom.xml" />
     <Content Include="sample.rss_2.xml" />
     <Content Include="uwsgi.ini" />

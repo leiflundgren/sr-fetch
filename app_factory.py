@@ -33,37 +33,10 @@ def hello():
 @app.route('/env')
 def env_tester():
     return env_test.EnvTest().application()
-    
 
-def application(environ, start_response):
-    path = environ['PATH_INFO']
-
-    path_parts = re.findall('[^/\.]+', path)
-
-    print('this is the beginning', file=sys.stderr)
-    print('environ[wsgi.errors] is ' + str(type(environ['wsgi.errors'])) + ': ' + str(environ['wsgi.errors']), file=sys.stderr)
-
-    log = environ['wsgi.errors']
-    print('a am ammy', file=log)
-    log=sys.stderr
-
-    common.log_handle = log
-    common.tracelevel = 5
-
-    for k, v in known_apps.items():
-        if k in path_parts:
-            common.trace(4, 'Running requested app ' + k)
-            return v(environ, start_response).application()
-
-    # Sorting and stringifying the environment key, value pairs
-    response_body = 'You wanted to get to "' + cgi.escape(path) + "'\r\nThat is an unknown application\r\n"
-
-    status = '501 Not implemented'
-    response_headers = [('Content-Type', 'text/plain'),
-                    ('Content-Length', str(len(response_body)))]
-    start_response(status, response_headers)
-
-    return [response_body.encode()]
+@app.route('/rss')
+def sr_feed_starter():
+    return sr_feed_app.SrFeedApp().application()    
 
 
 if __name__ == '__main__':
