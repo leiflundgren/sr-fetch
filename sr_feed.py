@@ -34,13 +34,14 @@ ns = { 'atom':ns_atom, 'xml': ns_xml, 'itunes':ns_itunes }
 
 class SrFeed(object):
     
-    def __init__(self, base_url, feed_url, progid, tracelevel, format, do_proxy):
+    def __init__(self, base_url, feed_url, progid, tracelevel, format, do_proxy, only_episode_with_attachments):
         self.tracelevel = tracelevel
         self.base_url = base_url
         self.feed_url = feed_url
         self.progid = str(progid)
         self.format = format
         self.do_proxy = do_proxy
+        self.only_episode_with_attachments = only_episode_with_attachments
         self.content_type = ''
         self.trace(7, 'initaialed a feed reader for ' + feed_url)
         self.trace(9, 'lxml version is ', ET.LXML_VERSION)
@@ -230,6 +231,10 @@ class SrFeed(object):
             self.trace(6, 'url for entry ' + url)
         
             media_url = self.fetch_media_url_for_entry(url)
+
+            if not media_url and self.only_episode_with_attachments:
+                self.trace(4, 'entry ' + url + ' had no media related. So ignoring.')
+                continue
 
             tag = get_namespace(entryEl.tag) + 'link'
             media_link_el = ET.SubElement(entryEl, tag, rel="enclosure", href=media_url, type='audio/mp4')

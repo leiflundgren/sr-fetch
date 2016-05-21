@@ -74,6 +74,12 @@ This is the SR feed generator<br />
 		<td>false</td>
 		<td>When requesting a file, proxy the data rather than making a redirect. Currently not implemented.</td>
 	</tr>
+	<tr>
+		<td>only_episode_with_attachments<br>
+        /only_content</td>
+		<td>true</td>
+		<td>Should episodes without any downloadable content be shown?</td>
+	</tr>
 	<tbody>
 </table>
 
@@ -110,8 +116,10 @@ Sample test URL: <a href="{app_url}?tracelevel=5&programid=4429&format=rss">{app
         else:
             return self.generate_help_error(500, 'unsupported source. Must be feed/html!')            
 
-        self.log(4, 'Attempt to find prog=' + str(programid)  + ', proxy_data = ' + str(proxy_data) + ' from ' + prog_url)
-        feeder = sr_feed.SrFeed(self.base_url, prog_url, str(programid), self.tracelevel, format, proxy_data)
+        only_episode_with_attachments = self.qs_get('only_episode_with_attachments', self.qs_get('only_content', True))
+
+        self.log(4, 'Attempt to find prog=' + str(programid)  + ', proxy_data = ' + str(proxy_data) + ' from ' + prog_url + " only_episode_with_attachments=" + str(only_episode_with_attachments))
+        feeder = sr_feed.SrFeed(self.base_url, prog_url, str(programid), self.tracelevel, format, proxy_data, only_episode_with_attachments)
         feed_data = feeder.get_feed().encode()
         self.log(9, 'feed_data is ' + str(type(feed_data)) + " len=" + str(len(feed_data)))
         # self.log(4, 'Result is ', feed_data)
