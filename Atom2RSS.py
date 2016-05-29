@@ -115,7 +115,9 @@ class Atom2RssNodePerNode(Atom2RSS):
             ET.SubElement(rss_item, 'title').text= getfirst(atom_entry, 'a:title/text()')
             ET.SubElement(rss_item, 'description').text = getfirst(atom_entry, 'a:summary/text()')
             ET.SubElement(rss_item, 'guid').text= atom_id
-            ET.SubElement(rss_item, 'pubDate').text= getfirst(atom_entry, 'a:published/text()')
+            t = getfirst(atom_root, 'a:updated/text()')
+            t = parse_datetime_to_rfc822(t)
+            ET.SubElement(rss_item, 'pubDate').text= t
             
             atom_href_link = getfirst(atom_entry, 'a:link[@type="text/html"]')
             href_link = ET.SubElement(rss_item, 'link', type="text/html")

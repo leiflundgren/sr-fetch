@@ -109,7 +109,7 @@ Sample test URL: <a href="{app_url}?tracelevel=5&programid=4429&format=rss">{app
 
         source = self.qs_get('source', 'feed')
 
-        if source == 'feed':
+        if source == 'feed' or source == 'rss':
             prog_url = 'http://api.sr.se/api/rss/program/' + str(programid)
         elif source == 'html':
             prog_url = 'http://sverigesradio.se/sida/avsnitt?programid=' + str(programid)
