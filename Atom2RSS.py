@@ -91,7 +91,8 @@ class Atom2RssNodePerNode(Atom2RSS):
 
         ET.SubElement(rss_channel, 'language').text = lang
         
-        ET.SubElement(rss_channel, 'description').text = getfirst(atom_root, 'a:subtitle[@type="text"]/text()')
+        # ET.SubElement(rss_channel, 'description').text = getfirst(atom_root, 'a:subtitle[@type="text"]/text()')
+        ET.SubElement(rss_channel, 'description').text = rss_title.text
 
         ET.SubElement(rss_channel, 'copyright').text = getfirst(atom_root, 'a:rights/text()')
 
