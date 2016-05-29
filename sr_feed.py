@@ -72,8 +72,7 @@ class SrFeed(object):
         (format, feed_et) = self.handle_feed_url(self.feed_url)
 
         conv_et = self.translate_format(format, feed_et)
-
-        xmlstr = ET.tostring(conv_et, encoding='utf-8', method='xml').decode('utf-8')
+        xmlstr = ET.tostring(conv_et, encoding='utf-8', method='xml').decode('utf-8').lstrip()
         if self.content_type.find('charset') < 0:
             self.content_type = self.content_type + '; charset=utf-8'
         # ElementTree thinks it has to explicitly state namespace on all nodes. Some readers might have problem with that.
@@ -98,7 +97,7 @@ class SrFeed(object):
         if format.find('atom') >= 0 and self.format.find('rss') >= 0:
             self.trace(5, 'Translating atom-feed to rss')
             rss = self.translate_atom_to_rss(feed_et)
-            self.context_type = 'application/rss+xml'
+            self.content_type = 'application/rss+xml'
             return rss
         
         else:

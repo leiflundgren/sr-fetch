@@ -102,7 +102,9 @@ class RssFromFiles(object):
             #<item>
             ET.SubElement(rss_item, 'title').text= fi['title']
             ET.SubElement(rss_item, 'description').text = fi['title']
-            ET.SubElement(rss_item, 'guid').text= fi['rel_file']
+            guid = ET.SubElement(rss_item, 'guid')
+            guid.set('isPermaLink', 'false')
+            guid.text= fi['rel_file']
             ET.SubElement(rss_item, 'pubDate').text= common.format_datetime(fi['date'])
             
             #href_link = ET.SubElement(rss_item, 'link', type="text/html")

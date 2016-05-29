@@ -75,7 +75,10 @@ class Page2RSS(object):
             #rss
             #<item>
             avsnitt_id = episode_dict['avsnitt']
-            ET.SubElement(rss_item, 'guid').text= avsnitt_id
+            guid = ET.SubElement(rss_item, 'guid')
+            guid.set('isPermaLink', 'false')
+            guid.text= avsnitt_id
+
             ET.SubElement(rss_item, 'title').text= episode_dict['title']
             timestamp = episode_dict['timestamp']
             ET.SubElement(rss_item, 'pubDate').text= format_datetime(timestamp)
