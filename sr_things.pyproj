@@ -14,7 +14,7 @@
     <InterpreterId>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</InterpreterId>
     <InterpreterVersion>3.4</InterpreterVersion>
     <IsWindowsApplication>False</IsWindowsApplication>
-    <CommandLineArguments>--progid 4430 --source=feed</CommandLineArguments>
+    <CommandLineArguments>--progid 4430 --source=html</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <DebugStdLib>False</DebugStdLib>
     <InterpreterArguments>

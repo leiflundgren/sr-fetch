@@ -73,8 +73,10 @@ class SrFeed(object):
 
         conv_et = self.translate_format(format, feed_et)
         xmlstr = ET.tostring(conv_et, encoding='utf-8', method='xml').decode('utf-8').lstrip()
+        if format == 'rss':
+            self.content_type = 'application/rss+xml'
         if self.content_type.find('charset') < 0:
-            self.content_type = self.content_type + '; charset=utf-8'
+            self.content_type = self.content_type + '; charset=' + self.charset
         # ElementTree thinks it has to explicitly state namespace on all nodes. Some readers might have problem with that.
         # This is a hack to remove the namespace
         self.trace(9, 'feed aquired. content-type="' + self.content_type + "\" len=" + str(len(xmlstr)) + " type=" + str(type(xmlstr)))
@@ -87,7 +89,11 @@ class SrFeed(object):
         if self.format is None:
             self.trace(7, 'format of feed not specified, so ' + self.content_type + ' no altered.')
             return feed_et
-        if format.find(self.format) >= 0:
+        if format == 'rss' and feed_et.tag == 'rss':
+            self.content_type = 'application/rss+xml'
+            self.trace(7, 'format of feed is rss, as specified, so ' + self.content_type + ' not altered.')
+            return feed_et
+        if format.find(self.format) >= 0 and self.content_type.find(format) >= 0:
             self.trace(6, 'Content-type is ' + self.content_type + ' so format ' + self.format + ' seems met.')
             return feed_et
 
