@@ -109,6 +109,20 @@ class SrProgramPageParser(object):
 
         keywords_meta = head.find('meta[@name="keywords"]')        
         self.title = '' if keywords_meta is None else keywords_meta.attrib['content']
+
+        title = head.find('title')
+        if not title is None:
+            self.title = title.text
+        prefix = 'Alla avsnitt'
+        postfix = 'Sveriges Radio'
+        trims = '|- '
+        if self.title.startswith(prefix):
+            self.title = self.title[len(prefix):]
+        if self.title.endswith(postfix):
+            self.title = self.title[:-len(postfix)]
+        self.title = self.title.strip(trims)
+        
+
   
         logo_meta = XmlHandler.find_element_attribute(head, 'meta', 'name', "*:image")        
         self.logo = '' if logo_meta is None else logo_meta.attrib['content']
