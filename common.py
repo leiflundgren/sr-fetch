@@ -8,6 +8,11 @@ import subprocess
 import argparse
 import datetime
 import warnings
+import re
+import unittest
+
+import email.utils
+import time
 
 tracelevel = 4
 log_handle = None
@@ -166,14 +171,35 @@ def combine_http_path(x, y):
     return x.rstrip('/') + '/' + y.lstrip('/')
 
 """ 
-    Parses a datetime like 2000-01-01T23:45:00
-    Timezone is ignored 
+    Parses a datetime like 2000-01-01T23:45:00    
+    Timezone is ignored  
+        2016-05-25T09:08:00+02:00
 """
 def parse_datetime(s):
-    try:
-        return datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%S")
-    except ValueError:
-        return datetime.datetime.strptime(s, "%Y-%m-%d %H:%M:%S")
+    def parse_without_timezone(s):
+        try:
+            return datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%S")
+        except ValueError:
+            return datetime.datetime.strptime(s, "%Y-%m-%d %H:%M:%S")
+
+    trace(9, 'parse_datetime(' + s + ')')
+    if re.match('.*[\+\-]\d\d\:\d\d$', s):
+        raise ValueError('common.parse_datetime doesnt support timezones')
+    return parse_without_timezone(s)
+
+def parse_datetime_to_rfc822(s):
+    if re.match('.*[\+\-]\d\d\:\d\d$', s):
+        tz = s[-6:-3] + s[-2:] # timezone, without colon
+        s = s[:-6]
+    else:
+        tz = 'GMT'
+    dt = parse_datetime(s)
+    #return dt
+    rfc822 = email.utils.format_datetime(dt)
+    rfc822 = rfc822[:-5] + tz # replace -0000 with timezone
+    trace(9, 'parse_datetime_to_rfc822("' + s + '") -> ' + str(rfc822))
+    return rfc822
+
 
 def format_datetime(dt):
     return dt.strftime('%Y-%m-%dT%H:%M:%S%z')
@@ -192,3 +218,46 @@ def get_el(root, name, ns=None):
 
 def is_none_or_empty(s):
     return s is None or isinstance(s, str) and s == ""
+
+if __name__ == '__main__':
+    print(sys.argv)
+    print('hello world')
+    time.sleep(4)
+    tracelevel = 8
+
+    class TestCommon(unittest.TestCase):
+        def test_parse_datetime(self):
+            trace(4, 'test_parse_datetime testing...')
+            t = parse_datetime('2000-01-01T23:45:00')
+            self.assertEqual(datetime.datetime(2000,1,1,23,45,0), t)
+
+            t = parse_datetime('2000-01-01 23:45:00')
+            self.assertEqual(datetime.datetime(2000,1,1,23,45,0), t)
+
+            #t = parse_datetime('2000-01-01T23:45:00+02:00')
+            #self.assertEqual(datetime.datetime(2000,1,1,23,45,0), t)
+
+            #t = parse_datetime('2000-01-01 23:45:00+02:00')
+            #self.assertEqual(datetime.datetime(2000,1,1,23,45,0), t)        
+            trace(4, 'test_parse_datetime passed')
+
+        def test_parse_datetime_rfc822(self):
+            trace(4, 'test_parse_datetime_rfc822 testing...')
+            t = parse_datetime_to_rfc822('2000-01-01T23:45:00')
+            self.assertEqual('Sat, 01 Jan 2000 23:45:00 GMT', t)
+
+            t = parse_datetime_to_rfc822('2000-01-01 23:45:00')
+            self.assertEqual('Sat, 01 Jan 2000 23:45:00 GMT', t)
+
+            t = parse_datetime_to_rfc822('2000-01-01T23:45:00+02:00')
+            self.assertEqual('Sat, 01 Jan 2000 23:45:00 +0200', t)
+
+            t = parse_datetime_to_rfc822('2000-01-01 23:45:00+02:00')
+            self.assertEqual('Sat, 01 Jan 2000 23:45:00 +0200', t)
+            trace(4, 'test_parse_datetime_rfc822 passed')
+        pass
+
+
+   
+    trace(4, 'Running common-unitttests')
+    sys.exit(unittest.main(argv=['-v']))

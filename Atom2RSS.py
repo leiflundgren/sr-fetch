@@ -6,6 +6,7 @@ from common import trace
 from common import pretty
 from common import get_el
 from common import is_none_or_empty
+from common import parse_datetime_to_rfc822
 
 from XmlHandler import find_first_child
 from XmlHandler import find_child_nodes
@@ -94,8 +95,10 @@ class Atom2RssNodePerNode(Atom2RSS):
 
         ET.SubElement(rss_channel, 'copyright').text = getfirst(atom_root, 'a:rights/text()')
 
-        ET.SubElement(rss_channel, 'lastBuildDate').text = getfirst(atom_root, 'a:updated/text()')
-        ET.SubElement(rss_channel, 'pubDate').text = getfirst(atom_root, 'a:updated/text()')
+        t = getfirst(atom_root, 'a:updated/text()')
+        t = parse_datetime_to_rfc822(t)
+        ET.SubElement(rss_channel, 'lastBuildDate').text = t
+        ET.SubElement(rss_channel, 'pubDate').text = t
 
 
         rss_image = ET.SubElement(rss_channel, 'image')

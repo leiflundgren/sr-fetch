@@ -3,13 +3,13 @@
 
 import lxml.etree as ET
 
+import os.path
+
 from common import trace
 from common import pretty
 from common import get_el
 from common import is_none_or_empty
 from common import format_datetime
-
-import os.path
 
 from XmlHandler import find_first_child
 from XmlHandler import find_child_nodes

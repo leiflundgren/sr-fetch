@@ -12,6 +12,7 @@ import argparse
 import datetime
 
 import sr_helpers
+import email.utils
 
 #import xml.etree.ElementTree 
 import lxml.etree as ET
@@ -266,12 +267,18 @@ class SrFeed(object):
 
         rss_gen = Page2RSS(text_url, media_url)
         timestamp = page_parser.timestamp
+        
         if isinstance(timestamp, datetime.datetime):
-            timestamp = timestamp.strftime("%Y-%m-%d %H:%M:%S")
+            timestamp = email.utils.format_datetime(timestamp)
+            #timestamp = timestamp.strftime("%Y-%m-%d %H:%M:%S")
         elif isinstance(timestamp, datetime.date):
-            timestamp = timestamp.strftime("%Y-%m-%d")
-
-
+            #timestamp = timestamp.strftime("%Y-%m-%d")
+            timestamp = email.utils.format_datetime(timestamp)
+        elif isinstance(timestamp, basestring):
+            timestamp = common.parse_datetime_to_rfc822(timestamp)
+        else:
+            self.trace(6, 'timestamp class-type unhandled: ', timestamp, type(timestamp))
+        
         return ('rss', rss_gen.transform(episodes, title=page_parser.title, timestamp=timestamp, description=page_parser.description, logo_url=page_parser.logo, lang=page_parser.lang))
 
 
@@ -353,7 +360,7 @@ if __name__ == '__main__':
     for a in sys.argv:
         if a.find('unittest') >= 0:
             common.trace(4, 'Running sr_feed-unitttests')
-            sys.exit(unittest.main())
+            sys.exit(unittest.main(argv=['v']))
 
 
     parser = argparse.ArgumentParser(description='My favorite argparser.')
@@ -385,7 +392,7 @@ if __name__ == '__main__':
         common.trace(1, 'feed/progid required')
         sys.exit(1)
 
-    feeder = SrFeed('http://leifdev.leiflundgren.com:8091/py-cgi/', feed_url, r.progid, common.tracelevel, r.format, r.proxy)
+    feeder = SrFeed('http://leifdev.leiflundgren.com:8091/py-cgi/', feed_url, r.progid, common.tracelevel, r.format, r.proxy, False)
 
 
     feed = feeder.get_feed()
