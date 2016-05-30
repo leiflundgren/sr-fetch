@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{03b757ec-c789-4ea6-b6ac-3add94539289}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>common.py</StartupFile>
+    <StartupFile>sr_feed.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -14,10 +14,11 @@
     <InterpreterId>{9a7a9026-48c1-4688-9d5d-e5699d47d074}</InterpreterId>
     <InterpreterVersion>3.5</InterpreterVersion>
     <IsWindowsApplication>False</IsWindowsApplication>
-    <CommandLineArguments>debug</CommandLineArguments>
+    <CommandLineArguments>--progid 4430 --source=html</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <DebugStdLib>False</DebugStdLib>
-    <InterpreterArguments>debug</InterpreterArguments>
+    <InterpreterArguments>
+    </InterpreterArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />

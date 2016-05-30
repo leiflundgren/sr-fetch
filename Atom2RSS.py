@@ -91,7 +91,8 @@ class Atom2RssNodePerNode(Atom2RSS):
 
         ET.SubElement(rss_channel, 'language').text = lang
         
-        ET.SubElement(rss_channel, 'description').text = getfirst(atom_root, 'a:subtitle[@type="text"]/text()')
+        # ET.SubElement(rss_channel, 'description').text = getfirst(atom_root, 'a:subtitle[@type="text"]/text()')
+        ET.SubElement(rss_channel, 'description').text = rss_title.text
 
         ET.SubElement(rss_channel, 'copyright').text = getfirst(atom_root, 'a:rights/text()')
 
@@ -114,8 +115,15 @@ class Atom2RssNodePerNode(Atom2RSS):
             #<item>
             ET.SubElement(rss_item, 'title').text= getfirst(atom_entry, 'a:title/text()')
             ET.SubElement(rss_item, 'description').text = getfirst(atom_entry, 'a:summary/text()')
-            ET.SubElement(rss_item, 'guid').text= atom_id
-            ET.SubElement(rss_item, 'pubDate').text= getfirst(atom_entry, 'a:published/text()')
+            
+            guid = ET.SubElement(rss_item, 'guid')
+            if not atom_id.startswith('http'):
+                guid.set('isPermaLink', 'false')
+            guid.text= atom_id
+
+            t = getfirst(atom_root, 'a:updated/text()')
+            t = parse_datetime_to_rfc822(t)
+            ET.SubElement(rss_item, 'pubDate').text= t
             
             atom_href_link = getfirst(atom_entry, 'a:link[@type="text/html"]')
             href_link = ET.SubElement(rss_item, 'link', type="text/html")
@@ -141,8 +149,9 @@ class Atom2RssNodePerNode(Atom2RSS):
             else:
                 trace(6, 'atom_entry ', atom_id, ' did not have enclosure: ', ET.tostring(atom_entry))
 
-            ET.SubElement(rss_item, 'category').text = getfirst(atom_entry, 'a:category/text()')
-            
+            category = getfirst(atom_entry, 'a:category/text()')
+            if category != '':
+                ET.SubElement(rss_item, 'category').text = category
 
         return rss_root
 

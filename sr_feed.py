@@ -72,10 +72,11 @@ class SrFeed(object):
         (format, feed_et) = self.handle_feed_url(self.feed_url)
 
         conv_et = self.translate_format(format, feed_et)
-
-        xmlstr = ET.tostring(conv_et, encoding='utf-8', method='xml').decode('utf-8')
+        xmlstr = ET.tostring(conv_et, encoding='utf-8', method='xml').decode('utf-8').lstrip()
+        if format == 'rss':
+            self.content_type = 'application/rss+xml'
         if self.content_type.find('charset') < 0:
-            self.content_type = self.content_type + '; charset=utf-8'
+            self.content_type = self.content_type + '; charset=' + self.charset
         # ElementTree thinks it has to explicitly state namespace on all nodes. Some readers might have problem with that.
         # This is a hack to remove the namespace
         self.trace(9, 'feed aquired. content-type="' + self.content_type + "\" len=" + str(len(xmlstr)) + " type=" + str(type(xmlstr)))
@@ -88,7 +89,11 @@ class SrFeed(object):
         if self.format is None:
             self.trace(7, 'format of feed not specified, so ' + self.content_type + ' no altered.')
             return feed_et
-        if format.find(self.format) >= 0:
+        if format == 'rss' and feed_et.tag == 'rss':
+            self.content_type = 'application/rss+xml'
+            self.trace(7, 'format of feed is rss, as specified, so ' + self.content_type + ' not altered.')
+            return feed_et
+        if format.find(self.format) >= 0 and self.content_type.find(format) >= 0:
             self.trace(6, 'Content-type is ' + self.content_type + ' so format ' + self.format + ' seems met.')
             return feed_et
 
@@ -98,7 +103,7 @@ class SrFeed(object):
         if format.find('atom') >= 0 and self.format.find('rss') >= 0:
             self.trace(5, 'Translating atom-feed to rss')
             rss = self.translate_atom_to_rss(feed_et)
-            self.context_type = 'application/rss+xml'
+            self.content_type = 'application/rss+xml'
             return rss
         
         else:
@@ -366,12 +371,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='My favorite argparser.')
     parser.add_argument('-l', '--tracelevel', help='Verbosity level 1 is important like error, 9 is unneeded debuginfo', default=4, type=int)
     parser.add_argument('--avsnitt', help='avsnitt', default=None, type=int, required=False)
-    parser.add_argument('--progid', help='progid', default=None, type=int, required=True)
+    parser.add_argument('--progid', help='progid', default=4430, type=int, required=False)
     parser.add_argument('--artikel', help='artikel', default=None, type=int, required=False)
     parser.add_argument('--feed', help='Full feed url', default=None, required=False)
     parser.add_argument('--url', help='Full feed url', default=None, required=False)
     parser.add_argument('--source', help="Should parse rss or html. rss/html", default='rss', required=False)
-    parser.add_argument('--format', help="rss/atom", default=None, required=False)
+    parser.add_argument('--format', help="rss/atom", default='rss', required=False)
     parser.add_argument('--proxy', help="if urls should to proxy data", default=False, required=False)
 
     r = parser.parse_args(None)

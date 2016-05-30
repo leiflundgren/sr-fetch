@@ -4,6 +4,7 @@
 import lxml.etree as ET
 
 import os.path
+import email.utils
 
 from common import trace
 from common import pretty
@@ -75,9 +76,13 @@ class Page2RSS(object):
             #rss
             #<item>
             avsnitt_id = episode_dict['avsnitt']
-            ET.SubElement(rss_item, 'guid').text= avsnitt_id
+            guid = ET.SubElement(rss_item, 'guid')
+            guid.set('isPermaLink', 'false')
+            guid.text= avsnitt_id
+
             ET.SubElement(rss_item, 'title').text= episode_dict['title']
-            ET.SubElement(rss_item, 'pubDate').text= format_datetime(episode_dict['timestamp'])
+            timestamp = episode_dict['timestamp']
+            ET.SubElement(rss_item, 'pubDate').text= email.utils.format_datetime(timestamp)
             ET.SubElement(rss_item, 'description').text = episode_dict.get('description', '')
             
             href_link = ET.SubElement(rss_item, 'link', type="text/html")
