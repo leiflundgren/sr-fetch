@@ -56,7 +56,7 @@ class SrUrlFinder(object):
         return url.endswith('.m4a')
 
     def looks_like_sr_program_page(self, url):
-        res = not re.match(r'^http://sverigesradio.se/sida/[\.\w]+/*\?programid=\d+', url) is None
+        res = not re.match(r'^https?://sverigesradio.se/sida/[\.\w]+/*\?programid=\d+', url) is None
         self.trace(9, 'looks_like_sr_program_page(' + url + ') -->', res)
         # http://sverigesradio.se/sida/avsnitt?programid=4490
         # http://sverigesradio.se/sida/default.aspx?programid=4432
@@ -64,19 +64,19 @@ class SrUrlFinder(object):
 
     def looks_like_sr_episode(self, url):
         # http://sverigesradio.se/sida/avsnitt/412431?programid=4490
-        return not re.match(r'^http://sverigesradio.se/sida/avsnitt/\d+', url) is None
+        return not re.match(r'^https?://sverigesradio.se/sida/avsnitt/\d+', url) is None
 
     def looks_like_sr_artikel(self, url):
         # sverigesradio.se/sida/artikel.aspx?programid=4427&artikel=6143755
-        return not re.match(r'^http://sverigesradio.se/sida/artikel.asp.*artikel=\d+', url) is None
+        return not re.match(r'^https?://sverigesradio.se/sida/artikel.asp.*artikel=\d+', url) is None
 
     def looks_like_sr_laddaner(self, url):
         # http://sverigesradio.se/topsy/ljudfil/5032268
-        return not re.match(r'http://sverigesradio.se/topsy/ljudfil/\d+', url) is None
+        return not re.match(r'https?://sverigesradio.se/topsy/ljudfil/\d+', url) is None
 
     def looks_like_sr_lyssnaigen(self, url):
         # http://lyssnaigen.sr.se/Isidor/EREG/musikradion_sthlm/2014/08/10_lexsommar_20140806_1700_21e9c23_a96.m4a
-        return not re.match(r'http://lyssnaigen\.sr\.se(/.*)(/.*)(/.*)\.m4a$', url) is None        
+        return not re.match(r'https?://lyssnaigen\.sr\.se(/.*)(/.*)(/.*)\.m4a$', url) is None        
 
     # Sometimes the URL is to a html-page
     def looks_like_html_page(self, url):
