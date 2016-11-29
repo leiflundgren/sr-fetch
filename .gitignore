@@ -2,3 +2,5 @@
 *.pyc
 *.suo
 *.pyc
+/env/.ptvs
+/win-env
