@@ -107,7 +107,7 @@ Sample test URL: <a href="{app_url}?tracelevel=5&programid=4429&format=rss">{app
         proxy_data = self.qs_get('proxy_data', 'False').lower() == 'true'
         format = self.qs_get('format', 'rss') 
 
-        source = self.qs_get('source', 'feed')
+        source = self.qs_get('source', 'html')
 
         if source == 'feed' or source == 'rss':
             prog_url = 'http://api.sr.se/api/rss/program/' + str(programid)

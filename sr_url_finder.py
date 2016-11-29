@@ -12,6 +12,7 @@ import re
 import urllib.request, urllib.error, urllib.parse
 import urllib.request, urllib.parse, urllib.error
 import errno
+import json
 from xml.dom import minidom 
 from xml.dom import minidom 
 
@@ -56,7 +57,7 @@ class SrUrlFinder(object):
         return url.endswith('.m4a')
 
     def looks_like_sr_program_page(self, url):
-        res = not re.match(r'^http://sverigesradio.se/sida/[\.\w]+/*\?programid=\d+', url) is None
+        res = not re.match(r'^https?://sverigesradio.se/sida/[\.\w]+/*\?programid=\d+', url) is None
         self.trace(9, 'looks_like_sr_program_page(' + url + ') -->', res)
         # http://sverigesradio.se/sida/avsnitt?programid=4490
         # http://sverigesradio.se/sida/default.aspx?programid=4432
@@ -64,19 +65,19 @@ class SrUrlFinder(object):
 
     def looks_like_sr_episode(self, url):
         # http://sverigesradio.se/sida/avsnitt/412431?programid=4490
-        return not re.match(r'^http://sverigesradio.se/sida/avsnitt/\d+', url) is None
+        return not re.match(r'^https?://sverigesradio.se/sida/avsnitt/\d+', url) is None
 
     def looks_like_sr_artikel(self, url):
         # sverigesradio.se/sida/artikel.aspx?programid=4427&artikel=6143755
-        return not re.match(r'^http://sverigesradio.se/sida/artikel.asp.*artikel=\d+', url) is None
+        return not re.match(r'^https?://sverigesradio.se/sida/artikel.asp.*artikel=\d+', url) is None
 
     def looks_like_sr_laddaner(self, url):
         # http://sverigesradio.se/topsy/ljudfil/5032268
-        return not re.match(r'http://sverigesradio.se/topsy/ljudfil/\d+', url) is None
+        return not re.match(r'https?://sverigesradio.se/topsy/ljudfil/\d+', url) is None
 
     def looks_like_sr_lyssnaigen(self, url):
         # http://lyssnaigen.sr.se/Isidor/EREG/musikradion_sthlm/2014/08/10_lexsommar_20140806_1700_21e9c23_a96.m4a
-        return not re.match(r'http://lyssnaigen\.sr\.se(/.*)(/.*)(/.*)\.m4a$', url) is None        
+        return not re.match(r'https?://lyssnaigen\.sr\.se(/.*)(/.*)(/.*)\.m4a$', url) is None        
 
     # Sometimes the URL is to a html-page
     def looks_like_html_page(self, url):
@@ -236,6 +237,11 @@ class SrUrlFinder(object):
             
             return self.handle_url_check_result(url)
 
+        m = re.match(r'.*playepisode=(\d+)', url)
+        if not m:
+            assert("The URL seems to be missing the playepisode-argument: " + url)
+        episode = m.group(1)
+
         response = urllib.request.urlopen(url)
         content_type = response.headers['content-type']
         enc = response.headers['content-encoding'] if 'content-encoding' in response.headers else 'utf-8'
@@ -255,6 +261,9 @@ class SrUrlFinder(object):
         #    if url:
         #        self.trace(5, 'Extracted avsnitt-url from artikel-url. Exploring that.')
         #        return self.handle_url(url)
+
+        if not stream:
+            stream = self.handle_playerajax_getaudiourl(episode, url)
 
         if not stream:
             self.trace(2, "Failed to find twitter:player:stream-meta-header and <link rel=canonical href /> !\n" + html[0:2300] + '...')
@@ -308,6 +317,39 @@ class SrUrlFinder(object):
             self.trace(7, 'Changed to 192kbit: ' + url)
         return self.handle_m4a_url(url)
         
+    def handle_playerajax_getaudiourl(self, episodeid, referer_url):
+        ajax_url = 'http://sverigesradio.se/sida/playerajax/getaudiourl?id=' + episodeid + '&type=episode&quality=high&format=iis'
+        self.trace(5, 'ajax-call to ', ajax_url)
+        req = urllib.request.Request(ajax_url)
+        req.add_header('Referer', referer_url)
+        req.add_header('Accept', 'application/json')
+        req.add_header('X-Requested-With', 'XMLHttpRequest')
+        response = urllib.request.urlopen(req)
+        content_type = response.headers['content-type']
+
+        if not content_type.startswith('application/json'):
+            self.trace(1, 'Response-type ', content_type, ' dont know if we can handle that')
+
+        if 'content-encoding' in response.headers:
+            enc = response.headers['content-encoding'] 
+        elif content_type.find('charset') > 0:
+            begin = content_type.find('charset')+8
+            enc = content_type[begin:].strip()
+            if enc.find(';') > 0:
+                enc = enc[0:enc.find(';')].strip()
+        else:
+            enc = 'utf-8'
+        json_string = response.read().decode(enc)
+        try:
+            json_object = json.loads(json_string)
+            audioUrl = json_object['audioUrl']
+            self.trace(5, 'ajax-call yielded ', audioUrl)
+            return audioUrl
+        except Exception as ex:
+            self.trace(1, 'Failed to decode json_string\n' + str(ex) + '\n' + json_string)
+            raise # give up
+
+
     @staticmethod
     def build_latest_url_from_progid(progid):
         # http://sverigesradio.se/api/radio/radio.aspx?type=latestbroadcast&id=83&codingformat=.m4a&metafile=asx

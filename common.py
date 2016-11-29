@@ -181,7 +181,7 @@ def parse_datetime(s):
             return datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%S")
         except ValueError:
             return datetime.datetime.strptime(s, "%Y-%m-%d %H:%M:%S")
-
+    
     trace(9, 'parse_datetime(' + s + ')')
     if re.match('.*[\+\-]\d\d\:\d\d$', s):
         raise ValueError('common.parse_datetime doesnt support timezones')
@@ -191,6 +191,9 @@ def parse_datetime_to_rfc822(s):
     if re.match('.*[\+\-]\d\d\:\d\d$', s):
         tz = s[-6:-3] + s[-2:] # timezone, without colon
         s = s[:-6]
+    elif s[-1] == 'Z': #  "2011-08-12T20:17:46Z" is Zulu-time
+        tz = 'GMT'
+        s = s[:-1]
     else:
         tz = 'GMT'
     dt = parse_datetime(s)
@@ -254,6 +257,11 @@ if __name__ == '__main__':
 
             t = parse_datetime_to_rfc822('2000-01-01 23:45:00+02:00')
             self.assertEqual('Sat, 01 Jan 2000 23:45:00 +0200', t)
+
+            t = parse_datetime_to_rfc822('2016-09-17T12:47:41Z')
+            self.assertEqual('Sat, 17 Sep 2016 12:47:41 GMT', t)
+            
+            
             trace(4, 'test_parse_datetime_rfc822 passed')
         pass
 

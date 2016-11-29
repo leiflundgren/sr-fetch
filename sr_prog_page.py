@@ -299,7 +299,7 @@ if __name__ == '__main__':
     parser.add_argument('--avsnitt', help='avsnitt', default=None, type=int, required=False)
     parser.add_argument('--progid', help='progid', default=None, type=int, required=False)
     parser.add_argument('--artikel', help='artikel', default=None, type=int, required=False)
-    parser.add_argument('--url', help='use url rather than deduce from progid', default=None, required=True)
+    parser.add_argument('--url', help='use url rather than deduce from progid', default=None, required=False)
 
     r = parser.parse_args(None)
 
