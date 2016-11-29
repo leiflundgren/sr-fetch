@@ -35,7 +35,13 @@ ns = { 'atom':ns_atom, 'xml': ns_xml, 'itunes':ns_itunes }
 
 class SrFeed(object):
     
-    def __init__(self, base_url, feed_url, progid, tracelevel, format, do_proxy, only_episode_with_attachments):
+    def __init__(self, base_url, feed_url, progid, tracelevel, format, do_proxy, only_episode_with_attachments, program_prefix):
+        assert isinstance(base_url, str), 'base_url'
+        assert isinstance(feed_url, str), 'feed_url'
+        assert isinstance(progid, int) or isinstance(progid, str), 'prog_id'
+        assert isinstance(tracelevel, int), 'tracelevel'
+        assert isinstance(program_prefix, str), 'program_prefix'
+
         self.tracelevel = tracelevel
         self.base_url = base_url
         self.feed_url = feed_url
@@ -43,6 +49,7 @@ class SrFeed(object):
         self.format = format
         self.do_proxy = do_proxy
         self.only_episode_with_attachments = only_episode_with_attachments
+        self.program_prefix = program_prefix
         self.content_type = ''
         self.trace(7, 'initaialed a feed reader for ' + feed_url)
         self.trace(9, 'lxml version is ', ET.LXML_VERSION)
@@ -264,8 +271,7 @@ class SrFeed(object):
             self.trace(8, 'media_url(' + x + ') --> ' + y)
             return y
 
-        page_parser = SrProgramPageParser(self.tracelevel)
-        page_parser.html = self.dom
+        page_parser = SrProgramPageParser(self.tracelevel, self.dom, self.program_prefix)
         episodes = page_parser.episodes()
 
         self.trace(7, 'Got ' + str(len(episodes)) + ' from html-page\r\n', episodes)
