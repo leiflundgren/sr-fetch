@@ -32,12 +32,14 @@ class SrProgramPageParser(object):
         assert html_dom is None or isinstance(html_dom, ET._ElementTree) or isinstance(html_dom, EHTML.HtmlEntity), 'html_dom was ' + type(html_dom).__name__
         assert isinstance(program_prefix, str), 'program_prefix should be string'
 
+        self.trace(5, 'html_dom is ' + type(html_dom).__name__)
+        
         self.tracelevel = tracelevel
         self.url_ = None
-        self.html_ = html_dom
         self.program_prefix = program_prefix
         self.episodes_ = None
-        page_parser.html = self.html_
+        self.html_ = html_dom
+        # page_parser.html = self.html_
 
 
     @property
@@ -129,7 +131,7 @@ class SrProgramPageParser(object):
         self.title = self.title.strip(trims)
         
         if self.program_prefix:
-            self.title = self.program_prefix + ' - ' + self.program_prefix
+            self.title = self.program_prefix + ' - ' + self.title
             self.trace(7, 'After adding program_prefix title became ' + self.title)
            
   

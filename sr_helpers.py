@@ -84,8 +84,9 @@ def filename_from_html_content(html):
     displaydate = find_html_meta_argument(html, 'displaydate')
     programid = find_html_meta_argument(html, 'programid')
 
-    # change date from 20141210 to 2014-12-10            
-    displaydate = displaydate[:-4] + '-' +  displaydate[-4:-2] + '-' + displaydate[-2:]
+    # change date from 20141210 to 2014-12-10      
+    if len(displaydate) == 8:
+        displaydate = displaydate[:-4] + '-' +  displaydate[-4:-2] + '-' + displaydate[-2:]
 
     title = find_html_meta_argument(html, 'og:title')
 
