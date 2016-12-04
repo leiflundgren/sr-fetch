@@ -4,53 +4,75 @@
 import lxml.etree as ET
 import common
 import os
-import eyed3
 import sys
 import datetime
 import operator
+from time import sleep
+import re
+
+# to look at meta-data, if we can
+try:
+    import eyed3
+except ImportError: 
+    pass
+
 
 class RssFromFiles(object):
     """description of class"""
 
-    extensions_tuple = ('.mp3')
 
-    def __init__(self, base_url, dir):
+    def __init__(self, base_url, dirs, extensions = None):
+        self.extensions = extensions if not extensions is None or len(extensions) > 0 else ('.mp3', '.mp4')
         self.script_directory = os.path.dirname(sys.argv[0])
         self.base_url = base_url
-        files = self.getAllFiles(dir)
-        self.fileInfos = [self.getFileInfo(f[0], f[1]) for f in files]
+        self.fileInfos = self.getAllFiles(dirs)
         self.buildRss()
         pass
 
     def trace(self, lvl, *args):
         common.trace(lvl, 'RssFromFiles: ', args)
 
-    def getAllFiles(self, dir):
-        self.trace(6, 'Looking in dir ' + dir + ' for ', RssFromFiles.extensions_tuple)
+    def getAllFiles(self, dirs):
+        self.trace(6, 'Looking in for ', self.extensions, ' in ', dirs)
         res = []
 
-        if dir[-1] != os.sep: dir += os.sep 
-        for root, dirnames, filenames in os.walk(dir):
-            for filename in filenames:
-                if filename.lower().endswith(RssFromFiles.extensions_tuple):
-                    full_filename = os.path.join(root, filename)
-                    rel_filename = full_filename[len(dir):]
-                    res.append((dir, rel_filename))
+        for dir in dirs:
+            if dir[-1] != os.sep: dir += os.sep 
+            for root, dirnames, filenames in os.walk(dir):
+                for filename in filenames:
+                    if filename.lower().endswith(self.extensions):
+                        full_filename = os.path.join(root, filename)
+                        rel_filename = full_filename[len(dir):]
+                        try:
+                            fileinfo = self.getFileInfo(dir, rel_filename)
+                            res.append(fileinfo)
+                        except Exception as ex:
+                            self.trace(3, "Failed to get fileinfo about " + os.path.join(dir, rel_filename) + " ", ex, ' Skipping file')
 
-        self.trace(8, 'Got files: ', res)
+        if len(res) > 0:
+            self.trace(6, 'Got files: ', res)
+        else:
+            self.trace(6, 'Got NO files ')
         return res
 
     def getFileInfo(self, base_dir, rel_file):
-        filename = os.path.join(base_dir, rel_file)
-        fi = self.read_metadata(filename)
+        
+        fi = self.read_metadata(base_dir, rel_file)
         fi['base_dir'] = base_dir
         fi['rel_file'] = rel_file
-        self.trace(7, 'Metadata of ' + filename, fi)
+        self.trace(7, 'Metadata of ' + os.path.join(base_dir, rel_file), fi)
         return fi
        
 
-    def read_metadata(self, filename):
+    def read_metadata(self, base_dir, rel_file):
+        filename = os.path.join(base_dir, rel_file)
         self.trace(6, 'Reading metadata from ' + filename)
+        try:
+            return self.read_metadata_eyed3(filename)
+        except NameError: 
+            return self.read_metadata_filepath(base_dir, rel_file)
+
+    def read_metadata_eyed3(self, filename):
         audiofile = eyed3.load(filename)
 
         self.trace(9, 'Got audiofile', audiofile)
@@ -71,10 +93,50 @@ class RssFromFiles(object):
         }
         return metadata
 
-    def buildRss(self):
+    def read_metadata_filepath(self, base_dir, rel_file):
+        filename = os.path.join(base_dir, rel_file)
+        self.trace(9, 'finding metadata from filename', filename)
         
-        ignored_index, latest_fileinfo = max(enumerate(self.fileInfos), key=operator.itemgetter(0))
-        pubDate = common.format_datetime(latest_fileinfo['date'])
+        artist=''
+        album=''
+        album_artist=''
+        album.isspace()
+
+        (file_base, file_ext) = os.path.splitext(rel_file)
+        if len(file_base) > 0:
+            parts = re.findall('[^_\-/\\\\]+', file_base) ## need to escape \ first from string-eval, then from re
+            parts = [s for s in parts if s or not s.isspace()]
+            artist = parts[0]
+            if len(parts) >= 1: 
+                album = parts[1] 
+            if len(parts) >= 2: 
+                album_artist = parts[2] 
+                
+        try:
+            mtime = os.path.getmtime(filename)
+        except OSError:
+            mtime = 0
+        last_modified_date = datetime.datetime.fromtimestamp(mtime)
+
+        metadata = { 
+            'date': last_modified_date,
+            #'length': audiofile.info.time_secs,
+            'artist': artist,
+            'album': album,
+            'album_artist': album_artist,
+            'title': file_base,
+        }
+
+        self.trace(9, 'Got metadata ', filename)
+        return metadata
+
+    def buildRss(self):
+                
+        if len(self.fileInfos) > 0:
+            ignored_index, latest_fileinfo = max(enumerate(self.fileInfos), key=operator.itemgetter(0))
+            pubDate = common.format_datetime(latest_fileinfo['date'])
+        else:
+            pubDate = common.format_datetime(datetime.datetime.now())
 
         rss_root = ET.Element('rss', version='2.0')
         rss_channel = ET.SubElement(rss_root, 'channel')
@@ -127,6 +189,7 @@ class RssFromFiles(object):
 
 if __name__ == '__main__':
     common.tracelevel = 9
-    rss =  RssFromFiles('http://leifdev.leiflundgren.com:8891/py-cgi/', 'C:\\Users\llundgren\Downloads').rss
+    rss =  RssFromFiles('http://leifdev.leiflundgren.com:8891/py-cgi/', 'C:\\Users\lundgrel\Downloads').rss
     print(ET.tostring(rss, pretty_print=True))
+    sleep(5)
 

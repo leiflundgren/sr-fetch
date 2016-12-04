@@ -33,6 +33,10 @@ def sr_feed_starter():
 def sr_episode():
     return sr_redirect.SrRedirect().application()
 
+@app.route('/files')
+def rss_file_files():
+    return rss_files_app.RssFilesApp().application()
+
 @app.route('/')
 def index_page():
     return index_app_page.IndexApp().application()
