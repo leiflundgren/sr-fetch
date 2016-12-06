@@ -20,9 +20,8 @@ except ImportError:
 class RssFromFiles(object):
     """description of class"""
 
-
     def __init__(self, base_url, dirs, extensions = None):
-        self.extensions = extensions if not extensions is None or len(extensions) > 0 else ('.mp3', '.mp4')
+        self.extensions = extensions if extensions else ('.mp3', '.mp4', '.wav')
         self.script_directory = os.path.dirname(sys.argv[0])
         self.base_url = base_url
         self.fileInfos = self.getAllFiles(dirs)
@@ -189,7 +188,10 @@ class RssFromFiles(object):
 
 if __name__ == '__main__':
     common.tracelevel = 9
-    rss =  RssFromFiles('http://leifdev.leiflundgren.com:8891/py-cgi/', 'C:\\Users\lundgrel\Downloads').rss
+    rss =  RssFromFiles(
+        'http://leifdev.leiflundgren.com:8891/py-cgi/', 
+        ['C:\\Users\lundgrel\Downloads', 'c:\\Users\\leif\\Downloads']
+    ).rss
     print(ET.tostring(rss, pretty_print=True))
     sleep(5)
 
