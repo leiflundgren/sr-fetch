@@ -9,6 +9,7 @@ import datetime
 import operator
 from time import sleep
 import re
+import app_config
 
 # to look at meta-data, if we can
 try:
@@ -188,9 +189,11 @@ class RssFromFiles(object):
 
 if __name__ == '__main__':
     common.tracelevel = 9
+    print('Starting test-run')
     rss =  RssFromFiles(
-        'http://leifdev.leiflundgren.com:8891/py-cgi/', 
-        ['C:\\Users\lundgrel\Downloads', 'c:\\Users\\leif\\Downloads']
+        'http://leifdev.leiflundgren.com:8891/py-cgi/',
+        app_config.rss_files_paths,
+        app_config.rss_files_ext         
     ).rss
     print(ET.tostring(rss, pretty_print=True))
     sleep(5)
