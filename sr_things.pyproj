@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{03b757ec-c789-4ea6-b6ac-3add94539289}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>RssFromFiles.py</StartupFile>
+    <StartupFile>app_factory.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -63,6 +63,7 @@
     <Compile Include="RssFromFiles.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="rss_filedownload_app.py" />
     <Compile Include="rss_files_app.py" />
     <Compile Include="sr_helpers.py">
       <SubType>Code</SubType>

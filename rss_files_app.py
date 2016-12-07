@@ -13,6 +13,7 @@ class RssFilesApp(AppBase):
         AppBase.__init__(self, 'RssFiles')
         
     def application(self):
+        self.trace(4, 'Starting RssFilesApp')
 
         try:
             u = urllib.parse.urlsplit(self.base_url)
@@ -20,7 +21,8 @@ class RssFilesApp(AppBase):
             self.log(5, 'Will look at extensions ', app_config.rss_files_ext, ' in directorys ',  app_config.rss_files_paths, '\nweb is at ' + url)
 
 
-            feed =  RssFromFiles(url, app_config.rss_files_paths, app_config.rss_files_ext).rss
+            rss_gen = RssFromFiles(url, app_config.rss_files_paths, app_config.rss_files_ext)
+            feed = rss_gen.get_rss()
             self.log(7, 'Got RSS\n',  ET.tostring(feed, pretty_print=True))            
             feed_data = ET.tostring(feed, encoding='utf8')
             return self.make_response(200, feed_data, 'application/rss+xml')
