@@ -33,6 +33,7 @@ class RssFileDownloadApp(AppBase):
             if found_dir is None:
                 return self.make_response(404, 'Can\'t find that one buddy', 'text/plain')
 
+            self.log(3, 'Will now serve ' + os.path.join(found_dir, self.filepath))
             return send_from_directory( found_dir, self.filepath )
 
 
