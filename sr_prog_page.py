@@ -147,7 +147,7 @@ class SrProgramPageParser(object):
             + self.html.findall('//div[@class="episode-list-item__info-top"]')
         
 
-        def find_a_playonclick(root: ET.ElementTree) -> ET.ElementTree:
+        def find_a_playonclick(root: ET.ElementTree) -> str:
             a_play = XmlHandler.find_element_attribute(root, 'a', 'data-require', "modules/play-on-click")
             return None if a_play is None else a_play.attrib['href'] 
 
