@@ -4,3 +4,4 @@
 *.pyc
 /env/.ptvs
 /win-env
+/__pycache__

@@ -20,17 +20,21 @@ except ImportError:
 class RssFromFiles(object):
     """description of class"""
 
-
     def __init__(self, base_url, dirs, extensions = None):
-        self.extensions = extensions if not extensions is None or len(extensions) > 0 else ('.mp3', '.mp4')
+        self.extensions = extensions if extensions else ('.mp3', '.mp4', '.wav')
         self.script_directory = os.path.dirname(sys.argv[0])
+        self.dirs = dirs
         self.base_url = base_url
-        self.fileInfos = self.getAllFiles(dirs)
-        self.buildRss()
+        if self.base_url[-1] != '/':
+            self.base_url += '/' 
         pass
 
     def trace(self, lvl, *args):
         common.trace(lvl, 'RssFromFiles: ', args)
+
+    def get_rss(self):
+        fileInfos = self.getAllFiles(self.dirs)
+        return self.buildRss(fileInfos)
 
     def getAllFiles(self, dirs):
         self.trace(6, 'Looking in for ', self.extensions, ' in ', dirs)
@@ -107,9 +111,9 @@ class RssFromFiles(object):
             parts = re.findall('[^_\-/\\\\]+', file_base) ## need to escape \ first from string-eval, then from re
             parts = [s for s in parts if s or not s.isspace()]
             artist = parts[0]
-            if len(parts) >= 1: 
+            if len(parts) > 1: 
                 album = parts[1] 
-            if len(parts) >= 2: 
+            if len(parts) > 2: 
                 album_artist = parts[2] 
                 
         try:
@@ -130,10 +134,10 @@ class RssFromFiles(object):
         self.trace(9, 'Got metadata ', filename)
         return metadata
 
-    def buildRss(self):
+    def buildRss(self, fileInfos):
                 
-        if len(self.fileInfos) > 0:
-            ignored_index, latest_fileinfo = max(enumerate(self.fileInfos), key=operator.itemgetter(0))
+        if len(fileInfos) > 0:
+            ignored_index, latest_fileinfo = max(enumerate(fileInfos), key=operator.itemgetter(0))
             pubDate = common.format_datetime(latest_fileinfo['date'])
         else:
             pubDate = common.format_datetime(datetime.datetime.now())
@@ -157,7 +161,7 @@ class RssFromFiles(object):
         #ET.SubElement(rss_image, 'title').text = rss_title.text
         #ET.SubElement(rss_image, 'link').text = getfirst(atom_root, 'a:link/@href')
 
-        for fi in self.fileInfos:
+        for fi in fileInfos:
             rss_item = ET.SubElement(rss_channel, 'item')
 
             #rss
@@ -180,16 +184,15 @@ class RssFromFiles(object):
             ET.SubElement(rss_item, 'link').text = media_url
 
 
-        self.rss_ = rss_root
         return rss_root
 
-    @property
-    def rss(self):
-        return self.rss_
 
 if __name__ == '__main__':
     common.tracelevel = 9
-    rss =  RssFromFiles('http://leifdev.leiflundgren.com:8891/py-cgi/', 'C:\\Users\lundgrel\Downloads').rss
+    rss =  RssFromFiles(
+        'http://leifdev.leiflundgren.com:8891/py-cgi/', 
+        ['C:\\Users\lundgrel\Downloads', 'c:\\Users\\leif\\Downloads']
+    ).rss
     print(ET.tostring(rss, pretty_print=True))
     sleep(5)
 

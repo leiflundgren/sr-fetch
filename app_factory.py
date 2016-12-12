@@ -11,7 +11,8 @@ import index_app_page
 import sr_redirect
 import sr_feed_app
 import rss_files_app
-
+import rss_filedownload_app
+import app_config
 
 from flask import Flask, after_this_request
 
@@ -36,6 +37,10 @@ def sr_episode():
 @app.route('/files')
 def rss_file_files():
     return rss_files_app.RssFilesApp().application()
+
+@app.route('/filedownload/<path:filepath>')
+def rss_filedownload_files(filepath):
+    return rss_filedownload_app.RssFileDownloadApp(filepath, app_config.rss_files_paths).application()
 
 @app.route('/')
 def index_page():

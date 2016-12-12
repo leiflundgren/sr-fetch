@@ -63,6 +63,7 @@
     <Compile Include="RssFromFiles.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="rss_filedownload_app.py" />
     <Compile Include="rss_files_app.py" />
     <Compile Include="sr_helpers.py">
       <SubType>Code</SubType>

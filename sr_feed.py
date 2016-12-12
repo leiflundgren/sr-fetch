@@ -285,7 +285,7 @@ class SrFeed(object):
         elif isinstance(timestamp, datetime.date):
             #timestamp = timestamp.strftime("%Y-%m-%d")
             timestamp = email.utils.format_datetime(timestamp)
-        elif isinstance(timestamp, basestring):
+        elif isinstance(timestamp, str):
             timestamp = common.parse_datetime_to_rfc822(timestamp)
         else:
             self.trace(6, 'timestamp class-type unhandled: ', timestamp, type(timestamp))
