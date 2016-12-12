@@ -14,7 +14,7 @@ from urllib.parse import urlparse
 import Page2RSS
 import argparse
 
-#import xml.etree.ElementTree 
+#import ET.ElementTree 
 import lxml.etree as ET
 import lxml.html as EHTML
 
@@ -140,16 +140,21 @@ class SrProgramPageParser(object):
                       
         self.lang = self.html.getroot().attrib.get('lang', '')
 
-        divs_to_search = self.html.findall('//div[@class="episode-latest-body"]') + self.html.findall('//div[@class="audio-box-content"]') + self.html.findall('//div[@class="audio-episode-content"]')
+        divs_to_search = \
+            self.html.findall('//div[@class="episode-latest-body"]') \
+            + self.html.findall('//div[@class="audio-box-content"]') \
+            + self.html.findall('//div[@class="audio-episode-content"]') \
+            + self.html.findall('//div[@class="episode-list-item__info-top"]')
+        
 
-        def find_a_playonclick(root):
+        def find_a_playonclick(root: ET.ElementTree) -> ET.ElementTree:
             a_play = XmlHandler.find_element_attribute(root, 'a', 'data-require', "modules/play-on-click")
             return None if a_play is None else a_play.attrib['href'] 
 
         """ 
             Find Sändes-keyword and extract time from that.
         """
-        def find_transmit_time(root):
+        def find_transmit_time(root: ET.ElementTree) -> datetime:
             
             for span in XmlHandler.findall_element_attribute(root, 'span', 'class', 'date'):
                 try:
@@ -167,7 +172,7 @@ class SrProgramPageParser(object):
                     pass
             return None
 
-        def find_title(root):
+        def find_title(root: ET.ElementTree) -> str:
             # <div class="audio-box-title">
             try:
                 audio_box_title = XmlHandler.find_element_attribute(root, 'div', 'class', "audio-box-title")
@@ -195,7 +200,7 @@ class SrProgramPageParser(object):
 
             return None
 
-        def find_desc(div):
+        def find_desc(div: ET.ElementTree) -> str: 
             parent_div = div.getparent()
             try:
                 audio_episode_body = XmlHandler.find_element_attribute(parent_div, 'div', 'class', "audio-episode-body")
@@ -226,6 +231,9 @@ class SrProgramPageParser(object):
             a_href = find_a_playonclick(div)
             if a_href is None:
                 continue
+
+            if a_href == '#':
+                pass
 
             url = urlparse(a_href)
             path_parts = url.path.split('/')
@@ -287,10 +295,10 @@ class SrProgramPageParser(object):
 
 
 def get_root(element_thing):
-    # lxml.etree._ElementTree :: getroot
+    # lET._ElementTree :: getroot
     if isinstance(element_thing, ET._ElementTree):
         return element_thing.getroot()
-    # <type 'lxml.etree._Element'> :: getroottree
+    # <type 'lET._Element'> :: getroottree
     if isinstance(element_thing, ET._Element):
         return get_root(element_thing.getroottree())
             
