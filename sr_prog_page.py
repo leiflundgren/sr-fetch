@@ -196,7 +196,7 @@ class SrProgramPageParser(object):
             except AttributeError:
                 pass
 
-            self.trace(8, 'Failed to find a title in div ' + ET.tostring(root, pretty_print=True))
+            self.trace(8, 'Failed to find a title in div \n', ET.tostring(root, pretty_print=True))
 
             return None
 
@@ -226,14 +226,28 @@ class SrProgramPageParser(object):
 
             return None
 
+        def find_episode_url(el: ET.ElementTree) -> str :
+            a_ep = XmlHandler.find_element_attribute(el, 'a', 'href', '/sida/avsnitt/*')
+            return None if a_ep is None else a_ep.attrib['href'] 
+
         for div in divs_to_search:
 
             a_href = find_a_playonclick(div)
-            if a_href is None:
-                continue
 
             if a_href == '#':
-                pass
+                # we have found a block like below. Neet to find the 2nd a-href element. 
+                #<div class="episode-list-item__info-top">
+                #    <div class="episode-list-item__play">
+                #        <a  href="#" data-audio-type="episode" data-audio-id="819043" data-require="modules/play-on-click" class="play-symbol play-symbol--circle" ><span class="sr-icon" ><i class="play-arrow play-arrow--medium sr-icon__image" ></i></span></a>
+                #    </div>
+                #    <div class="episode-list-item__header">
+                #        <a  href="/sida/avsnitt/819043?programid=4429" class="heading__d heading--inverted line-clamp heading__d-line-clamp--2" >R&#246;ster under himlen</a>
+                #    </div>
+                #</div>            
+                a_href = find_episode_url(div)
+
+            if a_href is None:
+                continue
 
             url = urlparse(a_href)
             path_parts = url.path.split('/')
