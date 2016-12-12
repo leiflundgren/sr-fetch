@@ -140,8 +140,11 @@ class SrProgramPageParser(object):
                       
         self.lang = self.html.getroot().attrib.get('lang', '')
 
-        divs_to_search = self.html.findall('//div[@class="episode-latest-body"]') + self.html.findall('//div[@class="audio-box-content"]') + self.html.findall('//div[@class="audio-episode-content"]')
-
+        divs_to_search \
+            = self.html.findall('//div[@class="episode-latest-body"]') \
+            + self.html.findall('//div[@class="audio-box-content"]') \
+            + self.html.findall('//div[@class="audio-episode-content"]') \
+            + self.html.findall('//div[@class="episode-list-item__info"]')
         def find_a_playonclick(root):
             a_play = XmlHandler.find_element_attribute(root, 'a', 'data-require', "modules/play-on-click")
             return None if a_play is None else a_play.attrib['href'] 
