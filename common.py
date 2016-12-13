@@ -178,9 +178,11 @@ def combine_http_path(x, y):
 def parse_datetime(s):
     def parse_without_timezone(s):
         try:
-            return datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%S")
+            if len(s) > 9 and ( s[8] == 'T' or s[10] == 'T'):
+                return datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%S")
         except ValueError:
-            return datetime.datetime.strptime(s, "%Y-%m-%d %H:%M:%S")
+            pass
+        return datetime.datetime.strptime(s, "%Y-%m-%d %H:%M:%S")
     
     trace(9, 'parse_datetime(' + s + ')')
     if re.match('.*[\+\-]\d\d\:\d\d$', s):

@@ -52,7 +52,12 @@ if __name__ == '__main__':
     for a in sys.argv:
        if a.find('debug') >= 0:
            debug=True
-            
-    # Bind to PORT if defined, otherwise default to 5000.
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=debug)
+     
+    if debug:       
+        # Bind to PORT if defined, otherwise default to 5000.
+        port = int(os.environ.get('PORT', 5000))
+        app.run(host='0.0.0.0', port=port, debug=debug)
+
+    else:
+        print('running app default')
+        app.run()

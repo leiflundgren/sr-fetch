@@ -12,13 +12,13 @@ xml_cxml = False
 xml_exml = False
 
 
-try:
-    import xml.etree.CElementTree
-    x = xml.etree.cElementTree.fromstring('<hello target="World">there</hello>') 
-    xml_loaded=True
-    xml_cxml = True
-except ImportError:
-    pass
+#try:
+#    import xml.etree.CElementTree
+#    x = xml.etree.cElementTree.fromstring('<hello target="World">there</hello>') 
+#    xml_loaded=True
+#    xml_cxml = True
+#except ImportError:
+#    pass
 
 try:
     import xml.etree.ElementTree
@@ -38,13 +38,13 @@ try:
 except ImportError:
     pass
 
-try:
-    import xml.dom.minidom
-    x = xml.dom.minidom.parseString('<hello target="World">there</hello>') 
-    xml_loaded=True
-    xml_minidom = True
-except ImportError:
-    pass
+#try:
+#    import xml.dom.minidom
+#    x = xml.dom.minidom.parseString('<hello target="World">there</hello>') 
+#    xml_loaded=True
+#    xml_minidom = True
+#except ImportError:
+#    pass
 
 if not xml_loaded:
     raise Exception('Failed to load *ANY* XML library!!!')
@@ -151,13 +151,16 @@ def find_child_nodes(el, node_names, only_first = False):
     return res
 
 def check_right_element_exactly(e, tagname, attrib, avalue):
+    e_tag = e.tag
+    e_attr = e.attrib.get(attrib, '')
     return e.tag == tagname and e.attrib.get(attrib, '') == avalue
 
 def check_right_element_wildcard(e, tagname, attrib, avalue):
     return fnmatch(e.tag, tagname ) and fnmatch(e.attrib.get(attrib, ''), avalue)
 
 
-def find_element_attribute(root, tagname, attrib, avalue):
+def find_element_attribute(root: xml.etree.ElementTree, tagname, attrib, avalue) -> xml.etree.ElementTree:
+    if root is None: return None
     matcher = check_right_element_wildcard if tagname.find('*') >=0 or avalue.find('*') >= 0 else check_right_element_exactly
     q = root if isinstance(root, list) else [root]
 

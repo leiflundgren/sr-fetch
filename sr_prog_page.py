@@ -14,7 +14,7 @@ from urllib.parse import urlparse
 import Page2RSS
 import argparse
 
-#import xml.etree.ElementTree 
+#import ET.ElementTree 
 import lxml.etree as ET
 import lxml.html as EHTML
 
@@ -140,16 +140,21 @@ class SrProgramPageParser(object):
                       
         self.lang = self.html.getroot().attrib.get('lang', '')
 
-        divs_to_search = self.html.findall('//div[@class="episode-latest-body"]') + self.html.findall('//div[@class="audio-box-content"]') + self.html.findall('//div[@class="audio-episode-content"]')
+        divs_to_search = \
+            self.html.findall('//div[@class="episode-latest-body"]') \
+            + self.html.findall('//div[@class="audio-box-content"]') \
+            + self.html.findall('//div[@class="audio-episode-content"]') \
+            + self.html.findall('//div[@class="episode-list-item__info-top"]')
+        
 
-        def find_a_playonclick(root):
+        def find_a_playonclick(root: ET.ElementTree) -> str:
             a_play = XmlHandler.find_element_attribute(root, 'a', 'data-require', "modules/play-on-click")
             return None if a_play is None else a_play.attrib['href'] 
 
         """ 
             Find Sändes-keyword and extract time from that.
         """
-        def find_transmit_time(root):
+        def find_transmit_time(root: ET.ElementTree) -> datetime:
             
             for span in XmlHandler.findall_element_attribute(root, 'span', 'class', 'date'):
                 try:
@@ -167,7 +172,7 @@ class SrProgramPageParser(object):
                     pass
             return None
 
-        def find_title(root):
+        def find_title(root: ET.ElementTree) -> str:
             # <div class="audio-box-title">
             try:
                 audio_box_title = XmlHandler.find_element_attribute(root, 'div', 'class', "audio-box-title")
@@ -191,11 +196,11 @@ class SrProgramPageParser(object):
             except AttributeError:
                 pass
 
-            self.trace(8, 'Failed to find a title in div ' + ET.tostring(root, pretty_print=True))
+            self.trace(8, 'Failed to find a title in div \n', ET.tostring(root, pretty_print=True))
 
             return None
 
-        def find_desc(div):
+        def find_desc(div: ET.ElementTree) -> str: 
             parent_div = div.getparent()
             try:
                 audio_episode_body = XmlHandler.find_element_attribute(parent_div, 'div', 'class', "audio-episode-body")
@@ -213,17 +218,38 @@ class SrProgramPageParser(object):
                 episode_body = XmlHandler.find_element_attribute(div, 'div', 'class', "episode*-body")
                 episode__content = XmlHandler.find_element_attribute(episode_body, 'div', 'class', "*episode__content")
                 episode__body = XmlHandler.find_element_attribute(episode__content, 'div', 'class', "*episode__body")
-                p = XmlHandler.find_first_child(episode__body, 'p')
-                el = p if p is not None else episode__body
-                return el.text_content().strip()
+                if episode__body is not None:
+                    p = XmlHandler.find_first_child(episode__body, 'p')
+                    el = p if p is not None else episode__body
+                    return el.text_content().strip()
             except AttributeError:
                 pass
 
             return None
 
+        def find_episode_url(el: ET.ElementTree) -> (str, str) :
+            a_ep = XmlHandler.find_element_attribute(el, 'a', 'href', '/sida/avsnitt/*')
+            if a_ep is None:
+                return (None, None)
+            return ( a_ep.attrib['href'], a_ep.text_content() )
+
         for div in divs_to_search:
+            avsnitt_title = ''
 
             a_href = find_a_playonclick(div)
+
+            if a_href == '#':
+                # we have found a block like below. Neet to find the 2nd a-href element. 
+                #<div class="episode-list-item__info-top">
+                #    <div class="episode-list-item__play">
+                #        <a  href="#" data-audio-type="episode" data-audio-id="819043" data-require="modules/play-on-click" class="play-symbol play-symbol--circle" ><span class="sr-icon" ><i class="play-arrow play-arrow--medium sr-icon__image" ></i></span></a>
+                #    </div>
+                #    <div class="episode-list-item__header">
+                #        <a  href="/sida/avsnitt/819043?programid=4429" class="heading__d heading--inverted line-clamp heading__d-line-clamp--2" >R&#246;ster under himlen</a>
+                #    </div>
+                #</div>            
+                (a_href, avsnitt_title) = find_episode_url(div)
+
             if a_href is None:
                 continue
 
@@ -236,8 +262,12 @@ class SrProgramPageParser(object):
             avsnitt_id = path_parts[-1]
 
             avsnitt_timestamp = find_transmit_time(div)
+            if avsnitt_timestamp is None:
+                avsnitt_timestamp = find_transmit_time(div.getparent())
 
-            avsnitt_title = find_title(div)
+
+            if avsnitt_title is None:
+                avsnitt_title = find_title(div)
 
             avsnitt_description = find_desc(div)
 
@@ -270,9 +300,6 @@ class SrProgramPageParser(object):
             if not 'title' in avsnitt:
                 self.trace(2, "When parsing avsnitt " + str(avsnitt_id) + ", failed to find title")
                 raise ValueError('Bad parse-data')
-            if not 'title' in avsnitt:
-                self.trace(2, "When parsing avsnitt " + str(avsnitt_id) + ", failed to find title")
-                raise ValueError('Bad parse-data')
 
     def find_episodes(self):
         if self.html_ is None:
@@ -287,10 +314,10 @@ class SrProgramPageParser(object):
 
 
 def get_root(element_thing):
-    # lxml.etree._ElementTree :: getroot
+    # lET._ElementTree :: getroot
     if isinstance(element_thing, ET._ElementTree):
         return element_thing.getroot()
-    # <type 'lxml.etree._Element'> :: getroottree
+    # <type 'lET._Element'> :: getroottree
     if isinstance(element_thing, ET._Element):
         return get_root(element_thing.getroottree())
             
