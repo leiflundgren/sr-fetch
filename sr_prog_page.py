@@ -218,19 +218,23 @@ class SrProgramPageParser(object):
                 episode_body = XmlHandler.find_element_attribute(div, 'div', 'class', "episode*-body")
                 episode__content = XmlHandler.find_element_attribute(episode_body, 'div', 'class', "*episode__content")
                 episode__body = XmlHandler.find_element_attribute(episode__content, 'div', 'class', "*episode__body")
-                p = XmlHandler.find_first_child(episode__body, 'p')
-                el = p if p is not None else episode__body
-                return el.text_content().strip()
+                if episode__body is not None:
+                    p = XmlHandler.find_first_child(episode__body, 'p')
+                    el = p if p is not None else episode__body
+                    return el.text_content().strip()
             except AttributeError:
                 pass
 
             return None
 
-        def find_episode_url(el: ET.ElementTree) -> str :
+        def find_episode_url(el: ET.ElementTree) -> (str, str) :
             a_ep = XmlHandler.find_element_attribute(el, 'a', 'href', '/sida/avsnitt/*')
-            return None if a_ep is None else a_ep.attrib['href'] 
+            if a_ep is None:
+                return (None, None)
+            return ( a_ep.attrib['href'], a_ep.text_content() )
 
         for div in divs_to_search:
+            avsnitt_title = ''
 
             a_href = find_a_playonclick(div)
 
@@ -244,7 +248,7 @@ class SrProgramPageParser(object):
                 #        <a  href="/sida/avsnitt/819043?programid=4429" class="heading__d heading--inverted line-clamp heading__d-line-clamp--2" >R&#246;ster under himlen</a>
                 #    </div>
                 #</div>            
-                a_href = find_episode_url(div)
+                (a_href, avsnitt_title) = find_episode_url(div)
 
             if a_href is None:
                 continue
@@ -258,8 +262,12 @@ class SrProgramPageParser(object):
             avsnitt_id = path_parts[-1]
 
             avsnitt_timestamp = find_transmit_time(div)
+            if avsnitt_timestamp is None:
+                avsnitt_timestamp = find_transmit_time(div.getparent())
 
-            avsnitt_title = find_title(div)
+
+            if avsnitt_title is None:
+                avsnitt_title = find_title(div)
 
             avsnitt_description = find_desc(div)
 
@@ -288,9 +296,6 @@ class SrProgramPageParser(object):
             
             if not 'timestamp' in avsnitt:
                 self.trace(2, "When parsing avsnitt " + str(avsnitt_id) + ", failed to find timestamp")
-                raise ValueError('Bad parse-data')
-            if not 'title' in avsnitt:
-                self.trace(2, "When parsing avsnitt " + str(avsnitt_id) + ", failed to find title")
                 raise ValueError('Bad parse-data')
             if not 'title' in avsnitt:
                 self.trace(2, "When parsing avsnitt " + str(avsnitt_id) + ", failed to find title")
