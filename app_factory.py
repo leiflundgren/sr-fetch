@@ -53,12 +53,17 @@ if __name__ == '__main__':
        if a.find('debug') >= 0:
            debug=True
      
-    if debug:       
-        # Bind to PORT if defined, otherwise default to 5000.
-        port = int(os.environ.get('PORT', 5000))
-        print('Starting own http server on port ' + str(port))
-        app.run(host='0.0.0.0', port=port, debug=debug)
-
+    # Bind to PORT if defined, otherwise default to 5000.
+    penv = os.environ.get('PORT')
+    if penv is not None:
+        print('PORT env was set to ' + penv)
+        port = int(penv)
     else:
-        print('running app default')
-        app.run()
+        print('PORT env was not set, defaulting to 5000')
+        port = 5000
+    print('Starting own http server on port ' + str(port) + " debug=" + str(debug))
+    app.run(host='0.0.0.0', port=port, debug=debug)
+
+    #else:
+    #    print('running app default')
+    #    app.run()
