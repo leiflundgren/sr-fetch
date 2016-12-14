@@ -12,13 +12,13 @@ xml_cxml = False
 xml_exml = False
 
 
-#try:
-#    import xml.etree.CElementTree
-#    x = xml.etree.cElementTree.fromstring('<hello target="World">there</hello>') 
-#    xml_loaded=True
-#    xml_cxml = True
-#except ImportError:
-#    pass
+try:
+    import xml.etree.CElementTree
+    x = xml.etree.cElementTree.fromstring('<hello target="World">there</hello>') 
+    xml_loaded=True
+    xml_cxml = True
+except ImportError:
+    pass
 
 try:
     import xml.etree.ElementTree
@@ -38,13 +38,13 @@ try:
 except ImportError:
     pass
 
-#try:
-#    import xml.dom.minidom
-#    x = xml.dom.minidom.parseString('<hello target="World">there</hello>') 
-#    xml_loaded=True
-#    xml_minidom = True
-#except ImportError:
-#    pass
+try:
+    import xml.dom.minidom
+    x = xml.dom.minidom.parseString('<hello target="World">there</hello>') 
+    xml_loaded=True
+    xml_minidom = True
+except ImportError:
+    pass
 
 if not xml_loaded:
     raise Exception('Failed to load *ANY* XML library!!!')
