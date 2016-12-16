@@ -14,7 +14,9 @@ import app_config
 # to look at meta-data, if we can
 try:
     import eyed3
+    eyed3_loaded = True
 except ImportError: 
+    eyed3_loaded = False
     pass
 
 
@@ -72,9 +74,9 @@ class RssFromFiles(object):
     def read_metadata(self, base_dir, rel_file):
         filename = os.path.join(base_dir, rel_file)
         self.trace(6, 'Reading metadata from ' + filename)
-        try:
+        if eyed3_loaded:
             return self.read_metadata_eyed3(filename)
-        except NameError: 
+        else:
             return self.read_metadata_filepath(base_dir, rel_file)
 
     def read_metadata_eyed3(self, filename):
