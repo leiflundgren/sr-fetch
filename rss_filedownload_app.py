@@ -23,7 +23,10 @@ class RssFileDownloadApp(AppBase):
     def application(self):
         self.trace(4, 'Starting ' + self.app_name)
         self.trace(4, 'Download request of ', self.filepath)
-        
+  
+        if self.are_we_running_in_heroku():
+            return self.make_response(403, 'We are running in Heroku cloud.\r\nNo file-access methods here!\r\n', 'text/plain')
+              
         def string_to_list(s):
             chars = []
             for c in s:

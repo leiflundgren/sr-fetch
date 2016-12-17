@@ -65,6 +65,12 @@ class AppBase(object):
         self.log(0, 'Not implemented. Should be overriden in subclass')
         return self.make_response(501, "Not implemented. Should be overriden in subclass", "text/html")
 
+    def are_we_running_in_heroku(self):
+        if self.base_url.find('herokuapp.com') < 0:
+            return False
+        self.log(0, 'The base-url ' + self.base_url + ' indicates we are running in Heroku cloud. No file access here!')
+        return True
+
     def make_response(self, statuscode, body, content_type = None, headers = []):
         if statuscode >= 300 and statuscode < 400:
             self.log(5, 'redirecting ', statuscode, ' to ', body)

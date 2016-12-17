@@ -15,6 +15,9 @@ class RssFilesApp(AppBase):
     def application(self):
         self.trace(4, 'Starting RssFilesApp')
 
+        if self.are_we_running_in_heroku():
+            return self.make_response(403, 'We are running in Heroku cloud.\r\nNo file-access methods here!\r\n', 'text/plain')
+
         try:
             u = urllib.parse.urlsplit(self.base_url)
             url = urllib.parse.urlunsplit((u[0], u[1], app_config.rss_files_webpath, u[3], u[4]))
