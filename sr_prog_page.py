@@ -205,7 +205,8 @@ class SrProgramPageParser(object):
             try:
                 audio_episode_body = XmlHandler.find_element_attribute(parent_div, 'div', 'class', "audio-episode-body")
                 p = XmlHandler.find_element_attribute(audio_episode_body, 'p', 'class', "*preamble")
-                return p.text_content().strip()
+                if p:
+                    return p.text_content().strip()
             except AttributeError:
                 pass            
             try:

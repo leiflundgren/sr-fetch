@@ -153,7 +153,7 @@ def parse_sr_time_string(s, today):
 
     i=0
     while i<len(parts):
-        if parts[i] == 'klockan' and i+1<len(parts):
+        if parts[i].casefold() == 'klockan' and i+1<len(parts):
             n = parts[i+1].split(':')
             hour = int(n[0])
             minute = int(n[1]) if len(n) > 1 else 0
