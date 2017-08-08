@@ -160,7 +160,7 @@ def parse_sr_time_string(s, today):
             second = int(n[2]) if len(n) > 2 else 0
             t = datetime.datetime.combine(t.date(), datetime.time(hour, minute, second))
             i += 2
-        elif parts[i] == 'Ig&#229;r' or parts[i] == 'Ig\xe5r':
+        elif parts[i].casefold() == 'ig&#229;r' or parts[i] == 'ig\xe5r':
             t -= datetime.timedelta(days=1)
             i += 1
         elif common.is_swe_weekday(parts[i]):
