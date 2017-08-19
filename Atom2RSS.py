@@ -139,7 +139,7 @@ class Atom2RssNodePerNode(Atom2RSS):
                     enclosure_link = ET.SubElement(rss_item, 'enclosure', type=atom_enclosure.attrib.get('type',''), url=media_url)
                     trace(7, 'atom contained enclosure ', enclosure_link.text, ' type=', enclosure_link.attrib['type'])
                     trace(7, 'atom enclosure ', ET.tostring(atom_enclosure, pretty_print=True))
-                    trace(7, 'rss enclosure ', ET.tostring(enclosure_link, pretty_print=True))
+                    trace(7, 'atom2rss enclosure ', ET.tostring(enclosure_link, pretty_print=True))
 
                     ET.SubElement(rss_item, 'link').text = media_url
 

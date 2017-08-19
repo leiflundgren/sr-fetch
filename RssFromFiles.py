@@ -182,7 +182,7 @@ class RssFromFiles(object):
           
             media_url = self.base_url + fi['rel_file']
             enclosure_link = ET.SubElement(rss_item, 'enclosure', type='audio/mpeg', url=media_url)
-            self.trace(7, 'rss enclosure ', ET.tostring(enclosure_link, pretty_print=True))
+            self.trace(7, 'rss file enclosure ', ET.tostring(enclosure_link, pretty_print=True))
 
             ET.SubElement(rss_item, 'link').text = media_url
 

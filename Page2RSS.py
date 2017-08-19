@@ -92,8 +92,10 @@ class Page2RSS(object):
             try:
                 media_url = self.media_url_formater(episode_dict['avsnitt'])
                 filename, file_ext = os.path.splitext(os.path.basename(urllib.parse.urlparse(media_url).path))
+                if file_ext is None or file_ext == '':
+                    file_ext = 'm4a'
                 enclosure_link = ET.SubElement(rss_item, 'enclosure', type='audio/'+file_ext.strip('.'), url=media_url)
-                trace(7, 'rss enclosure ', ET.tostring(enclosure_link, pretty_print=True))
+                trace(7, 'page2rss enclosure ', ET.tostring(enclosure_link, pretty_print=True))
 
                 ET.SubElement(rss_item, 'link').text = media_url
 
