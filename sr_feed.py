@@ -279,7 +279,9 @@ class SrFeed(object):
         rss_gen = Page2RSS(text_url, media_url)
         timestamp = page_parser.timestamp
         
-        if isinstance(timestamp, datetime.datetime):
+        if timestamp is None:
+            pass
+        elif isinstance(timestamp, datetime.datetime):
             timestamp = email.utils.format_datetime(timestamp)
             #timestamp = timestamp.strftime("%Y-%m-%d %H:%M:%S")
         elif isinstance(timestamp, datetime.date):

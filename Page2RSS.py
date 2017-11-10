@@ -53,8 +53,9 @@ class Page2RSS(object):
         if not description is None:
             ET.SubElement(rss_channel, 'description').text = description
 
-        ET.SubElement(rss_channel, 'lastBuildDate').text = timestamp
-        ET.SubElement(rss_channel, 'pubDate').text = timestamp
+        if not timestamp is None:
+            ET.SubElement(rss_channel, 'lastBuildDate').text = timestamp
+            ET.SubElement(rss_channel, 'pubDate').text = timestamp
 
         if not logo_url is None:
             rss_image = ET.SubElement(rss_channel, 'image')
