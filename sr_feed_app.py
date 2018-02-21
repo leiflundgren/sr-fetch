@@ -97,7 +97,7 @@ This is the SR feed generator<br />
 <br/>
 Sample test URL: <a href="{app_url}">{app_url_html}</a>
 <br/>
-<br/>
+<br/><
 </body>
 </html>
         """.format(

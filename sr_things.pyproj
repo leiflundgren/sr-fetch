@@ -11,8 +11,7 @@
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <InterpreterId>{9a7a9026-48c1-4688-9d5d-e5699d47d074}</InterpreterId>
-    <InterpreterVersion>3.5</InterpreterVersion>
+    <InterpreterId>Global|PythonCore|3.6</InterpreterId>
     <IsWindowsApplication>False</IsWindowsApplication>
     <CommandLineArguments>--progid 4429 --avsnitt 801558</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
@@ -24,11 +23,11 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <PropertyGroup>
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
-    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="atom2rss.xsl" />
     <Content Include="my_Atom_output.xml" />
+    <Content Include="p2hemvag.html" />
     <Content Include="Procfile" />
     <Content Include="requirements.txt" />
     <Content Include="sample.atom.xml" />
@@ -72,6 +71,9 @@
     <Compile Include="sr_prog_page.py" />
     <Compile Include="sr_feed.py" />
     <Compile Include="sr_feed_app.py" />
+    <Compile Include="sr_prog_page_tests.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="sr_url_finder.py" />
     <Compile Include="sr_redirect.py">
       <SubType>Code</SubType>
@@ -85,10 +87,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <InterpreterReference Include="{09bb8631-446d-4ce2-8c26-9ca5a59958a3}\3.4" />
-    <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\3.4" />
-    <InterpreterReference Include="{9a7a9026-48c1-4688-9d5d-e5699d47d074}\3.5" />
+    <InterpreterReference Include="Global|PythonCore|3.4-32" />
+    <InterpreterReference Include="Global|PythonCore|3.5" />
+    <InterpreterReference Include="Global|PythonCore|3.6" />
   </ItemGroup>
-  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
 </Project>

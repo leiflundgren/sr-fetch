@@ -25,6 +25,107 @@ from XmlHandler import get_namespace
 
 
 
+def parse_find_a_playonclick(root: ET.ElementTree) -> str:
+    a_play = XmlHandler.find_element_attribute(root, 'a', 'data-require', "modules/play-on-click")
+    # if a_play is not None: return a_play.attrib['href'] 
+
+    return None if a_play is None else a_play.attrib['href'] 
+
+
+def parse_find_a__data_clickable_content(root: ET.ElementTree) -> str:
+    a_play = XmlHandler.find_element_attribute(root, 'a', 'data-clickable-content', "link")
+    # if a_play is not None: return a_play.attrib['href'] 
+
+    return None if a_play is None else a_play.attrib['href'] 
+
+""" 
+    Find Sändes-keyword and extract time from that.
+"""
+
+def parse_find_transmit_time(root: ET.ElementTree, date_today) -> datetime:
+            
+    for span in XmlHandler.findall_element_attribute(root, 'span', 'class', 'date'):
+        try:
+            abbr = span.find('abbr[@title]')
+            return sr_helpers.parse_sr_time_string(abbr.attrib['title'], date_today)
+        except ValueError:
+            pass
+    for span in XmlHandler.findall_element_attribute(root, 'span', 'class', 'tiny-text'):
+        # 2nd attempt, check text-context                
+        try:
+            if span.text.find('S&#228;ndes') >= 0 or span.text.find('S\xe4ndes') >= 0:
+                abbr = span.find('abbr[@title]')
+                return sr_helpers.parse_sr_time_string(abbr.attrib['title'], date_today)
+        except ValueError:
+            pass
+    return None
+
+
+def parse_find_title(root: ET.ElementTree) -> str:
+    # <div class="audio-box-title">
+    try:
+        audio_box_title = XmlHandler.find_element_attribute(root, 'div', 'class', "audio-box-title")
+        title_span = XmlHandler.find_element_attribute(audio_box_title, 'span', 'class', "responsive-audio-box-title")
+        return title_span.text_content().strip()
+    except AttributeError:
+        pass
+    # <div class="audio-episode-title audio-info">
+    try:
+        audio_episode_title = XmlHandler.find_element_attribute(root, 'div', 'class', "audio-episode-title audio-info")
+        title_span = XmlHandler.find_element_attribute(audio_episode_title, 'span', 'class', "header2")
+        return title_span.text_content().strip()
+    except AttributeError:
+        pass
+    # <div class="latest-episode__playimage">
+    try:
+        episode_body = XmlHandler.find_element_attribute(root, 'div', 'class', "episode*-body")
+        episode__content = XmlHandler.find_element_attribute(episode_body, 'div', 'class', "*episode__content")
+        title_span = XmlHandler.find_element_attribute(episode__content, 'span', 'class', "screen-reader-description")
+        return title_span.text_content().strip()
+    except AttributeError:
+        pass
+
+    self.trace(8, 'Failed to find a title in div \n', ET.tostring(root, pretty_print=True))
+
+    return None
+
+
+def parse_find_desc(div: ET.ElementTree) -> str: 
+    parent_div = div.getparent()
+    try:
+        audio_episode_body = XmlHandler.find_element_attribute(parent_div, 'div', 'class', "audio-episode-body")
+        p = XmlHandler.find_element_attribute(audio_episode_body, 'p', 'class', "*preamble")
+        if p:
+            return p.text_content().strip()
+    except AttributeError:
+        pass            
+    try:
+        audio_audiobox_body = XmlHandler.find_element_attribute(parent_div, 'div', 'class', "audio-box-body")
+        p = XmlHandler.find_element_attribute(audio_audiobox_body, 'p', 'class', "preamble")
+        return p.text_content().strip()
+    except AttributeError:
+        pass
+    try:
+        episode_body = XmlHandler.find_element_attribute(div, 'div', 'class', "episode*-body")
+        episode__content = XmlHandler.find_element_attribute(episode_body, 'div', 'class', "*episode__content")
+        episode__body = XmlHandler.find_element_attribute(episode__content, 'div', 'class', "*episode__body")
+        if episode__body is not None:
+            p = XmlHandler.find_first_child(episode__body, 'p')
+            el = p if p is not None else episode__body
+            return el.text_content().strip()
+    except AttributeError:
+        pass
+
+    return None
+
+
+def parse_find_episode_url(el: ET.ElementTree) -> (str, str) :
+    a_ep = XmlHandler.find_element_attribute(el, 'a', 'href', '/sida/avsnitt/*')
+    if a_ep is None:
+        return (None, None)
+    return ( a_ep.attrib['href'], a_ep.text_content() )
+
+
 class SrProgramPageParser(object):
 
     def __init__(self, tracelevel, html_dom = None, program_prefix = ''):
@@ -33,6 +134,7 @@ class SrProgramPageParser(object):
         assert isinstance(program_prefix, str), 'program_prefix should be string'
 
         self.trace(5, 'html_dom is ' + type(html_dom).__name__)
+        # self.trace(9, ET.tostring(html_dom, pretty_print=True, encoding='unicode'))
         
         self.tracelevel = tracelevel
         self.url_ = None
@@ -91,6 +193,7 @@ class SrProgramPageParser(object):
         self.trace(9, 'got page \r\n', ET.tostring(self.html, pretty_print=True))
         #print ET.tostring(self.html, pretty_print=True)
 
+
     def parse_page(self):
 
         # good links are 
@@ -144,101 +247,21 @@ class SrProgramPageParser(object):
             self.html.findall('//div[@class="episode-latest-body"]') \
             + self.html.findall('//div[@class="audio-box-content"]') \
             + self.html.findall('//div[@class="audio-episode-content"]') \
-            + self.html.findall('//div[@class="episode-list-item__info-top"]')
-        
+            + self.html.findall('//div[@class="episode-list-item__info-top"]') \
+            + self.html.findall('//div[@class="episode-list__item__title"]')
 
-        def find_a_playonclick(root: ET.ElementTree) -> str:
-            a_play = XmlHandler.find_element_attribute(root, 'a', 'data-require', "modules/play-on-click")
-            return None if a_play is None else a_play.attrib['href'] 
+        if len(divs_to_search) == 0:
+            self.trace(3, 'When searching the HTML page, nothing found')
 
-        """ 
-            Find Sändes-keyword and extract time from that.
-        """
-        def find_transmit_time(root: ET.ElementTree) -> datetime:
-            
-            for span in XmlHandler.findall_element_attribute(root, 'span', 'class', 'date'):
-                try:
-                    abbr = span.find('abbr[@title]')
-                    return sr_helpers.parse_sr_time_string(abbr.attrib['title'], html_timestamp)
-                except ValueError:
-                    pass
-            for span in XmlHandler.findall_element_attribute(root, 'span', 'class', 'tiny-text'):
-                # 2nd attempt, check text-context                
-                try:
-                    if span.text.find('S&#228;ndes') >= 0 or span.text.find('S\xe4ndes') >= 0:
-                        abbr = span.find('abbr[@title]')
-                        return sr_helpers.parse_sr_time_string(abbr.attrib['title'], html_timestamp)
-                except ValueError:
-                    pass
-            return None
-
-        def find_title(root: ET.ElementTree) -> str:
-            # <div class="audio-box-title">
-            try:
-                audio_box_title = XmlHandler.find_element_attribute(root, 'div', 'class', "audio-box-title")
-                title_span = XmlHandler.find_element_attribute(audio_box_title, 'span', 'class', "responsive-audio-box-title")
-                return title_span.text_content().strip()
-            except AttributeError:
-                pass
-            # <div class="audio-episode-title audio-info">
-            try:
-                audio_episode_title = XmlHandler.find_element_attribute(root, 'div', 'class', "audio-episode-title audio-info")
-                title_span = XmlHandler.find_element_attribute(audio_episode_title, 'span', 'class', "header2")
-                return title_span.text_content().strip()
-            except AttributeError:
-                pass
-            # <div class="latest-episode__playimage">
-            try:
-                episode_body = XmlHandler.find_element_attribute(root, 'div', 'class', "episode*-body")
-                episode__content = XmlHandler.find_element_attribute(episode_body, 'div', 'class', "*episode__content")
-                title_span = XmlHandler.find_element_attribute(episode__content, 'span', 'class', "screen-reader-description")
-                return title_span.text_content().strip()
-            except AttributeError:
-                pass
-
-            self.trace(8, 'Failed to find a title in div \n', ET.tostring(root, pretty_print=True))
-
-            return None
-
-        def find_desc(div: ET.ElementTree) -> str: 
-            parent_div = div.getparent()
-            try:
-                audio_episode_body = XmlHandler.find_element_attribute(parent_div, 'div', 'class', "audio-episode-body")
-                p = XmlHandler.find_element_attribute(audio_episode_body, 'p', 'class', "*preamble")
-                if p:
-                    return p.text_content().strip()
-            except AttributeError:
-                pass            
-            try:
-                audio_audiobox_body = XmlHandler.find_element_attribute(parent_div, 'div', 'class', "audio-box-body")
-                p = XmlHandler.find_element_attribute(audio_audiobox_body, 'p', 'class', "preamble")
-                return p.text_content().strip()
-            except AttributeError:
-                pass
-            try:
-                episode_body = XmlHandler.find_element_attribute(div, 'div', 'class', "episode*-body")
-                episode__content = XmlHandler.find_element_attribute(episode_body, 'div', 'class', "*episode__content")
-                episode__body = XmlHandler.find_element_attribute(episode__content, 'div', 'class', "*episode__body")
-                if episode__body is not None:
-                    p = XmlHandler.find_first_child(episode__body, 'p')
-                    el = p if p is not None else episode__body
-                    return el.text_content().strip()
-            except AttributeError:
-                pass
-
-            return None
-
-        def find_episode_url(el: ET.ElementTree) -> (str, str) :
-            a_ep = XmlHandler.find_element_attribute(el, 'a', 'href', '/sida/avsnitt/*')
-            if a_ep is None:
-                return (None, None)
-            return ( a_ep.attrib['href'], a_ep.text_content() )
 
         for div in divs_to_search:
             avsnitt_title = ''
 
-            a_href = find_a_playonclick(div)
+            a_href = parse_find_a_playonclick(div)
 
+            if a_href is None:
+                a_href = parse_find_a__data_clickable_content(div)
+        
             if a_href == '#':
                 # we have found a block like below. Neet to find the 2nd a-href element. 
                 #<div class="episode-list-item__info-top">
@@ -249,9 +272,11 @@ class SrProgramPageParser(object):
                 #        <a  href="/sida/avsnitt/819043?programid=4429" class="heading__d heading--inverted line-clamp heading__d-line-clamp--2" >R&#246;ster under himlen</a>
                 #    </div>
                 #</div>            
-                (a_href, avsnitt_title) = find_episode_url(div)
+                (a_href, avsnitt_title) = parse_find_episode_url(div)
+
 
             if a_href is None:
+                self.trace(7, "Failed to find playonclick on \n" + ET.tostring(div, encoding='unicode', pretty_print=True) )
                 continue
 
             url = urlparse(a_href)
@@ -262,15 +287,15 @@ class SrProgramPageParser(object):
                 
             avsnitt_id = path_parts[-1]
 
-            avsnitt_timestamp = find_transmit_time(div)
+            avsnitt_timestamp = parse_find_transmit_time(div, html_timestamp)
             if avsnitt_timestamp is None:
-                avsnitt_timestamp = find_transmit_time(div.getparent())
+                avsnitt_timestamp = parse_find_transmit_time(div.getparent(), html_timestamp)
 
 
             if avsnitt_title is None:
-                avsnitt_title = find_title(div)
+                avsnitt_title = parse_find_title(div)
 
-            avsnitt_description = find_desc(div)
+            avsnitt_description = parse_find_desc(div)
 
             avsnitt = next((e for e in self.episodes_ if e['avsnitt'] == avsnitt_id), None)
             if avsnitt is None:
@@ -289,6 +314,7 @@ class SrProgramPageParser(object):
         self.validate_episodes()
 
         return self.episodes_
+
 
 
     def validate_episodes(self):
