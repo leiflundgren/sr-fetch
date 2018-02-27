@@ -85,7 +85,15 @@ def parse_find_title(root: ET.ElementTree) -> str:
     except AttributeError:
         pass
 
-    self.trace(8, 'Failed to find a title in div \n', ET.tostring(root, pretty_print=True))
+    try:
+        episode_body = XmlHandler.find_element_attribute(root, 'div', 'class', "episode-list__item__title")
+        episode_a_href = XmlHandler.find_element_attribute(episode_body, 'a', 'class', "heading heading--small")
+
+        return episode_a_href.text_content().strip()
+    except AttributeError:
+        pass
+
+    common.trace(8, 'Failed to find a title in div \n', ET.tostring(root, pretty_print=True))
 
     return None
 
@@ -99,12 +107,14 @@ def parse_find_desc(div: ET.ElementTree) -> str:
             return p.text_content().strip()
     except AttributeError:
         pass            
+
     try:
         audio_audiobox_body = XmlHandler.find_element_attribute(parent_div, 'div', 'class', "audio-box-body")
         p = XmlHandler.find_element_attribute(audio_audiobox_body, 'p', 'class', "preamble")
         return p.text_content().strip()
     except AttributeError:
         pass
+
     try:
         episode_body = XmlHandler.find_element_attribute(div, 'div', 'class', "episode*-body")
         episode__content = XmlHandler.find_element_attribute(episode_body, 'div', 'class', "*episode__content")
@@ -113,6 +123,17 @@ def parse_find_desc(div: ET.ElementTree) -> str:
             p = XmlHandler.find_first_child(episode__body, 'p')
             el = p if p is not None else episode__body
             return el.text_content().strip()
+    except AttributeError:
+        pass
+
+    try:
+        ep_desc = XmlHandler.find_element_attribute(parent_div, 'div', 'class', "episode-list__item__description *" )
+        desc = ep_desc.text_content().strip()
+        if len(desc) > 0:
+            return desc
+        
+        p = XmlHandler.find_element_attribute(audio_audiobox_body, 'p', 'class', "text*")
+        return p.text_content().strip()
     except AttributeError:
         pass
 
@@ -224,6 +245,8 @@ class SrProgramPageParser(object):
         title = head.find('title')
         if not title is None:
             self.title = title.text
+        else:
+            bp = 17
         prefix = 'Alla avsnitt'
         postfix = 'Sveriges Radio'
         trims = '|- '
@@ -292,7 +315,7 @@ class SrProgramPageParser(object):
                 avsnitt_timestamp = parse_find_transmit_time(div.getparent(), html_timestamp)
 
 
-            if avsnitt_title is None:
+            if not avsnitt_title:
                 avsnitt_title = parse_find_title(div)
 
             avsnitt_description = parse_find_desc(div)
@@ -305,10 +328,9 @@ class SrProgramPageParser(object):
             if not avsnitt_timestamp is None:
                 avsnitt['timestamp'] = avsnitt_timestamp
 
-            if not avsnitt_title is None:
+            if not avsnitt_title:
                 avsnitt['title'] = avsnitt_title
-
-            if not avsnitt_description is None:
+            elif not avsnitt_description:
                 avsnitt['title'] = avsnitt_description
 
         self.validate_episodes()
