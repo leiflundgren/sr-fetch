@@ -156,7 +156,7 @@ def check_right_element_exactly(e, tagname, attrib, avalue):
     return e.tag == tagname and e.attrib.get(attrib, '') == avalue
 
 def check_right_element_wildcard(e, tagname, attrib, avalue):
-    return fnmatch(e.tag, tagname ) and fnmatch(e.attrib.get(attrib, ''), avalue)
+    return fnmatch(e.tag, tagname ) and (not attrib or fnmatch(e.attrib.get(attrib, ''), avalue))
 
 
 def find_element_attribute(root: xml.etree.ElementTree, tagname, attrib, avalue) -> xml.etree.ElementTree:

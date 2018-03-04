@@ -50,14 +50,14 @@ class Page2RSS(object):
         rss_title = ET.SubElement(rss_channel, 'title')
         rss_title.text = title
 
-        if not description is None:
+        if description:
             ET.SubElement(rss_channel, 'description').text = description
 
-        if not timestamp is None:
+        if timestamp:
             ET.SubElement(rss_channel, 'lastBuildDate').text = timestamp
             ET.SubElement(rss_channel, 'pubDate').text = timestamp
 
-        if not logo_url is None:
+        if logo_url:
             rss_image = ET.SubElement(rss_channel, 'image')
             ET.SubElement(rss_image, 'url').text = logo_url
             ET.SubElement(rss_image, 'title').text = title

@@ -143,6 +143,18 @@ def parse_find_desc(div: ET.ElementTree) -> str:
     except AttributeError:
         pass
 
+    try:
+        ep_desc = XmlHandler.find_element_attribute(parent_div, 'div', 'class', "episode-list__item__description" )
+        desc = ep_desc.text_content().strip()
+        if len(desc) > 0:
+            return desc
+        
+        p = XmlHandler.find_element_attribute(audio_audiobox_body, 'p', 'class', "text*")
+        return p.text_content().strip()
+    except AttributeError:
+        pass
+
+
     return None
 
 
@@ -346,8 +358,10 @@ class SrProgramPageParser(object):
 
         if  avsnitt_title:
             avsnitt['title'] = avsnitt_title
-        elif avsnitt_description:
-            avsnitt['title'] = avsnitt_description
+        if avsnitt_description:
+            avsnitt['description'] = avsnitt_description
+            if not avsnitt_title:
+                avsnitt['title'] = avsnitt_description
 
         self.validate_one_episode(avsnitt)
         return avsnitt
