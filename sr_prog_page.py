@@ -93,6 +93,12 @@ def parse_find_title(root: ET.ElementTree) -> str:
     except AttributeError:
         pass
 
+    # <svg class="play-icon-play-pause" (which is inside a-href-tag)
+    tag = XmlHandler.find_element_attribute(root, 'svg', 'class', "play-icon-play-pause")
+    while tag:
+        if tag.tag == 'a':
+            return tag.attrib.get('aria-label')
+
     common.trace(8, 'Failed to find a title in div \n', ET.tostring(root, pretty_print=True))
 
     return None
@@ -278,79 +284,91 @@ class SrProgramPageParser(object):
 
 
         for div in divs_to_search:
-            avsnitt_title = ''
-
-            a_href = parse_find_a_playonclick(div)
-
-            if a_href is None:
-                a_href = parse_find_a__data_clickable_content(div)
-        
-            if a_href == '#':
-                # we have found a block like below. Neet to find the 2nd a-href element. 
-                #<div class="episode-list-item__info-top">
-                #    <div class="episode-list-item__play">
-                #        <a  href="#" data-audio-type="episode" data-audio-id="819043" data-require="modules/play-on-click" class="play-symbol play-symbol--circle" ><span class="sr-icon" ><i class="play-arrow play-arrow--medium sr-icon__image" ></i></span></a>
-                #    </div>
-                #    <div class="episode-list-item__header">
-                #        <a  href="/sida/avsnitt/819043?programid=4429" class="heading__d heading--inverted line-clamp heading__d-line-clamp--2" >R&#246;ster under himlen</a>
-                #    </div>
-                #</div>            
-                (a_href, avsnitt_title) = parse_find_episode_url(div)
-
-
-            if a_href is None:
-                self.trace(7, "Failed to find playonclick on \n" + ET.tostring(div, encoding='unicode', pretty_print=True) )
-                continue
-
-            url = urlparse(a_href)
-            path_parts = url.path.split('/')
+            avsnitt = self.parse_episode(div, html_timestamp)
+            if avsnitt is None: continue 
             
-            if len(path_parts) < 3 or path_parts[-2] != 'avsnitt':
-                continue
-                
-            avsnitt_id = path_parts[-1]
-
-            avsnitt_timestamp = parse_find_transmit_time(div, html_timestamp)
-            if avsnitt_timestamp is None:
-                avsnitt_timestamp = parse_find_transmit_time(div.getparent(), html_timestamp)
-
-
-            if not avsnitt_title:
-                avsnitt_title = parse_find_title(div)
-
-            avsnitt_description = parse_find_desc(div)
-
-            avsnitt = next((e for e in self.episodes_ if e['avsnitt'] == avsnitt_id), None)
-            if avsnitt is None:
-                avsnitt = {'avsnitt': avsnitt_id }
-                self.episodes_.append(avsnitt)
-
-            if not avsnitt_timestamp is None:
-                avsnitt['timestamp'] = avsnitt_timestamp
-
-            if not avsnitt_title:
-                avsnitt['title'] = avsnitt_title
-            elif not avsnitt_description:
-                avsnitt['title'] = avsnitt_description
-
+            self.episodes_.append(avsnitt)
+            
         self.validate_episodes()
 
         return self.episodes_
 
+    def parse_episode(self, div, html_timestamp):
+        avsnitt_title = ''
+
+        a_href = parse_find_a_playonclick(div)
+
+        if a_href is None:
+            a_href = parse_find_a__data_clickable_content(div)
+        
+        if a_href == '#':
+            # we have found a block like below. Neet to find the 2nd a-href element. 
+            #<div class="episode-list-item__info-top">
+            #    <div class="episode-list-item__play">
+            #        <a  href="#" data-audio-type="episode" data-audio-id="819043" data-require="modules/play-on-click" class="play-symbol play-symbol--circle" ><span class="sr-icon" ><i class="play-arrow play-arrow--medium sr-icon__image" ></i></span></a>
+            #    </div>
+            #    <div class="episode-list-item__header">
+            #        <a  href="/sida/avsnitt/819043?programid=4429" class="heading__d heading--inverted line-clamp heading__d-line-clamp--2" >R&#246;ster under himlen</a>
+            #    </div>
+            #</div>            
+            (a_href, avsnitt_title) = parse_find_episode_url(div)
+
+
+        if a_href is None:
+            self.trace(7, "Failed to find playonclick on \n" + ET.tostring(div, encoding='unicode', pretty_print=True) )
+            return None
+
+        url = urlparse(a_href)
+        path_parts = url.path.split('/')
+            
+        if len(path_parts) < 3 or path_parts[-2] != 'avsnitt':
+            return None
+
+                
+        avsnitt_id = path_parts[-1]
+
+        avsnitt_timestamp = parse_find_transmit_time(div, html_timestamp)
+        if avsnitt_timestamp is None:
+            avsnitt_timestamp = parse_find_transmit_time(div.getparent(), html_timestamp)
+
+
+        if not avsnitt_title:
+            avsnitt_title = parse_find_title(div)
+
+        avsnitt_description = parse_find_desc(div)
+
+        avsnitt = next((e for e in self.episodes_ if e['avsnitt'] == avsnitt_id), None)
+        if avsnitt is None:
+            avsnitt = {'avsnitt': avsnitt_id }
+
+        if not avsnitt_timestamp is None:
+            avsnitt['timestamp'] = avsnitt_timestamp
+
+        if  avsnitt_title:
+            avsnitt['title'] = avsnitt_title
+        elif avsnitt_description:
+            avsnitt['title'] = avsnitt_description
+
+        self.validate_one_episode(avsnitt)
+        return avsnitt
 
 
     def validate_episodes(self):
         for avsnitt in self.episodes_:
-            avsnitt_id = avsnitt['avsnitt']
+            self.validate_one_episode(avsnitt)
+
+    def validate_one_episode(self, avsnitt):
+        avsnitt_id = avsnitt['avsnitt']
             
-            if not 'timestamp' in avsnitt:
-                msg = "When parsing avsnitt " + str(avsnitt_id) + ", failed to find timestamp"
-                self.trace(2, msg)
-                raise ValueError('Bad parse-data: ' + msg)
-            if not 'title' in avsnitt:
-                msg = "When parsing avsnitt " + str(avsnitt_id) + ", failed to find title"
-                self.trace(2, msg)
-                raise ValueError('Bad parse-data: ' + msg)
+        if not 'timestamp' in avsnitt:
+            msg = "When parsing avsnitt " + str(avsnitt_id) + ", failed to find timestamp"
+            self.trace(2, msg)
+            raise ValueError('Bad parse-data: ' + msg)
+        if not 'title' in avsnitt:
+            msg = "When parsing avsnitt " + str(avsnitt_id) + ", failed to find title"
+            self.trace(2, msg)
+            raise ValueError('Bad parse-data: ' + msg)
+
 
     def find_episodes(self):
         if self.html_ is None:
