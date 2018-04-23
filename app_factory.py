@@ -22,6 +22,13 @@ app = Flask(__name__)
 def hello():
     return 'hello world'
     
+@app.route('/robots.txt')
+def hello():
+    return  """
+User-agent: *
+Disallow: /
+"""
+    
 @app.route('/env')
 def env_tester():
     return env_test.EnvTest().application()
