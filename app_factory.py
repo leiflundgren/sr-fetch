@@ -23,7 +23,7 @@ def hello():
     return 'hello world'
     
 @app.route('/robots.txt')
-def hello():
+def robots():
     return  """
 User-agent: *
 Disallow: /
