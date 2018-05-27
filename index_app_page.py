@@ -37,7 +37,6 @@ class IndexApp(AppBase):
 <br/>
 <br/>
 <p><a href="{hello_url}">trivial hello world</a>
-<p><a href="{env_url}">enviroment test</a>
 <p><a href="{feed_url}">SR feed page</a>
 <br/>
 <br/>

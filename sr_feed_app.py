@@ -12,7 +12,7 @@ class SrFeedApp(AppBase):
         
     def generate_help_error(self, status_code, error_message):
         self.trace(3, 'Going to print error message', status_code, error_message)
-        app_url = self.app_url + '?tracelevel=5&programid=4429&format=rss&prefix='
+        app_url = self.app_url + '?param=val&p2=v=p3'
         html = """
 <html>
 <head>
@@ -95,7 +95,7 @@ This is the SR feed generator<br />
 </table>
 
 <br/>
-Sample test URL: <a href="{app_url}">{app_url_html}</a>
+Sample test URL: {app_url_html}
 <br/>
 <br/><
 </body>
