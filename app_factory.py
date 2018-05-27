@@ -14,7 +14,7 @@ import rss_files_app
 import rss_filedownload_app
 import app_config
 
-from flask import Flask, after_this_request
+from flask import Flask, make_response
 
 app = Flask(__name__)
 
@@ -24,10 +24,14 @@ def hello():
     
 @app.route('/robots.txt')
 def robots():
-    return  """
+    robots = """
 User-agent: *
 Disallow: /
-"""
+Disallow: /feed
+"""  
+    r = make_response(robots)
+    r.headers['Content-Type'] = 'text/plain'
+    return r
     
 @app.route('/env')
 def env_tester():
