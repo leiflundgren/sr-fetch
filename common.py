@@ -1,5 +1,4 @@
-
-# -*- coding: iso-8859-1 -*-
+ï»¿
 
 
 import sys
@@ -13,11 +12,23 @@ import unittest
 
 import email.utils
 import time
+import os
 
 tracelevel = 4
 log_handle = None
 
 def trace(level, *args):
+    def fix_linendings(s: str) -> str:
+        if os.linesep == '\n':
+            return s
+        p = 0
+        while True:
+            p = s.find('\n', p+1)
+            if p<0: break
+            if p>0 and s[p-1] != '\r':
+                s = s[:p] + '\r' + s[p:]
+        return s
+
     def mystr(thing):
         if isinstance(thing, (list, tuple)):
             msg = []
@@ -41,7 +52,12 @@ def trace(level, *args):
         #    return bytes.decode('utf-8')
         else:
             try:
-                return str(thing)
+                if isinstance(thing, bytes):
+                    s = thing.decode('utf-8')
+                else:
+                    s = str(thing)
+                s = fix_linendings(s)
+                return s
             except UnicodeEncodeError:
                 return str(thing).encode('ascii', 'ignore')
             except ex as Exception:
@@ -103,29 +119,38 @@ def run_child_process(cmd, alt_path=None, get_stdout=True, get_stderr=True):
 
 with warnings.catch_warnings():
     warnings.simplefilter("ignore")
-    swe_weekdays = {'m&#229;ndag':0, 'måndag':0, 'tisdag':1, 'onsdag':2, 'torsdag':3, 'fredag':4, 'l#246;ndag':5, 'l#214;rdag':5, 'lördag':5, 'lördag':5, 's#246;ndag':6, 's#214;ndag':6, 'söndag':6, 'söndag':6 }
+    swe_weekdays = {
+        'm&#229;ndag':0, 'm&#229;n':0, 'mÃ¥ndag':0, 'mÃ¥n':0, 
+        'tisdag':1, 'tis':1, 
+        'onsdag':2, 'ons':2, 
+        'torsdag':3, 'tor':3, 
+        'fredag':4, 'fre':4, 
+        'l#246;ndag':5, 'l#214;rdag':5, 'lÃ¶rdag':5, 'lÃ¶r':5, 'l#246;n':5, 'l#214;r':5,
+        's#246;ndag':6, 's#214;ndag':6, 'sÃ¶ndag':6, 's#246;n':6, 's#214;n':6, 'sÃ¶n':6, 
+    }
 
 
 # make sure januari is month 1
-swe_months = [None, 'januari', 'februari', 'mars', 'april', 'maj', 'juni', 'juli', 'augusti', 'september', 'oktober', 'november', 'december']
+swe_months = ['', 'januari', 'februari', 'mars', 'april', 'maj', 'juni', 'juli', 'augusti', 'september', 'oktober', 'november', 'december']
 
-def is_swe_month(x):
+def is_swe_month(x: str):
     return parse_swe_month(x) >= 0
 
-def is_swe_weekday(x):
+def is_swe_weekday(x: str):
     return parse_swe_weekday(x) >= 0
 
-def parse_swe_month(x):
-    try:
-        return swe_months.index(x.lower())
-    except ValueError:
-        return -1
+def parse_swe_month(x: str):
+    x = x.lower()
+    for i in range(1, 12):
+        if swe_months[i].startswith(x) :
+            return i
+    return -1
 
 
-def parse_swe_weekday(x):
+def parse_swe_weekday(x: str):
     return swe_weekdays.get(x.lower(), -1)
 
-def unescape_html(html):
+def unescape_html(html: str):
     res = ''
     last = 0
     while True:
@@ -150,15 +175,15 @@ def unescape_html(html):
             res += 'o'
         elif code == '#214' or code.lower() == 'ouml' and code[0].isupper():
             res += 'O'
-        elif code == '#233': # é
+        elif code == '#233': # Ã©
             res += 'e'
-        elif code == '#225': # á
+        elif code == '#225': # Ã¡
             res += 'a'
-        elif code == '#237': # í
+        elif code == '#237': # Ã­
             res += 'i'
         elif code == '#39': # '
             res += ' '
-        elif code == '#233': # é
+        elif code == '#233': # Ã©
             res += 'e'
             
         else:
@@ -175,7 +200,7 @@ def combine_http_path(x, y):
     Timezone is ignored  
         2016-05-25T09:08:00+02:00
 """
-def parse_datetime(s):
+def parse_datetime(s: str):
     def parse_without_timezone(s):
         try:
             if len(s) > 9 and ( s[8] == 'T' or s[10] == 'T'):
@@ -189,7 +214,7 @@ def parse_datetime(s):
         raise ValueError('common.parse_datetime doesnt support timezones')
     return parse_without_timezone(s)
 
-def parse_datetime_to_rfc822(s):
+def parse_datetime_to_rfc822(s: str):
     if re.match('.*[\+\-]\d\d\:\d\d$', s):
         tz = s[-6:-3] + s[-2:] # timezone, without colon
         s = s[:-6]
@@ -206,7 +231,7 @@ def parse_datetime_to_rfc822(s):
     return rfc822
 
 
-def format_datetime(dt):
+def format_datetime(dt: datetime):
     return dt.strftime('%Y-%m-%dT%H:%M:%S%z')
 
 def get_el(root, name, ns=None):

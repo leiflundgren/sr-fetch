@@ -1,5 +1,5 @@
-
-# -*- coding: iso-8859-1 -*-
+ï»¿
+# -*- coding: utf-8 -*-
 
 
 import common
@@ -138,47 +138,54 @@ def filename_from_html_content(html):
         
     return filename
 
-def parse_sr_time_string(s, today):
+def parse_sr_time_string(s:str, today:datetime):
     """ 
         This method tries to handle strings like
             klockan 10:03
-            igår
+            igÃ¥r
             tisdags
             fredag 24 juli klockan 10:03
+            ons 19 sep kl 17:06
     """
     trace(8, 'parse_sr_time_string(' + s + ')')
-    t = today
+    year = today.year
+    month = today.month
+    day  = today.day
+    hour = today.hour
+    minute = today.minute
+    second = today.second
 
     parts = s.strip().split(' ')
-
     i=0
-    while i<len(parts):
-        if parts[i].casefold() == 'klockan' and i+1<len(parts):
+    while i<len(parts):        
+        p = parts[i]
+        if (parts[i].casefold() == 'klockan' or parts[i].casefold() == 'kl' ) and i+1<len(parts):
             n = parts[i+1].split(':')
             hour = int(n[0])
             minute = int(n[1]) if len(n) > 1 else 0
             second = int(n[2]) if len(n) > 2 else 0
-            t = datetime.datetime.combine(t.date(), datetime.time(hour, minute, second))
-            i += 2
+            i += len(n)
         elif parts[i] == 'Ig&#229;r' or parts[i] == 'Ig\xe5r':
-            t -= datetime.timedelta(days=1)
+            days-=1
             i += 1
         elif common.is_swe_weekday(parts[i]):
             #ignore weekday
             i += 1
         elif len(parts[i]) == 4 and parts[i].isdigit():
-            t = datetime.datetime(int(parts[i]), t.month, t.day, t.hour, t.minute, t.second)
+            year = int(parts[i])
             i += 1                                  
         elif i+1 < len(parts) and parts[i].isdigit() and common.is_swe_month(parts[i+1]):
-            month = common.parse_swe_month(parts[i+1])
             day = int(parts[i])
-            t = datetime.datetime(t.year, month, day, t.hour, t.minute, t.second)
-            if t > today: # if date causes wrap-around of year
-                t = t - datetime.timedelta(365)
+            month = common.parse_swe_month(parts[i+1])
 
             i += 2
         else:
             raise ValueError('parse_sr_time_string: Unhandled part ' + parts[i])
+
+    t = datetime.datetime(year, month, day, hour, minute, second)
+    if t > today: # if date causes wrap-around of year
+        year -= 1
+        t = datetime.datetime(year, month, day, hour, minute, second)
 
     trace(8, 'parse_sr_time_string --> ' + str(t))
     return t
@@ -196,7 +203,7 @@ class TestHelpers(unittest.TestCase):
         self.assertEqual(datetime.datetime(2015,7,28, 10,3,0), parse_sr_time_string('Ig&#229;r klockan 10:03', base_day))
         self.assertEqual(datetime.datetime(2015,7,24, 10,3,0), parse_sr_time_string('fredag 24 juli klockan 10:03', base_day))
         self.assertEqual(datetime.datetime(2015,7,24, 10,3,0), parse_sr_time_string('m&#229;ndag 24 juli klockan 10:03', base_day))
-        self.assertEqual(datetime.datetime(2015,7,24, 10,3,0), parse_sr_time_string('söndag 24 juli klockan 10:03', base_day))
+        self.assertEqual(datetime.datetime(2015,7,24, 10,3,0), parse_sr_time_string('sÃ¶ndag 24 juli klockan 10:03', base_day))
     pass
 
 if __name__ == '__main__':

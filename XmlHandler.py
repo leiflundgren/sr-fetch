@@ -17,6 +17,8 @@ try:
     x = xml.etree.cElementTree.fromstring('<hello target="World">there</hello>') 
     xml_loaded=True
     xml_cxml = True
+except ModuleNotFoundError:
+    pass
 except ImportError:
     pass
 
@@ -27,8 +29,10 @@ try:
     xml_exml = True
 except ImportError:
     pass
+except ModuleNotFoundError:
+    pass
 
-import lxml.etree
+import lxml.etree # non-optional module..
 
 try:
     import lxml.etree.ElementTree
@@ -37,6 +41,8 @@ try:
     xml_lxml = True
 except ImportError:
     pass
+except ModuleNotFoundError:
+    pass
 
 try:
     import xml.dom.minidom
@@ -44,6 +50,8 @@ try:
     xml_loaded=True
     xml_minidom = True
 except ImportError:
+    pass
+except ModuleNotFoundError:
     pass
 
 if not xml_loaded:
@@ -155,11 +163,15 @@ def check_right_element_exactly(e, tagname, attrib, avalue):
     e_attr = e.attrib.get(attrib, '')
     return e.tag == tagname and e.attrib.get(attrib, '') == avalue
 
-def check_right_element_wildcard(e, tagname, attrib, avalue):
-    return fnmatch(e.tag, tagname ) and (not attrib or fnmatch(e.attrib.get(attrib, ''), avalue))
+def check_right_element_wildcard(e: xml.etree.ElementTree, tagname, attrib, avalue):
+    if not fnmatch(e.tag, tagname): return False
+    if not attrib: return True
+    attrval = e.attrib.get(attrib, '')
+    if not fnmatch(attrval, avalue): return False
+    return True
 
 
-def find_element_attribute(root: xml.etree.ElementTree, tagname, attrib, avalue) -> xml.etree.ElementTree:
+def find_element_attribute(root: xml.etree.ElementTree, tagname:str, attrib:str, avalue:str) -> xml.etree.ElementTree:
     if root is None: return None
     matcher = check_right_element_wildcard if tagname.find('*') >=0 or avalue.find('*') >= 0 else check_right_element_exactly
     q = root if isinstance(root, list) else [root]
@@ -183,7 +195,12 @@ def findall_element_attribute(root, tagname, attrib, avalue):
         e = q.pop()
         if matcher(e, tagname, attrib, avalue):
             res.append(e)
-        q += list(e)
+        for c in e:
+            if isinstance(c, lxml.html.HtmlElement):
+                q.append(c)
+            else:
+                pass
+        
 
     return res
 

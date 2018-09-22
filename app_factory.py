@@ -29,7 +29,7 @@ User-agent: *
 Disallow: /
 Disallow: /feed
 """  
-    r = make_response(robots)
+    r = make_rewsponse(robots)
     r.headers['Content-Type'] = 'text/plain'
     return r
     

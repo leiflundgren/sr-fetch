@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# -*- coding: iso-8859-1 -*-
+# -*- co   ding: iso-8859-1 -*-
 
 import lxml.etree as ET
 import common
