@@ -138,7 +138,7 @@ def filename_from_html_content(html):
         
     return filename
 
-def parse_sr_time_string(s:str, today:datetime):
+def parse_sr_time_string(s:str, today:datetime) -> datetime:
     """ 
         This method tries to handle strings like
             klockan 10:03
@@ -148,6 +148,7 @@ def parse_sr_time_string(s:str, today:datetime):
             ons 19 sep kl 17:06
     """
     trace(8, 'parse_sr_time_string(' + s + ')')
+    tomorrow = today + datetime.timedelta(days=1)
     year = today.year
     month = today.month
     day  = today.day
@@ -166,7 +167,7 @@ def parse_sr_time_string(s:str, today:datetime):
             second = int(n[2]) if len(n) > 2 else 0
             i += len(n)
         elif parts[i] == 'Ig&#229;r' or parts[i] == 'Ig\xe5r':
-            days-=1
+            day-=1
             i += 1
         elif common.is_swe_weekday(parts[i]):
             #ignore weekday
@@ -183,7 +184,7 @@ def parse_sr_time_string(s:str, today:datetime):
             raise ValueError('parse_sr_time_string: Unhandled part ' + parts[i])
 
     t = datetime.datetime(year, month, day, hour, minute, second)
-    if t > today: # if date causes wrap-around of year
+    if t > tomorrow: # if date causes wrap-around of year
         year -= 1
         t = datetime.datetime(year, month, day, hour, minute, second)
 
@@ -201,6 +202,7 @@ class TestHelpers(unittest.TestCase):
 
         self.assertEqual(datetime.datetime(2015,7,29, 10,3,0), parse_sr_time_string('klockan 10:03', base_day))
         self.assertEqual(datetime.datetime(2015,7,28, 10,3,0), parse_sr_time_string('Ig&#229;r klockan 10:03', base_day))
+        self.assertEqual(datetime.datetime(2015,7,28, 10,3,0), parse_sr_time_string('Ig&#229;r kl 10:03', base_day))
         self.assertEqual(datetime.datetime(2015,7,24, 10,3,0), parse_sr_time_string('fredag 24 juli klockan 10:03', base_day))
         self.assertEqual(datetime.datetime(2015,7,24, 10,3,0), parse_sr_time_string('m&#229;ndag 24 juli klockan 10:03', base_day))
         self.assertEqual(datetime.datetime(2015,7,24, 10,3,0), parse_sr_time_string('söndag 24 juli klockan 10:03', base_day))
@@ -208,3 +210,4 @@ class TestHelpers(unittest.TestCase):
 
 if __name__ == '__main__':
     sys.exit(unittest.main(argv=['-v']))
+    
