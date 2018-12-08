@@ -8,7 +8,8 @@
             "name": "Python: app_factory",
             "type": "python",
             "request": "launch",
-            "program": "c:\\devel\\sr-fetch\\app_factory.py",
+            "cwd": "${workspaceRoot}",
+            "program": "${workspaceRoot}/app_factory.py",
             "console": "integratedTerminal"
         },
         {
