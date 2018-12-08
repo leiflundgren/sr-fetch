@@ -1,6 +1,7 @@
 import unittest
 import lxml.etree as ET
 import lxml.html as EHTML
+import datetime
 
 import common
 from common import is_none_or_empty
@@ -8,6 +9,7 @@ from common import is_none_or_empty
 from XmlHandler import get_namespace
 
 from sr_prog_page import SrProgramPageParser
+import sr_prog_page
 
 div___episode_list__item__title =  ET.fromstring("""
         <div class="episode-list__item__title">
@@ -26,10 +28,22 @@ div___episode_list__item__title =  ET.fromstring("""
         </div>
 """)
 
+
 class Test_sr_prog_page_tests(unittest.TestCase):
     def test_parse_find_a__data_clickable_content(self):
-        el_ls = SrProgramPageParser.parse_find_a__data_clickable_content(div___episode_list__item__title)
+        el_ls = sr_prog_page.parse_find_a__data_clickable_content(div___episode_list__item__title)
         self.assertIsNotNone(el_ls)
+
+
+
+    def test_find_avsnitt_transmit_time(self):
+        today = datetime.datetime.now()
+        html = EHTML.parse('sr_prog_page_tests_divs.html')
+        html_root = html.getroot()
+        head = html_root
+        div_episodes_timestamp = head
+        avsnitt_time = sr_prog_page.parse_find_transmit_time(div_episodes_timestamp, today)
+        self.assertIsNotNone(avsnitt_time)
 
 if __name__ == '__main__':
     unittest.main(argv=['test'])

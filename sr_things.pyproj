@@ -32,7 +32,6 @@
     <Content Include="requirements.txt" />
     <Content Include="sample.atom.xml" />
     <Content Include="sample.rss_2.xml" />
-    <Content Include="uwsgi.ini" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="app_base.py">

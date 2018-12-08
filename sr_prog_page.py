@@ -44,7 +44,7 @@ def parse_find_a__data_clickable_content(root: ET.ElementTree) -> str:
 
 def parse_find_transmit_time(root: ET.ElementTree, date_today:datetime) -> datetime:
     if date_today is None:
-        raise ValValueError("date_today not specified!")
+        raise ValueError("date_today not specified!")
 
     for meta in XmlHandler.findall_element_attribute(root, 'div', 'class', "audio-heading__meta"): # <div class="audio-heading__meta">
         for span in XmlHandler.findall_element_attribute(meta, 'span', 'class', "metadata-item-text"): # <span class="metadata-item-text">ons 19 sep kl 17:06</span>
@@ -249,7 +249,7 @@ class SrProgramPageParser(object):
             elif isinstance(value, ET._ElementTree):
                 self.html_ = value
             else:
-                raise ValueError('html set to unknown type: ' + str(typeof(value)))
+                raise ValueError('html set to unknown type: ' + str(type(value)))
             self.trace(9, 'got page \r\n', self.html)
         except Exception as ex:
             self.trace(5, 'Failed to parse html: ', ex)
@@ -291,7 +291,7 @@ class SrProgramPageParser(object):
 
         html_root = self.html.getroot()
         head = html_root[0]
-        
+
         author_meta = head.find('meta[@name="author"]')        
         self.author = '' if author_meta is None else author_meta.attrib['content']
 
@@ -304,8 +304,7 @@ class SrProgramPageParser(object):
         title = head.find('title')
         if not title is None:
             self.title = title.text
-        else:
-            bp = 17
+              
         prefix = 'Alla avsnitt'
         postfix = 'Sveriges Radio'
         trims = '|- '
@@ -406,7 +405,9 @@ class SrProgramPageParser(object):
         avsnitt_timestamp = parse_find_transmit_time(div, html_timestamp)
         if avsnitt_timestamp is None:
             avsnitt_timestamp = parse_find_transmit_time(div.getparent(), html_timestamp)
-
+        if avsnitt_timestamp is None:
+            self.trace(3, 'Failed to find transmit time for ' + str(avsnitt_id) + 'in \n', ET.tostring(div.getparent(), pretty_print=True))
+            raise ValueError('Failed to find transmit time for ' + str(avsnitt_id))
 
         if not avsnitt_title:
             avsnitt_title = parse_find_title(div)

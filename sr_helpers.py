@@ -51,27 +51,27 @@ def find_html_meta_argument(html, argname):
     trace(7, "value of "+ argname + " is '" + val + "'")
     return val
 
-def find_html_link_argument(html, rel_type="canonical", pos = 0):
-    while True:
-        pos = html.find('<link ', pos)
-        if pos < 0:
-            trace(6, "Failed to find link element start pos ", str(pos))
-            return None
+# def find_html_link_argument(html, rel_type="canonical", pos = 0):
+#     while True:
+#         pos = html.find('<link ', pos)
+#         if pos < 0:
+#             trace(6, "Failed to find link element start pos ", str(pos))
+#             return None
 
-        pos += 5
-        endp = SrUrlFinder.find_html_endtag(html, 'link', pos)
+#         pos += 5
+#         endp = SrUrlFinder.find_html_endtag(html, 'link', pos)
 
-        (rel_attrib, a_endp) = SrUrlFinder.find_html_attribute(html, 'rel', pos, endp)
-        if rel_attrib != rel_type:
-            trace(5, 'Failed to find <link rel="' + rel_type + '" in range ' + str(pos) + '--' + str(endp) )
-            continue
+#         (rel_attrib, a_endp) = SrUrlFinder.find_html_attribute(html, 'rel', pos, endp)
+#         if rel_attrib != rel_type:
+#             trace(5, 'Failed to find <link rel="' + rel_type + '" in range ' + str(pos) + '--' + str(endp) )
+#             continue
 
-        (href_attrib, a_endp) = SrUrlFinder.find_html_attribute(html, 'href', pos, endp)
-        if rel_attrib is None:
-            trace(5, 'Failed to find <link rel="' + rel_type + '" href="..." in range ' + str(pos) + '--' + str(endp) )
-            continue
+#         (href_attrib, a_endp) = SrUrlFinder.find_html_attribute(html, 'href', pos, endp)
+#         if rel_attrib is None:
+#             trace(5, 'Failed to find <link rel="' + rel_type + '" href="..." in range ' + str(pos) + '--' + str(endp) )
+#             continue
 
-        return href_attrib
+#         return href_attrib
 
 
 def urllib_open_feed(url):
@@ -82,7 +82,7 @@ def filename_from_html_content(html):
     trace(8, 'Trying to deduce filename from html-content.')
     programname = ''
     displaydate = find_html_meta_argument(html, 'displaydate')
-    programid = find_html_meta_argument(html, 'programid')
+    # programid = find_html_meta_argument(html, 'programid')
 
     # change date from 20141210 to 2014-12-10      
     if len(displaydate) == 8:
@@ -131,14 +131,14 @@ def filename_from_html_content(html):
     title = common.unescape_html(title)
     title = title.replace('/', ' ').strip(' .,!')
 
-    trace(4, 'new title is ' + title + '\r\skipped index ', lastToKeep, 'to ', len(parts)-1)
+    trace(4, 'new title is ' + title + '\nskipped index ', lastToKeep, 'to ', len(parts)-1)
 
     filename = programname + ' ' + displaydate + ' ' + title + '.m4a'
-    trace(4, 'filename: ' + self.filename)
+    trace(4, 'filename: ' + filename)
         
     return filename
 
-def parse_sr_time_string(s:str, today:datetime) -> datetime:
+def parse_sr_time_string(s: str, today: datetime) -> datetime:
     """ 
         This method tries to handle strings like
             klockan 10:03
@@ -155,17 +155,35 @@ def parse_sr_time_string(s:str, today:datetime) -> datetime:
     hour = today.hour
     minute = today.minute
     second = today.second
-
+ 
     parts = s.strip().split(' ')
     i=0
     while i<len(parts):        
         p = parts[i]
         if (parts[i].casefold() == 'klockan' or parts[i].casefold() == 'kl' ) and i+1<len(parts):
-            n = parts[i+1].split(':')
-            hour = int(n[0])
-            minute = int(n[1]) if len(n) > 1 else 0
-            second = int(n[2]) if len(n) > 2 else 0
-            i += len(n)
+            time_parts = []
+            for p in parts[i+1:]:
+                if len(p) <= 2:
+                    time_parts.append(int(p))
+
+                elif len(p) >= 4 and p[2].isdigit():
+                    time_parts.append(int(p[0:2]))
+                    time_parts.append(int(p[2:4]))
+                    if len(p) == 6: 
+                        time_parts.append(int(p[4:6]))
+
+                else:
+                    delim = p[2]
+                    n = p.split(delim)
+
+                    for d in n:
+                        time_parts.append(int(d))
+
+            hour = time_parts[0] if len(time_parts) > 0 else 0
+            minute = time_parts[1] if len(time_parts) > 1 else 0
+            second = time_parts[2] if len(time_parts) > 2 else 0
+            break ## Assume string ends with time
+
         elif parts[i] == 'Ig&#229;r' or parts[i] == 'Ig\xe5r':
             day-=1
             i += 1
@@ -192,22 +210,6 @@ def parse_sr_time_string(s:str, today:datetime) -> datetime:
     return t
     
 
-
-class TestHelpers(unittest.TestCase):
-    def test_parse_sr_time_string(self):
-
-        base_day = datetime.datetime(2015,7,29)
-        t = parse_sr_time_string('klockan 10:03', base_day) # Just check no exception
-
-
-        self.assertEqual(datetime.datetime(2015,7,29, 10,3,0), parse_sr_time_string('klockan 10:03', base_day))
-        self.assertEqual(datetime.datetime(2015,7,28, 10,3,0), parse_sr_time_string('Ig&#229;r klockan 10:03', base_day))
-        self.assertEqual(datetime.datetime(2015,7,28, 10,3,0), parse_sr_time_string('Ig&#229;r kl 10:03', base_day))
-        self.assertEqual(datetime.datetime(2015,7,24, 10,3,0), parse_sr_time_string('fredag 24 juli klockan 10:03', base_day))
-        self.assertEqual(datetime.datetime(2015,7,24, 10,3,0), parse_sr_time_string('m&#229;ndag 24 juli klockan 10:03', base_day))
-        self.assertEqual(datetime.datetime(2015,7,24, 10,3,0), parse_sr_time_string('söndag 24 juli klockan 10:03', base_day))
-    pass
-
 if __name__ == '__main__':
-    sys.exit(unittest.main(argv=['-v']))
+    sys.exit(unittest.main(argv=['-v', 'sr_helpers_tests.py']))
     
