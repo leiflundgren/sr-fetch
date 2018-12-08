@@ -169,17 +169,25 @@ def find_child_nodes(el, node_names, only_first = False):
             
     return res
 
-def check_right_element_exactly(e, tagname, attrib, avalue):
+def check_right_element_exactly(e: xml.etree.ElementTree, tagname: str, attrib: str, avalue):
     e_tag = e.tag
     e_attr = e.attrib.get(attrib, '')
     return e_tag == tagname and e_attr == avalue
 
-def check_right_element_wildcard(e: xml.etree.ElementTree, tagname, attrib, avalue):
-    if not fnmatch(e.tag, tagname): return False
+def check_right_element_wildcard(e: xml.etree.ElementTree, tagname: str, attrib: str, avalue: str):
+    def my_fnmatch(val, match):        
+        try:
+            return fnmatch(val, match)
+        except TypeError as ex:
+            trace(1, "fnmatch failed \n  val:", str(val), "\n  match: ", match, "\n Exception ", ex)
+            return False
+    
+    if not my_fnmatch(e.tag, tagname): return False
     if not attrib: return True
     attrval = e.attrib.get(attrib, '')
-    if not fnmatch(attrval, avalue): return False
+    if not my_fnmatch(attrval, avalue): return False
     return True
+        
 
 
 def find_element_attribute(root: xml.etree.ElementTree, tagname:str, attrib:str, avalue:str) -> xml.etree.ElementTree:
@@ -207,8 +215,8 @@ def findall_element_attribute(root, tagname, attrib, avalue):
         if matcher(e, tagname, attrib, avalue):
             res.append(e)
         for c in e:
-            if isinstance(c, lxml.html.HtmlElement) or isinstance(c, lxml.etree._Element):
-                q.append(c)
+            if isinstance(c, lxml.html.HtmlElement):
+                q.append(c)         
             else:
                 pass
         

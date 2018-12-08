@@ -38,7 +38,7 @@ class Test_sr_prog_page_tests(unittest.TestCase):
 
     def test_find_avsnitt_transmit_time(self):
         today = datetime.datetime.now()
-        html = ET.parse('sr_prog_page_tests_divs.html')
+        html = EHTML.parse('sr_prog_page_tests_divs.html')
         html_root = html.getroot()
         head = html_root
         div_episodes_timestamp = head

@@ -291,7 +291,7 @@ class SrProgramPageParser(object):
 
         html_root = self.html.getroot()
         head = html_root[0]
-        
+
         author_meta = head.find('meta[@name="author"]')        
         self.author = '' if author_meta is None else author_meta.attrib['content']
 
