@@ -19,29 +19,40 @@ try:
     xml_cxml = True
 except ModuleNotFoundError:
     pass
-except ImportError:
+except ImportError as ex:
+    print("Import failed totally " + str(ex))
     pass
+
 
 try:
     import xml.etree.ElementTree
     x = xml.etree.ElementTree.fromstring('<hello target="World">there</hello>') 
     xml_loaded=True
     xml_exml = True
-except ImportError:
-    pass
 except ModuleNotFoundError:
     pass
+except ImportError as ex:
+    print("Import failed totally " + str(ex))
+    pass
 
-import lxml.etree # non-optional module..
+try:
+    import lxml.etree # non-optional module..
+except ex as ModuleNotFoundError:
+    print("lxml.etree import failed. We are doomed")
+    print(str(ex))
+    raise
+except ImportError as ex:
+    pass
 
 try:
     import lxml.etree.ElementTree
     x = lxml.etree.ElementTree.fromstring('<hello target="World">there</hello>') 
     xml_loaded=True
     xml_lxml = True
-except ImportError:
-    pass
 except ModuleNotFoundError:
+    pass
+except ImportError as ex:
+    print("Import failed totally " + str(ex))
     pass
 
 try:
@@ -89,8 +100,8 @@ class XmlHandler(object):
             self.xml = xml.etree.ElementTree.fromstring(string)
         elif xml_lxml:
             self.xml = lxml.etree.ElementTree.fromstring(string)
-        elif xml_mindom:
-            self.xml = xml.dom.minidom.fromstring(string)
+        elif xml_minidom:
+            self.xml = xml.dom.minidom.parseString(string)
         else:
             raise Exception('Failed to load *ANY* XML library!!!')
         return self.xml
@@ -103,12 +114,12 @@ class XmlHandler(object):
         else:
             raise Exception('unknown string  type ' + str(type(s)))
 
-    def load_from_string_cxml(self, s):
-        self.xml = ET(s)
+    def load_from_string_cxml(self, s: str):
+        self.xml = xml.etree.cElementTree.fromstring(s)
 
 
-    def load_from_string_lxml(self, str):
-        self.xml = lxml.etree.fromstring(str)
+    def load_from_string_lxml(self, s: str):
+        self.xml = lxml.etree.fromstring(s)
 
 def find_first_child(el, node_names):
     return find_child_nodes(el, node_names, True)
@@ -161,7 +172,7 @@ def find_child_nodes(el, node_names, only_first = False):
 def check_right_element_exactly(e, tagname, attrib, avalue):
     e_tag = e.tag
     e_attr = e.attrib.get(attrib, '')
-    return e.tag == tagname and e.attrib.get(attrib, '') == avalue
+    return e_tag == tagname and e_attr == avalue
 
 def check_right_element_wildcard(e: xml.etree.ElementTree, tagname, attrib, avalue):
     if not fnmatch(e.tag, tagname): return False
@@ -196,7 +207,7 @@ def findall_element_attribute(root, tagname, attrib, avalue):
         if matcher(e, tagname, attrib, avalue):
             res.append(e)
         for c in e:
-            if isinstance(c, lxml.html.HtmlElement):
+            if isinstance(c, lxml.html.HtmlElement) or isinstance(c, lxml.etree._Element):
                 q.append(c)
             else:
                 pass

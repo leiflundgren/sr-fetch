@@ -13,6 +13,7 @@ import unittest
 import email.utils
 import time
 import os
+import shlex
 
 tracelevel = 4
 log_handle = None
@@ -60,14 +61,14 @@ def trace(level, *args):
                 return s
             except UnicodeEncodeError:
                 return str(thing).encode('ascii', 'ignore')
-            except ex as Exception:
+            except Exception as ex:
                 return 'Failed to format thing as string caught ' + str(ex)
 
     #if tracelevel < level:
     #    return
 
     msg = datetime.datetime.now().strftime("%H:%M:%S: ")
-    for count, thing in enumerate(args):
+    for thing in args:
         msg += mystr(thing)
 
     msg = msg.rstrip()
@@ -210,12 +211,12 @@ def parse_datetime(s: str):
         return datetime.datetime.strptime(s, "%Y-%m-%d %H:%M:%S")
     
     trace(9, 'parse_datetime(' + s + ')')
-    if re.match('.*[\+\-]\d\d\:\d\d$', s):
+    if re.match(r'.*[\+\-]\d\d\:\d\d$', s):
         raise ValueError('common.parse_datetime doesnt support timezones')
     return parse_without_timezone(s)
 
 def parse_datetime_to_rfc822(s: str):
-    if re.match('.*[\+\-]\d\d\:\d\d$', s):
+    if re.match(r'.*[\+\-]\d\d\:\d\d$', s):
         tz = s[-6:-3] + s[-2:] # timezone, without colon
         s = s[:-6]
     elif s[-1] == 'Z': #  "2011-08-12T20:17:46Z" is Zulu-time
