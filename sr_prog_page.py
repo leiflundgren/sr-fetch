@@ -43,14 +43,15 @@ def parse_find_a__data_clickable_content(root: ET.ElementTree) -> str:
 """
 
 def parse_find_transmit_time(root: ET.ElementTree, date_today:datetime) -> datetime:
+
     if date_today is None:
         raise ValueError("date_today not specified!")
-
+    html = ET.tostring(root, pretty_print=True)
     for meta in XmlHandler.findall_element_attribute(root, 'div', 'class', "audio-heading__meta"): # <div class="audio-heading__meta">
         for span in XmlHandler.findall_element_attribute(meta, 'span', 'class', "metadata-item-text"): # <span class="metadata-item-text">ons 19 sep kl 17:06</span>
             try:
                 txt = span.text
-                if txt.find(' kl ') > 0:
+                if txt.startswith('kl ') or txt.find(' kl ') > 0:
                     return sr_helpers.parse_sr_time_string(txt, date_today)
             except ValueError:
                 pass
@@ -142,61 +143,64 @@ def parse_find_title(root: ET.ElementTree) -> str:
 
 
 def parse_find_desc(div: ET.ElementTree) -> str: 
-    parent_div = div.getparent()
-    parent_html = ET.tostring(parent_div, pretty_print="True")
-    common.trace(8, 'parent ',  parent_html)
-    try:
-        audio_episode_body = XmlHandler.find_element_attribute(parent_div, 'div', 'class', "audio-episode-body")
-        p = XmlHandler.find_element_attribute(audio_episode_body, 'p', 'class', "*preamble")
-        if p:
+    while True:
+
+        try:
+            audio_episode_body = XmlHandler.find_element_attribute(div, 'div', 'class', "audio-episode-body")
+            p = XmlHandler.find_element_attribute(audio_episode_body, 'p', 'class', "*preamble")
+            if p:
+                return p.text_content().strip()
+        except AttributeError:
+            pass            
+
+        try:
+            audio_audiobox_body = XmlHandler.find_element_attribute(div, 'div', 'class', "audio-box-body")
+            p = XmlHandler.find_element_attribute(audio_audiobox_body, 'p', 'class', "preamble")
             return p.text_content().strip()
-    except AttributeError:
-        pass            
+        except AttributeError:
+            pass
 
-    try:
-        audio_audiobox_body = XmlHandler.find_element_attribute(parent_div, 'div', 'class', "audio-box-body")
-        p = XmlHandler.find_element_attribute(audio_audiobox_body, 'p', 'class', "preamble")
-        return p.text_content().strip()
-    except AttributeError:
-        pass
+        try:
+            episode_body = XmlHandler.find_element_attribute(div, 'div', 'class', "episode*-body")
+            episode__content = XmlHandler.find_element_attribute(episode_body, 'div', 'class', "*episode__content")
+            episode__body = XmlHandler.find_element_attribute(episode__content, 'div', 'class', "*episode__body")
+            if episode__body is not None:
+                p = XmlHandler.find_first_child(episode__body, 'p')
+                el = p if p is not None else episode__body
+                return el.text_content().strip()
+        except AttributeError:
+            pass
 
-    try:
-        episode_body = XmlHandler.find_element_attribute(div, 'div', 'class', "episode*-body")
-        episode__content = XmlHandler.find_element_attribute(episode_body, 'div', 'class', "*episode__content")
-        episode__body = XmlHandler.find_element_attribute(episode__content, 'div', 'class', "*episode__body")
-        if episode__body is not None:
-            p = XmlHandler.find_first_child(episode__body, 'p')
-            el = p if p is not None else episode__body
-            return el.text_content().strip()
-    except AttributeError:
-        pass
-
-    try:
-        ep_desc = XmlHandler.find_element_attribute(parent_div, 'div', 'class', "episode-list*item*description*" )
-        desc = ep_desc.text_content().strip()
-        if len(desc) > 0:
-            return desc
+        try:
+            ep_desc = XmlHandler.find_element_attribute(div, 'div', 'class', "episode-list*item*description*" )
+            desc = ep_desc.text_content().strip()
+            if len(desc) > 0:
+                return desc
         
-        p = XmlHandler.find_element_attribute(audio_audiobox_body, 'p', 'class', "text*")
-        return p.text_content().strip()
-    except AttributeError:
-        pass
+            p = XmlHandler.find_element_attribute(audio_audiobox_body, 'p', 'class', "text*")
+            return p.text_content().strip()
+        except AttributeError:
+            pass
 
-    try:
-        ep_desc = XmlHandler.find_element_attribute(parent_div, 'div', 'class', 'latest-episode__preamble ltr' )
-        desc = ep_desc.text_content().strip()
-        if len(desc) > 0:
-            return desc
+        try:
+            ep_desc = XmlHandler.find_element_attribute(div, 'div', 'class', 'latest-episode__preamble ltr' )
+            desc = ep_desc.text_content().strip()
+            if len(desc) > 0:
+                return desc
         
-        p = XmlHandler.find_element_attribute(audio_audiobox_body, 'p', 'class', "text*")
-        return p.text_content().strip()
-    except AttributeError:
-        pass
+            p = XmlHandler.find_element_attribute(audio_audiobox_body, 'p', 'class', "text*")
+            return p.text_content().strip()
+        except AttributeError:
+            pass
 
-    if parent_div.tag == 'div' and parent_div.attrib['class'] == "episode-list-item__content":
-        return parse_find_desc(parent_div.getparent())
+        parent_div = div.getparent()
+        parent_class = parent_div.attrib['class']
+        if not parent_class is None and not parent_class.startswith("episode-list-item"):
+            common.trace(3, 'div has class "' + parent_class + '", not have class episode-list-item*, failed to find content')
+            return None
 
-    return None
+        div = parent_div
+        # next loop
 
 
 def parse_find_episode_url(el: ET.ElementTree) -> (str, str) :
@@ -326,7 +330,9 @@ class SrProgramPageParser(object):
 
         # episodeExplorerRoot = self.html.find('//div[@class="episode-explorer__list"]')
         # episodeExplorerRoot = self.html.find('//div[@class="episode-list-item th-p2 th-override"]')
-        divs_to_search = XmlHandler.findall_element_attribute(self.html.getroot(), 'div', 'class', 'episode-list-item *')
+        divs_to_search = XmlHandler.findall_element_attribute(self.html.getroot(), 'div', 'class', 'episode-list-item__content')
+        if len(divs_to_search) == 0:
+            divs_to_search = XmlHandler.findall_element_attribute(self.html.getroot(), 'div', 'class', 'episode-list-item *')
 
         # divs_to_search = XmlHandler.findall_element_attribute(episodeExplorerRoot, 'div', 'class', "episode-list-item__header")
         #for hpath in [
