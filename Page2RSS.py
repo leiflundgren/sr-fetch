@@ -29,9 +29,10 @@ class Page2RSS(object):
 
         ns = 'http://www.w3.org/2005/Atom'
         ns_xml = 'http://www.w3.org/XML/1998/namespace'
+        ns_itunes = 'http://www.itunes.com/dtds/podcast-1.0.dtd'
 
-        nsmap = {None: ns, 'xml': ns_xml }
-        nsxpath = {'a':ns, 'xml': ns_xml }
+        nsmap = {None: ns, 'xml': ns_xml, 'itunes': ns_itunes }
+        nsxpath = {'a':ns, 'xml': ns_xml, 'itunes': ns_itunes }
 
         def getfirst(el, xp):
             r = get(el, xp)
@@ -43,7 +44,7 @@ class Page2RSS(object):
         def get(el, xp):
             return el.xpath(xp, namespaces=nsxpath)
 
-        
+        ET.register_namespace('itunes', ns_itunes)
         rss_root = ET.Element('rss', version='2.0')
         rss_channel = ET.SubElement(rss_root, 'channel')
 
@@ -90,6 +91,17 @@ class Page2RSS(object):
             href_link.text= self.text_url_formater(episode_dict['avsnitt'])
             trace(7, 'text href ', ET.tostring(href_link, pretty_print=True))
             
+            if not episode_dict.get('logo') is None:
+                # <itunes:image href="https://elroycdn.twit.tv/sites/default/files/styles/twit_slideshow_600x450/public/images/episodes/778511/hero/sn721.png?itok=HdA44F8q"/>
+                try:
+                    img = ET.SubElement(rss_item, '{http://www.itunes.com/dtds/podcast-1.0.dtd}image')
+                    img.set('href', episode_dict['logo'])
+                except:
+                    pass
+                img = ET.SubElement(rss_item, 'image')
+                img.set('href', episode_dict['logo'])
+
+
             try:
                 media_url = self.media_url_formater(episode_dict['avsnitt'])
                 filename, file_ext = os.path.splitext(os.path.basename(urllib.parse.urlparse(media_url).path))

@@ -324,7 +324,11 @@ class SrProgramPageParser(object):
            
   
         logo_meta = XmlHandler.find_element_attribute(head, 'meta', 'name', "*:image")        
+        if logo_meta is None:
+            logo_meta = XmlHandler.find_element_attribute(head, 'meta', 'property', "*:image")
         self.logo = '' if logo_meta is None else logo_meta.attrib['content']
+
+
                       
         self.lang = self.html.getroot().attrib.get('lang', '')
 
@@ -433,6 +437,16 @@ class SrProgramPageParser(object):
             avsnitt['description'] = avsnitt_description
             if not avsnitt_title:
                 avsnitt['title'] = avsnitt_description
+
+        logo_meta = XmlHandler.find_element_attribute(div, 'meta', 'name', "*:image")        
+        if logo_meta is None:
+            logo_meta = XmlHandler.find_element_attribute(div, 'meta', 'property', "*:image")
+        avsnitt['logo'] = '' if logo_meta is None else logo_meta.attrib['content']
+        if logo_meta is None:
+            logo_meta = XmlHandler.find_element_attribute(div, 'img', 'class', "episode-list-item__image")
+            if not logo_meta is None:
+                avsnitt['logo'] = logo_meta.attrib['src']
+
 
         self.validate_one_episode(avsnitt)
         return avsnitt

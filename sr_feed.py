@@ -79,7 +79,7 @@ class SrFeed(object):
         (format, feed_et) = self.handle_feed_url(self.feed_url)
 
         conv_et = self.translate_format(format, feed_et)
-        xmlstr = ET.tostring(conv_et, encoding='utf-8', method='xml').decode('utf-8').lstrip()
+        xmlstr = ET.tostring(conv_et, xml_declaration=True, encoding='utf-8', method='xml').decode('utf-8').lstrip()
         if format == 'rss':
             self.content_type = 'application/rss+xml'
         if self.content_type.find('charset') < 0:
