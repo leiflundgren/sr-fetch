@@ -131,7 +131,9 @@ Sample test URL: {app_url_html}
             else:
                 return self.generate_help_error(500, 'unsupported source. Must be feed/html!')            
 
-            only_episode_with_attachments = self.qs_get('only_episode_with_attachments', self.qs_get('only_content', True))
+            only_episode_with_attachments = self.qs_get('reqmedia', 
+                                                        self.qs_get('only_episode_with_attachments', 
+                                                                    self.qs_get('only_content', 'true'))).lower() == 'true'
 
             self.log(4, 'Attempt to find prog=' + str(programid)  + ', proxy_data = ' + str(proxy_data) + ' from ' + prog_url + " only_episode_with_attachments=" + str(only_episode_with_attachments))
             feeder = sr_feed.SrFeed(self.base_url, prog_url, str(programid), self.tracelevel, format, proxy_data, only_episode_with_attachments, program_prefix)

@@ -212,7 +212,7 @@ def parse_find_episode_url(el: ET.ElementTree) -> (str, str) :
 
 class SrProgramPageParser(object):
 
-    def __init__(self, tracelevel, html_dom = None, program_prefix = ''):
+    def __init__(self, tracelevel, html_dom = None, program_prefix = '', only_episode_with_attachments = True):
         assert isinstance(tracelevel, int), 'tracelevel'
         assert html_dom is None or isinstance(html_dom, ET._ElementTree) or isinstance(html_dom, EHTML.HtmlEntity), 'html_dom was ' + type(html_dom).__name__
         assert isinstance(program_prefix, str), 'program_prefix should be string'
@@ -221,6 +221,7 @@ class SrProgramPageParser(object):
         # self.trace(9, ET.tostring(html_dom, pretty_print=True, encoding='unicode'))
         
         self.tracelevel = tracelevel
+        self.only_episode_with_attachments = only_episode_with_attachments
         self.url_ = None
         self.program_prefix = program_prefix
         self.episodes_ = None
@@ -324,7 +325,11 @@ class SrProgramPageParser(object):
            
   
         logo_meta = XmlHandler.find_element_attribute(head, 'meta', 'name', "*:image")        
+        if logo_meta is None:
+            logo_meta = XmlHandler.find_element_attribute(head, 'meta', 'property', "*:image")
         self.logo = '' if logo_meta is None else logo_meta.attrib['content']
+
+
                       
         self.lang = self.html.getroot().attrib.get('lang', '')
 
@@ -418,6 +423,14 @@ class SrProgramPageParser(object):
         if not avsnitt_title:
             avsnitt_title = parse_find_title(div)
 
+
+        if self.only_episode_with_attachments:
+            # Check if the "play" symbol is in page
+            play_div = XmlHandler.find_element_attribute(div, 'div', 'class', "audio-heading__play")
+            if play_div is None:
+                self.trace(3, 'Episode has no media content, ignoring ' + avsnitt_id + ': ' + avsnitt_title)
+                return None
+
         avsnitt_description = parse_find_desc(div)
 
         avsnitt = next((e for e in self.episodes_ if e['avsnitt'] == avsnitt_id), None)
@@ -433,6 +446,16 @@ class SrProgramPageParser(object):
             avsnitt['description'] = avsnitt_description
             if not avsnitt_title:
                 avsnitt['title'] = avsnitt_description
+
+        logo_meta = XmlHandler.find_element_attribute(div, 'meta', 'name', "*:image")        
+        if logo_meta is None:
+            logo_meta = XmlHandler.find_element_attribute(div, 'meta', 'property', "*:image")
+        avsnitt['logo'] = '' if logo_meta is None else logo_meta.attrib['content']
+        if logo_meta is None:
+            logo_meta = XmlHandler.find_element_attribute(div, 'img', 'class', "episode-list-item__image")
+            if not logo_meta is None:
+                avsnitt['logo'] = logo_meta.attrib['src']
+
 
         self.validate_one_episode(avsnitt)
         return avsnitt
