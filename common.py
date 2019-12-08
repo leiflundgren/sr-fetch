@@ -130,9 +130,22 @@ with warnings.catch_warnings():
         's#246;ndag':6, 's#214;ndag':6, 'söndag':6, 's#246;n':6, 's#214;n':6, 'sön':6, 
     }
 
-
 # make sure januari is month 1
-swe_months = ['', 'januari', 'februari', 'mars', 'april', 'maj', 'juni', 'juli', 'augusti', 'september', 'oktober', 'november', 'december']
+swe_months = [
+    ('januari',1), 
+    ('februari',2), 
+    ('mars',3), 
+    ('april',4), 
+    ('maj',5), 
+    ('juni',6), 
+    ('juli',7), 
+    ('augusti',8), 
+    ('september',9), 
+    ('oktober',10), 
+    ('november',11), 
+    ('december',12),
+]
+    
 
 def is_swe_month(x: str):
     return parse_swe_month(x) >= 0
@@ -142,9 +155,9 @@ def is_swe_weekday(x: str):
 
 def parse_swe_month(x: str):
     x = x.lower()
-    for i in range(1, 12):
-        if swe_months[i].startswith(x) :
-            return i
+    for key, value in swe_months:
+        if key.startswith(x) :
+            return value
     return -1
 
 

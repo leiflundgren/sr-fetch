@@ -121,10 +121,10 @@ class XmlHandler(object):
     def load_from_string_lxml(self, s: str):
         self.xml = lxml.etree.fromstring(s)
 
-def find_first_child(el, node_names):
+def find_first_child(el: xml.etree.ElementTree.Element, node_names: list) -> list:
     return find_child_nodes(el, node_names, True)
 
-def find_child_nodes(el, node_names, only_first = False):
+def find_child_nodes(el: xml.etree.ElementTree.Element, node_names: list, only_first = False) -> list:
 
     #: :type el: xml.etree.ElementTree.Element
     #: :type node_names: list
