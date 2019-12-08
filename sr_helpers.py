@@ -158,6 +158,12 @@ def parse_sr_time_string(s: str, today: datetime) -> datetime:
  
     parts = s.strip().split(' ')
     i=0
+
+    # if common.is_swe_weekday(parts[0]):
+    #         #ignore weekday
+    #         i += 1
+
+
     while i<len(parts):        
         p = parts[i]
         if (parts[i].casefold() == 'klockan' or parts[i].casefold() == 'kl' ) and i+1<len(parts):

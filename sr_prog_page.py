@@ -55,7 +55,11 @@ def parse_find_transmit_time(root: ET.ElementTree, date_today:datetime) -> datet
                     return sr_helpers.parse_sr_time_string(txt, date_today)
             except ValueError:
                 pass
-
+    for item in XmlHandler.findall_element_attribute(root, 'span', 'class','metadata-item-text'):        
+        try:
+            return sr_helpers.parse_sr_time_string(item.text, date_today)
+        except ValueError as e:
+            pass
             
     for span in XmlHandler.findall_element_attribute(root, 'span', 'class', 'date'):
         try:
@@ -99,7 +103,13 @@ def parse_find_title(root: ET.ElementTree) -> str:
         return episode_a_href.text_content().strip()
     except AttributeError:
         pass
-
+    try:
+        episode_body = XmlHandler.find_element_attribute(root, 'div', 'class', "audio-heading__play")
+        episode_button = XmlHandler.find_element_attribute(episode_body, 'button', 'class', "audio-button")
+        title = episode_button.attrib['aria-label']
+        return title.strip()
+    except AttributeError:
+        pass
     # <div class="audio-box-title">
     try:
         audio_box_title = XmlHandler.find_element_attribute(root, 'div', 'class', "audio-box-title")
@@ -136,6 +146,8 @@ def parse_find_title(root: ET.ElementTree) -> str:
     while tag:
         if tag.tag == 'a':
             return tag.attrib.get('aria-label')
+
+    
 
     common.trace(8, 'Failed to find a title in div \n', ET.tostring(root, pretty_print=True))
 
