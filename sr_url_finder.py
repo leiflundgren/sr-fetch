@@ -53,6 +53,9 @@ class SrUrlFinder(object):
     def looks_like_m3u(self, url):
         return url.endswith('.m3u')
  
+    def looks_like_mp3(self, url):
+        return url.endswith('.mp3')
+
     def looks_like_m4a(self, url):
         return url.endswith('.m4a')
 
@@ -112,6 +115,9 @@ class SrUrlFinder(object):
         if self.looks_like_m3u(url):
             return self.handle_m3u_url(url)
      
+        if self.looks_like_mp3(url):
+            return self.handle_mp3_url(url)
+
         if self.looks_like_m4a(url):
             return self.handle_m4a_url(url)
                    
@@ -175,11 +181,15 @@ class SrUrlFinder(object):
         raise self.trace(1, 'Could not find any http-url in asx-body: \n', asx)
         
                 
-    def handle_m4a_url(self, m4a_url):
-        self.trace(6, 'Processing m4a url ' + m4a_url + " That is the end result of this program. Returning")
-        self.trace(8, 'url-type is ', type(m4a_url).__name__)
-        #raise m4a_url
-        return m4a_url
+    def handle_m4a_url(self, url):
+        self.trace(6, 'Processing m4a url ' + url + " That is the end result of this program. Returning")
+        self.trace(8, 'url-type is ', type(url).__name__)
+        return url
+
+    def handle_mp3_url(self, url):
+        self.trace(6, 'Processing m4a url ' + url + " That is the end result of this program. Returning")
+        self.trace(8, 'url-type is ', type(url).__name__)
+        return url
 
     def handle_sr_program_page(self, url):
         """ Handles download of latest episode from
