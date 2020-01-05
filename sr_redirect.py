@@ -16,21 +16,21 @@ class SrRedirect(AppBase):
         proxy_data = self.qs_get('proxy_data', 'False').lower() == 'true'
 
 
-        if not avsnitt and not artikel:
-            path = 'string'
-            path = self.environ['PATH_INFO']
-            key = 'avsnitt/'
-            pos = path.find(key)
-            if pos > 0:
-                pos += len(key)
-                qmark = path.index('?', pos)
-                if qmark > 0:
-                    avsnitt = path[pos:qmark]
-                    self.log(5, 'Extracted avsnitt from query URL ', avsnitt)
+        # if not avsnitt and not artikel:
+        #     path = 'string'
+        #     path = self.environ['PATH_INFO']
+        #     key = 'avsnitt/'
+        #     pos = path.find(key)
+        #     if pos > 0:
+        #         pos += len(key)
+        #         qmark = path.index('?', pos)
+        #         if qmark > 0:
+        #             avsnitt = path[pos:qmark]
+        #             self.log(5, 'Extracted avsnitt from query URL ', avsnitt)
 
 
         if (not avsnitt or not programid) and not artikel:
-            self.log(3, 'query-string: ', self.qs)
+            #self.log(3, 'query-string: ', self.qs)
             return self.make_response("500", 'parameters avsnitt and programid or artikel is required!', "text/plain")
 
         if avsnitt and not avsnitt.isdigit():
@@ -51,8 +51,7 @@ class SrRedirect(AppBase):
             self.log(2, 'Got HTTP error for prog='+ programid + ', avsnitt=' + str(avsnitt) + ' artikel=' + str(artikel) + ', proxy_data=' + str(proxy_data))
             #self.log(2, 'code', e.code, 'msg', e.msg)
             self.log(2, e)
-            self.start_response(str(e.code) + ' ' + e.msg, [])
-            return []
+            return self.make_response(str(e.code), + e.msg)
 
 
         self.log(5, 'Result ', m4a_url, ' ', type(m4a_url))
