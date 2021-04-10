@@ -28,7 +28,6 @@
   <ItemGroup>
     <Content Include="atom2rss.xsl" />
     <Content Include="p2hemvag.html" />
-    <Content Include="Procfile" />
     <Content Include="requirements.txt" />
     <Content Include="sample.atom.xml" />
     <Content Include="sample.rss_2.xml" />
@@ -54,9 +53,6 @@
     </Compile>
     <Compile Include="hello_world.py" />
     <Compile Include="HttpProxyer.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="lxml_testing.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RssFromFiles.py">
