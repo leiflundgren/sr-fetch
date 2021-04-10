@@ -8,20 +8,7 @@ from fnmatch import fnmatch
 xml_loaded = False
 xml_minidom = False
 xml_lxml = False 
-xml_cxml = False
 xml_exml = False
-
-
-try:
-    import xml.etree.CElementTree
-    x = xml.etree.cElementTree.fromstring('<hello target="World">there</hello>') 
-    xml_loaded=True
-    xml_cxml = True
-except ModuleNotFoundError:
-    pass
-except ImportError as ex:
-    print("Import failed totally " + str(ex))
-    pass
 
 
 try:
@@ -43,17 +30,6 @@ except ex as ModuleNotFoundError:
     raise
 except ImportError as ex:
     pass
-
-#try:
-#    import lxml.etree.ElementTree
-#    x = lxml.etree.ElementTree.fromstring('<hello target="World">there</hello>') 
-#    xml_loaded=True
-#    xml_lxml = True
-#except ModuleNotFoundError:
-#    pass
-#except ImportError as ex:
-#    print("Import failed totally " + str(ex))
-#    pass
 
 try:
     import xml.dom.minidom
@@ -94,9 +70,7 @@ class XmlHandler(object):
             self.xml = self.load_from_string(string)
              
     def load_from_string(self, string):
-        if xml_cxml:
-            self.xml = xml.etree.CElementTree.fromstring(string)
-        elif xml_exml:
+        if xml_exml:
             self.xml = xml.etree.ElementTree.fromstring(string)
         elif xml_lxml:
             self.xml = lxml.etree.ElementTree.fromstring(string)
