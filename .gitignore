@@ -11,3 +11,5 @@
 /bin
 /bad_curl.sh
 /.vs
+/env
+/env_38

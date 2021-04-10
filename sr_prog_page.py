@@ -55,7 +55,23 @@ def parse_find_transmit_time(root: ET.ElementTree, date_today:datetime) -> datet
                     return sr_helpers.parse_sr_time_string(txt, date_today)
             except ValueError:
                 pass
-    for item in XmlHandler.findall_element_attribute(root, 'span', 'class','metadata-item-text'):        
+        for div_item in XmlHandler.findall_element_attribute(meta, 'div', 'class', "audio-heading__meta-item"): # <span class="metadata-item-text">ons 19 sep kl 17:06</span>
+            timeEl = XmlHandler.find_first_child(div_item, ['time'])
+            try:
+                strtime = timeEl.attrib['datetime']                
+                if strtime[-1] == 'Z':
+                    strtime = strtime[:-1]
+                return datetime.datetime.strptime(strtime, '%Y-%m-%d %H:%M:%S')
+            except ValueError:
+                pass
+            try:
+                txt = timeEl.text
+                if txt.startswith('kl ') or txt.find(' kl ') > 0:
+                    return sr_helpers.parse_sr_time_string(txt, date_today)
+            except ValueError:
+                pass
+
+    for item in XmlHandler.findall_element_attribute(root, 'span', 'class','metadata-item-text'):
         try:
             return sr_helpers.parse_sr_time_string(item.text, date_today)
         except ValueError as e:

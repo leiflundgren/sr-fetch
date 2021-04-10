@@ -44,16 +44,16 @@ except ex as ModuleNotFoundError:
 except ImportError as ex:
     pass
 
-try:
-    import lxml.etree.ElementTree
-    x = lxml.etree.ElementTree.fromstring('<hello target="World">there</hello>') 
-    xml_loaded=True
-    xml_lxml = True
-except ModuleNotFoundError:
-    pass
-except ImportError as ex:
-    print("Import failed totally " + str(ex))
-    pass
+#try:
+#    import lxml.etree.ElementTree
+#    x = lxml.etree.ElementTree.fromstring('<hello target="World">there</hello>') 
+#    xml_loaded=True
+#    xml_lxml = True
+#except ModuleNotFoundError:
+#    pass
+#except ImportError as ex:
+#    print("Import failed totally " + str(ex))
+#    pass
 
 try:
     import xml.dom.minidom
