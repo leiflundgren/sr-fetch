@@ -1,4 +1,5 @@
-import cgi
+#import cgi
+import html
 from app_base import AppBase
 import sr_feed
 import flask
@@ -13,7 +14,7 @@ class SrFeedApp(AppBase):
     def generate_help_error(self, status_code, error_message):
         self.trace(3, 'Going to print error message', status_code, error_message)
         app_url = self.app_url + '?param=val&p2=v=p3'
-        html = """
+        html_str = """
 <html>
 <head>
 <title>sr_feed_app help</title>
@@ -102,10 +103,10 @@ Sample test URL: {app_url_html}
 </html>
         """.format(
             app_url=app_url,
-            app_url_html=cgi.escape(app_url),
+            app_url_html=html.escape(app_url),
             error_message=error_message
             )
-        return self.make_response(status_code, html)
+        return self.make_response(status_code, html_str)
 
     def application(self):
 
