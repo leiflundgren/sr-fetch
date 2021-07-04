@@ -30,7 +30,6 @@
     <Content Include="p2hemvag.html" />
     <Content Include="requirements.txt" />
     <Content Include="sample.atom.xml" />
-    <Content Include="sample.rss_2.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="app_base.py">
@@ -80,11 +79,6 @@
     <Compile Include="xsl_test.py">
       <SubType>Code</SubType>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <InterpreterReference Include="Global|PythonCore|3.4-32" />
-    <InterpreterReference Include="Global|PythonCore|3.5" />
-    <InterpreterReference Include="Global|PythonCore|3.6" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

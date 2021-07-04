@@ -31,16 +31,16 @@ class SrRedirect(AppBase):
 
         if (not avsnitt or not programid) and not artikel:
             #self.log(3, 'query-string: ', self.qs)
-            return self.make_response("500", 'parameters avsnitt and programid or artikel is required!', "text/plain")
+            return self.make_response(500, 'parameters avsnitt and programid or artikel is required!', "text/plain")
 
-        if avsnitt and not avsnitt.isdigit():
-            return self.make_response("500", 'parameters avsnitt must be digit!', "text/plain")
+        #if avsnitt and not avsnitt.isdigit():
+        #    return self.make_response(500, 'parameters avsnitt must be digit!', "text/plain")
 
-        if programid and not programid.isdigit():
-            return self.make_response("500", 'parameters programid must be digit!', "text/plain")
+        #if programid and not programid.isdigit():
+        #    return self.make_response(500, 'parameters programid must be digit!', "text/plain")
 
-        if artikel and not artikel.isdigit():
-            return self.make_response("500", 'parameters artikel must be digit!', "text/plain")
+        #if artikel and not artikel.isdigit():
+        #    return self.make_response(500, 'parameters artikel must be digit!', "text/plain")
         
         self.log(4, 'Attempt to find prog='+ programid + ', avsnitt=' + str(avsnitt) + ' artikel=' + str(artikel) + ', proxy_data=' + str(proxy_data))
         url_finder=SrUrlFinder(programid, avsnitt, artikel)
@@ -51,7 +51,7 @@ class SrRedirect(AppBase):
             self.log(2, 'Got HTTP error for prog='+ programid + ', avsnitt=' + str(avsnitt) + ' artikel=' + str(artikel) + ', proxy_data=' + str(proxy_data))
             #self.log(2, 'code', e.code, 'msg', e.msg)
             self.log(2, e)
-            return self.make_response(str(e.code), + e.msg)
+            return self.make_response(str(e.code), e.msg)
 
 
         self.log(5, 'Result ', m4a_url, ' ', type(m4a_url))
