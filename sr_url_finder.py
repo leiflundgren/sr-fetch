@@ -68,11 +68,11 @@ class SrUrlFinder(object):
 
     def looks_like_sr_episode(self, url):
         # http://sverigesradio.se/sida/avsnitt/412431?programid=4490
-        return not re.match(r'^https?://sverigesradio.se/sida/avsnitt/\d+', url) is None
+        return not re.match(r'^https?://sverigesradio.se/sida/avsnitt/[^=&]+\?programid=\d+', url) is None
 
     def looks_like_sr_artikel(self, url):
         # sverigesradio.se/sida/artikel.aspx?programid=4427&artikel=6143755
-        return not re.match(r'^https?://sverigesradio.se/sida/artikel.asp.*artikel=\d+', url) is None
+        return not re.match(r'^https?://sverigesradio.se/sida/artikel.asp.*artikel=[=&]+', url) is None
 
     def looks_like_sr_laddaner(self, url):
         # http://sverigesradio.se/topsy/ljudfil/5032268
@@ -237,21 +237,20 @@ class SrUrlFinder(object):
         # sverigesradio.se/sida/artikel.aspx?programid=4427&artikel=6143755
         if self.looks_like_sr_artikel(url):
             pass # no work needed for artiel
-        elif not re.match(r'http://sverigesradio.se/sida/avsnitt/\d+\?programid=\d+&playepisode=\d+', url):
-            m = re.match(r'http://sverigesradio.se/sida/avsnitt/(\d+)\?programid=\d+', url)
+        elif re.match(r'http://sverigesradio.se/sida/avsnitt/[^&=]+\?programid=\d+&playepisode=[^&=]+', url):
+            m = re.match(r'.*playepisode=([^&=]+)', url)
+            if not m:
+                assert("The URL seems to be missing the playepisode-argument: " + url)
+            episode = m.group(1)
+        else:
+            m = re.match(r'http://sverigesradio.se/sida/avsnitt/([^&=]+)\?programid=[^&=]+', url)
             if not m:
                 assert("The URL seems to be missing the avsnitt-i: " + url)
                 
-            url = url.rstrip('&') + '&playepisode=' + m.group(1)
-            self.trace(7, 'deduced episodeid to be ' + m.group(1) + '  url: ' + url)
+            episode = m.group(1)
+            self.trace(7, 'deduced episodeid to be ' + episode + '  url: ' + url)
+            url = url + "&playepisode=" + episode
             
-            return self.handle_url_check_result(url)
-
-        m = re.match(r'.*playepisode=(\d+)', url)
-        if not m:
-            assert("The URL seems to be missing the playepisode-argument: " + url)
-        episode = m.group(1)
-
         response = urllib.request.urlopen(url)
         content_type = response.headers['content-type']
         enc = response.headers['content-encoding'] if 'content-encoding' in response.headers else 'utf-8'
@@ -260,19 +259,32 @@ class SrUrlFinder(object):
         # look for <meta name="twitter:player:stream" content="http://sverigesradio.se/topsy/ljudfil/5032268" />
         
         self.trace(7, 'response ' + content_type + ' len=' + str(len(html)))
+
         stream = sr_helpers.find_html_meta_argument(html, 'twitter:player:stream')
 
-        # sometimes artikel.aspx does not contains the stream as expected
-        # this seems only to handle when feed contains un-aired episodes
-        # for which there is no media yet. 
-        # So no need to do a re-fetch the avsnitt-url
-        #if not stream and url.find('artikel.aspx') > 0:
-        #    url = self.find_html_link_argument(html)
-        #    if url:
-        #        self.trace(5, 'Extracted avsnitt-url from artikel-url. Exploring that.')
-        #        return self.handle_url(url)
-
         if not stream:
+            if not episode.isdecimal():
+                # need to translate episode-name to id
+                # source canidates:        
+                #<meta property="al:ios:url" content="sesrplay://?json=%7B%22type%22:%22showEpisode%22,%22id%22:1738255%7D" />
+                #<meta property="al:android:url" content="sesrplay://play/episode/1738255" />  
+                #<link rel="alternate" type="application/json+oembed" href="https://sverigesradio.se/oembed/episode/1738255" title="Mozarts mytomspunna M&#xE4;ssa i c-moll" />
+                #  <button class="audio-button"
+                #    data-require="modules/play-on-click modules/set-starttime"
+                #    data-audio-type="episode"
+                #    data-audio-id="1738255"
+                #    aria-label="Lyssna p&#xE5; Mozarts mytomspunna M&#xE4;ssa i c-moll"
+                #     data-publication-id="1738255">
+        
+                str_episode = episode
+            
+                episode = sr_helpers.find_html_meta_argument(html, 'al:android:url')
+                if episode:
+                    last_slash = episode.rfind('/')
+                    if last_slash > 0:
+                        episode = episode[last_slash+1:]
+                        self.trace(4, 'found that episode ' + str_episode + " had id " + episode)
+
             stream = self.handle_playerajax_getaudiourl(episode, url)
 
         if not stream:
