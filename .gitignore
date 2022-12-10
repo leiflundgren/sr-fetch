@@ -13,3 +13,5 @@
 /.vs
 /env
 /env_38
+/.dockerignore 
+/.vscode
