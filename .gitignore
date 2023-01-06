@@ -16,3 +16,4 @@
 /.dockerignore 
 /.vscode
 /env_p310
+/.venv
