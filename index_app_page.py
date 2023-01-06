@@ -1,5 +1,4 @@
 from app_base import AppBase
-import flask
 from common import combine_http_path
 
 class IndexApp(AppBase):

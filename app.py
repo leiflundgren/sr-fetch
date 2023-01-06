@@ -1,7 +1,4 @@
-import io
 import sys
-import cgi
-import re
 import os
 
 import common
@@ -29,7 +26,7 @@ User-agent: *
 Disallow: /
 Disallow: /feed
 """  
-    r = make_rewsponse(robots)
+    r = make_response(robots)
     r.headers['Content-Type'] = 'text/plain'
     return r
     

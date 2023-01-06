@@ -2,7 +2,6 @@
 import html
 from app_base import AppBase
 import sr_feed
-import flask
 import traceback
 import sys
 

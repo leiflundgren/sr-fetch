@@ -1,4 +1,3 @@
-import cgi
 from app_base import AppBase
 from sr_url_finder import SrUrlFinder
 import urllib.request, urllib.error, urllib.parse

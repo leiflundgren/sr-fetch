@@ -1,17 +1,13 @@
 #!/usr/bin/python3
 
 import sys
-import os
 import glob
 import urllib.request, urllib.error, urllib.parse
-import subprocess
 import unittest
 import argparse
-import datetime
 import re
 import urllib.request, urllib.error, urllib.parse
 import urllib.request, urllib.parse, urllib.error
-import errno
 import json
 from xml.dom import minidom 
 from xml.dom import minidom 

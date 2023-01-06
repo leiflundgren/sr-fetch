@@ -69,6 +69,7 @@
     <Compile Include="sr_prog_page_tests.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="sr_set_metadata.py" />
     <Compile Include="sr_url_finder.py" />
     <Compile Include="sr_redirect.py">
       <SubType>Code</SubType>

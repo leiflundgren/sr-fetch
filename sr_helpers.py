@@ -6,7 +6,6 @@ import common
 import urllib.request, urllib.error, urllib.parse
 import re
 import datetime
-import time
 import unittest
 import sys
 

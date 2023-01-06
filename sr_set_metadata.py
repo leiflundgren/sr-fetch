@@ -138,7 +138,7 @@ class SrSetMetadata:
         try:
             subprocess.call(cmd)
             return True
-        except OSError, e:
+        except OSError as e:
             if e.errno == 2:
                 return False
             raise

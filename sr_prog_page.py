@@ -2,16 +2,13 @@
 ###  # -*- codi   ng: iso-8859-1 -*-
 
 import sys
-import os
 import unittest
-import re
 import sr_helpers
 import datetime
 import XmlHandler
 
 from urllib.parse import urlparse
 
-import Page2RSS
 import argparse
 
 #import ET.ElementTree 
@@ -19,9 +16,6 @@ import lxml.etree as ET
 import lxml.html as EHTML
 
 import common
-from common import is_none_or_empty
-
-from XmlHandler import get_namespace
 
 
 
