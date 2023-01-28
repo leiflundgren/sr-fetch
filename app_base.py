@@ -75,7 +75,7 @@ class AppBase(object):
         if statuscode >= 300 and statuscode < 400:
             self.log(5, 'redirecting ', statuscode, ' to ', body)
             return flask.redirect(body, statuscode)
-        r = flask.make_response(body)
+        r = flask.make_response(body, statuscode)
         if content_type:
             r.headers['Content-Type'] = content_type
         for (h, v) in headers:
