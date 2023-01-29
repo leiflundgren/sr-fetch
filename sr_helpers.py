@@ -17,7 +17,7 @@ def source_is_show_number(x):
     return x.isdigit()
 
 def source_is_sr_show(x):
-    # http://sverigesradio.se/sida/avsnitt?programid=4429
+    # https://sverigesradio.se/sida/avsnitt?programid=4429
     return not re.match(r'http\://sverigesradio.se/sida/avsnitt\?programid=\d+$', x) is None
 
 

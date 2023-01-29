@@ -1,15 +1,17 @@
 # syntax=docker/dockerfile:1
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.8-slim
-
-
-WORKDIR /app
-
-COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
-COPY . .
-
-CMD [ "python3", "-m" , "flask", "run"]
+#FROM python:3.10-slim
+#
+#COPY requirements.txt requirements.txt
+#RUN python3 -m pip install -r requirements.txt
+#
+#
+#WORKDIR /app
+#
+#COPY . app
+#
+#CMD [ "python3", "-m" , "flask", "run", "--host=127.0.0.1:5000"]
+#
 
 #EXPOSE 5002
 #
@@ -34,3 +36,12 @@ CMD [ "python3", "-m" , "flask", "run"]
 ## During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
 ##CMD ["gunicorn", "--bind", "localhost:5002", "app_factory:app"]
 #CMD [ "python3", "-m" , "flask", "run", "--host=localhost:5002"]
+
+
+FROM python:3.10
+COPY . /app
+WORKDIR /app
+RUN pip install -r requirements.txt
+ENTRYPOINT ["python3"]
+CMD ["app.py"]
+

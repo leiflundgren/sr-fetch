@@ -77,8 +77,8 @@ This is the SR feed generator<br />
 	<tr>
 		<td>source</td>
 		<td>feed</td>
-		<td>Source to find which episodes exists. Default is <tt>feed</tt> from http://api.sr.se/api/rss/program/1234. 
-        Alternative is <tt>html</tt> from http://sverigesradio.se/sida/avsnitt?programid=1234 </td>
+		<td>Source to find which episodes exists. Default is <tt>feed</tt> from https://api.sr.se/api/rss/program/1234. 
+        Alternative is <tt>html</tt> from https://sverigesradio.se/sida/avsnitt?programid=1234 </td>
 	</tr>
 	<tr>
 		<td>proxy_data</td>
@@ -125,9 +125,9 @@ Sample test URL: {app_url_html}
             program_prefix = self.qs_get('prefix', '')
 
             if source == 'feed' or source == 'rss':
-                prog_url = 'http://api.sr.se/api/rss/program/' + str(programid)
+                prog_url = 'https://api.sr.se/api/rss/program/' + str(programid)
             elif source == 'html':
-                prog_url = 'http://sverigesradio.se/sida/avsnitt?programid=' + str(programid)
+                prog_url = 'https://sverigesradio.se/sida/avsnitt?programid=' + str(programid)
             else:
                 return self.generate_help_error(500, 'unsupported source. Must be feed/html!')            
 

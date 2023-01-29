@@ -12,7 +12,7 @@ class AppBase(object):
 
 
  #       self.log_handle = environ['wsgi.errors']
-        self.log_handle = sys.stdout
+        self.log_handle = sys.stderr
 #        self.qs = cgi.parse_qs(environ['QUERY_STRING'])        
 
         

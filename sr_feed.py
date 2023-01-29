@@ -1,15 +1,18 @@
 #!/usr/bin/python3
 
+from inspect import trace
+from ntpath import join
 import sys
-import os
 import subprocess
 import unittest
-import re
 import urllib.request, urllib.error, urllib.parse
 import urllib.request, urllib.parse, urllib.error
 import urllib.parse
 import argparse
 import datetime
+
+import urllib.parse
+import dns.resolver
 
 import sr_helpers
 import email.utils
@@ -75,6 +78,16 @@ class SrFeed(object):
             )
         return url 
     
+    def dnslookup(self, url):
+        parsed_url = urllib.parse.urlparse(url)
+        hostname = parsed_url.hostname
+        try:
+            answers = dns.resolver.query(hostname, 'A')
+            ips = list(map(lambda rdata: str(rdata.address), answers))
+            common.trace(7, f'DNS lookup of {hostname} yielded: ', ips)
+        except dns.resolver.NXDOMAIN:
+            trace(f'DNS lookup of {hostname} failed.') 
+
     def get_feed(self):
         (format, feed_et) = self.handle_feed_url(self.feed_url)
 
@@ -126,6 +139,9 @@ class SrFeed(object):
             Return tuple (format, feed-xml)
         """
         self.trace(4, 'Handling url ' + url)
+
+        self.dnslookup(url)
+
         if u_thing == None:
             self.trace(7, 'Fetching content from url')
             u_thing = sr_helpers.urllib_open_feed(url)
@@ -313,7 +329,7 @@ class SrFeed(object):
         avsnitt = qs['avsnitt'][0] if 'avsnitt' in qs else ''
         artikel = qs['artikel'][0] if 'artikel' in qs else ''
 
-        # http://sverigesradio.se/sida/artikel.aspx?programid=4427&artikel=6143755
+        # https://sverigesradio.se/sida/artikel.aspx?programid=4427&artikel=6143755
         if avsnitt or artikel:
             url = self.build_episode_url(avsnitt, artikel)
             self.trace(7, 'created sr_redirect url: ' + url)
@@ -396,11 +412,11 @@ if __name__ == '__main__':
     if r.feed:
         feed_url = r.feed
     elif r.source=='html' and r.progid:
-        feed_url = 'http://sverigesradio.se/sida/avsnitt?programid=' + str(r.progid)
+        feed_url = 'https://sverigesradio.se/sida/avsnitt?programid=' + str(r.progid)
     elif r.url:
         feed_url = r.url
     elif r.progid:
-        feed_url = 'http://api.sr.se/api/rss/program/' + str(r.progid)
+        feed_url = 'https://api.sr.se/api/rss/program/' + str(r.progid)
     else:
         common.trace(1, 'feed/progid required')
         sys.exit(1)

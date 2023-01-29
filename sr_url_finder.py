@@ -30,9 +30,9 @@ class SrUrlFinder(object):
 
     def find(self):
         if self.progid and self.avsnitt :
-            url = "http://sverigesradio.se/sida/avsnitt/" + str(self.avsnitt) + '?programid=' + str(self.progid)
+            url = "https://sverigesradio.se/sida/avsnitt/" + str(self.avsnitt) + '?programid=' + str(self.progid)
         else:
-            url = 'http://sverigesradio.se/sida/artikel.aspx?artikel=' + str(self.artikel)
+            url = 'https://sverigesradio.se/sida/artikel.aspx?artikel=' + str(self.artikel)
         self.trace(5, "looking at URL " + url)
         return self.handle_url_check_result(url)
     
@@ -58,12 +58,12 @@ class SrUrlFinder(object):
     def looks_like_sr_program_page(self, url):
         res = not re.match(r'^https?://sverigesradio.se/sida/[\.\w]+/*\?programid=\d+', url) is None
         self.trace(9, 'looks_like_sr_program_page(' + url + ') -->', res)
-        # http://sverigesradio.se/sida/avsnitt?programid=4490
-        # http://sverigesradio.se/sida/default.aspx?programid=4432
+        # https://sverigesradio.se/sida/avsnitt?programid=4490
+        # https://sverigesradio.se/sida/default.aspx?programid=4432
         return res
 
     def looks_like_sr_episode(self, url):
-        # http://sverigesradio.se/sida/avsnitt/412431?programid=4490
+        # https://sverigesradio.se/sida/avsnitt/412431?programid=4490
         return not re.match(r'^https?://sverigesradio.se/sida/avsnitt/[^=&]+\?programid=\d+', url) is None
 
     def looks_like_sr_artikel(self, url):
@@ -71,7 +71,7 @@ class SrUrlFinder(object):
         return not re.match(r'^https?://sverigesradio.se/sida/artikel.asp.*artikel=[=&]+', url) is None
 
     def looks_like_sr_laddaner(self, url):
-        # http://sverigesradio.se/topsy/ljudfil/5032268
+        # https://sverigesradio.se/topsy/ljudfil/5032268
         return not re.match(r'https?://sverigesradio.se/topsy/ljudfil/\d+', url) is None
 
     def looks_like_sr_lyssnaigen(self, url):
@@ -189,7 +189,7 @@ class SrUrlFinder(object):
 
     def handle_sr_program_page(self, url):
         """ Handles download of latest episode from
-            http://sverigesradio.se/sida/avsnitt?programid=4490
+            https://sverigesradio.se/sida/avsnitt?programid=4490
         """
         self.trace(6, 'handle_sr_program_page(' + url + ')' )
         response = urllib.request.urlopen(url)
@@ -226,20 +226,20 @@ class SrUrlFinder(object):
         #exit()
         
 
-    # http://sverigesradio.se/sida/avsnitt/412431?programid=4490
+    # https://sverigesradio.se/sida/avsnitt/412431?programid=4490
     def handle_sr_episode(self, url):
         self.trace(5, "looking at SR episode " + url)
 
         # sverigesradio.se/sida/artikel.aspx?programid=4427&artikel=6143755
         if self.looks_like_sr_artikel(url):
             pass # no work needed for artiel
-        elif re.match(r'http://sverigesradio.se/sida/avsnitt/[^&=]+\?programid=\d+&playepisode=[^&=]+', url):
+        elif re.match(r'https://sverigesradio.se/sida/avsnitt/[^&=]+\?programid=\d+&playepisode=[^&=]+', url):
             m = re.match(r'.*playepisode=([^&=]+)', url)
             if not m:
                 assert("The URL seems to be missing the playepisode-argument: " + url)
             episode = m.group(1)
         else:
-            m = re.match(r'http://sverigesradio.se/sida/avsnitt/([^&=]+)\?programid=[^&=]+', url)
+            m = re.match(r'https://sverigesradio.se/sida/avsnitt/([^&=]+)\?programid=[^&=]+', url)
             if not m:
                 assert("The URL seems to be missing the avsnitt-i: " + url)
                 
@@ -252,7 +252,7 @@ class SrUrlFinder(object):
         enc = response.headers['content-encoding'] if 'content-encoding' in response.headers else 'utf-8'
         html = response.read().decode(enc)
 
-        # look for <meta name="twitter:player:stream" content="http://sverigesradio.se/topsy/ljudfil/5032268" />
+        # look for <meta name="twitter:player:stream" content="https://sverigesradio.se/topsy/ljudfil/5032268" />
         
         self.trace(7, 'response ' + content_type + ' len=' + str(len(html)))
 
@@ -288,7 +288,7 @@ class SrUrlFinder(object):
             return None
         
         if not stream.startswith('http'):
-            stream = 'http://sverigesradio.se' + stream
+            stream = 'https://sverigesradio.se' + stream
             self.trace(5, 'modified stream url to ' + stream)
             
         return self.handle_url_check_result(stream)
@@ -297,7 +297,7 @@ class SrUrlFinder(object):
             
     def handle_sr_laddaner(self, url):
         """
-            Handles an URL of the form http://sverigesradio.se/topsy/ljudfil/5036246
+            Handles an URL of the form https://sverigesradio.se/topsy/ljudfil/5036246
             @type url: str
         """
 
@@ -336,7 +336,7 @@ class SrUrlFinder(object):
         return self.handle_m4a_url(url)
         
     def handle_playerajax_getaudiourl(self, episodeid, referer_url):
-        ajax_url = 'http://sverigesradio.se/sida/playerajax/getaudiourl?id=' + episodeid + '&type=episode&quality=high&format=iis'
+        ajax_url = 'https://sverigesradio.se/sida/playerajax/getaudiourl?id=' + episodeid + '&type=episode&quality=high&format=iis'
         self.trace(5, 'ajax-call to ', ajax_url)
         req = urllib.request.Request(ajax_url)
         req.add_header('Referer', referer_url)
@@ -370,8 +370,8 @@ class SrUrlFinder(object):
 
     @staticmethod
     def build_latest_url_from_progid(progid):
-        # http://sverigesradio.se/api/radio/radio.aspx?type=latestbroadcast&id=83&codingformat=.m4a&metafile=asx
-        return 'http://sverigesradio.se/api/radio/radio.aspx?type=latestbroadcast&id=' + progid + '&codingformat=.m4a&metafile=asx'
+        # https://sverigesradio.se/api/radio/radio.aspx?type=latestbroadcast&id=83&codingformat=.m4a&metafile=asx
+        return 'https://sverigesradio.se/api/radio/radio.aspx?type=latestbroadcast&id=' + progid + '&codingformat=.m4a&metafile=asx'
     
 
 
