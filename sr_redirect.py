@@ -29,8 +29,8 @@ class SrRedirect(AppBase):
 
 
         if (not avsnitt or not programid) and not artikel:
-            #self.log(3, 'query-string: ', self.qs)
-            return self.make_response(500, 'parameters avsnitt and programid or artikel is required!', "text/plain")
+          self.log(1, 'parameters avsnitt and programid or artikel is required!')
+          return self.make_response(500, 'parameters avsnitt and programid or artikel is required!', "text/plain")
 
         #if avsnitt and not avsnitt.isdigit():
         #    return self.make_response(500, 'parameters avsnitt must be digit!', "text/plain")

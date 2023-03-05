@@ -31,6 +31,8 @@ class SrUrlFinder(object):
     def find(self):
         if self.progid and self.avsnitt :
             url = "https://sverigesradio.se/sida/avsnitt/" + str(self.avsnitt) + '?programid=' + str(self.progid)
+        elif self.progid:
+            url = "http://sverigesradio.se/sida/default.aspx?programid=" + str(self.progid)
         else:
             url = 'https://sverigesradio.se/sida/artikel.aspx?artikel=' + str(self.artikel)
         self.trace(5, "looking at URL " + url)
@@ -195,7 +197,7 @@ class SrUrlFinder(object):
         response = urllib.request.urlopen(url)
         html = response.read()
         
-        pos = html.find('<span>Lyssna</span>')
+        pos = html.find(b'<span>Lyssna</span>')
         if pos < 0:
             raise ValueError('SR program page lacks Lyssna-tag')
         self.trace(9, 'clip ' + str(pos) + ': ' + html[pos:pos+50])
