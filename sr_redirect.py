@@ -50,7 +50,7 @@ class SrRedirect(AppBase):
             self.log(2, 'Got HTTP error for prog='+ programid + ', avsnitt=' + str(avsnitt) + ' artikel=' + str(artikel) + ', proxy_data=' + str(proxy_data))
             #self.log(2, 'code', e.code, 'msg', e.msg)
             self.log(2, e)
-            return self.make_response(str(e.code), e.msg)
+            return self.make_response(int(e.code), e.msg)
 
 
         self.log(5, 'Result ', m4a_url, ' ', type(m4a_url))
