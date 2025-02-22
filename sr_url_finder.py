@@ -74,7 +74,9 @@ class SrUrlFinder(object):
 
     def looks_like_sr_laddaner(self, url):
         # https://sverigesradio.se/topsy/ljudfil/5032268
-        return not re.match(r'https?://sverigesradio.se/topsy/ljudfil/\d+', url) is None
+        # https://www.sverigesradio.se/topsy/ljudfil/9672003-hi
+        res = not re.match(r'https?://(www\.)?sverigesradio.se/topsy/ljudfil/\d+.*', url) is None
+        return res
 
     def looks_like_sr_lyssnaigen(self, url):
         # http://lyssnaigen.sr.se/Isidor/EREG/musikradion_sthlm/2014/08/10_lexsommar_20140806_1700_21e9c23_a96.m4a
