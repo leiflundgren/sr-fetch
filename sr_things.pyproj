@@ -13,7 +13,7 @@
     <LaunchProvider>Standard Python launcher</LaunchProvider>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <IsWindowsApplication>False</IsWindowsApplication>
-    <CommandLineArguments>--url=./p2hemvag.html</CommandLineArguments>
+    <CommandLineArguments>--source=html -l=9 --progid=4426 --format=rss</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <DebugStdLib>False</DebugStdLib>
     <InterpreterArguments>
@@ -54,7 +54,6 @@
     <Compile Include="env_test.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="hello_world.py" />
     <Compile Include="HttpProxyer.py">
       <SubType>Code</SubType>
     </Compile>
@@ -88,8 +87,8 @@
   <ItemGroup>
     <Interpreter Include="env\">
       <Id>env</Id>
-      <Version>3.12</Version>
-      <Description>env (Python 3.12 (64-bit))</Description>
+      <Version>3.14</Version>
+      <Description>env (Python 3.14.2)</Description>
       <InterpreterPath>Scripts\python.exe</InterpreterPath>
       <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
       <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>

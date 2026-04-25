@@ -76,6 +76,7 @@ class SrUrlFinder(object):
         # https://sverigesradio.se/topsy/ljudfil/5032268
         # https://www.sverigesradio.se/topsy/ljudfil/9672003-hi
         res = not re.match(r'https?://(www\.)?sverigesradio.se/topsy/ljudfil/\d+.*', url) is None
+        self.trace(9, 'looks_like_sr_program_page(' + url + ') -->', res)
         return res
 
     def looks_like_sr_lyssnaigen(self, url):

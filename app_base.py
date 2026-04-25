@@ -1,4 +1,4 @@
-import cgi
+#import cgi
 import common
 import sys
 import flask

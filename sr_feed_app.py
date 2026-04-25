@@ -114,8 +114,8 @@ Sample test URL: {app_url_html}
             if not programid:
                 return self.generate_help_error(500, 'parameter programid is required!')
             
-            if not programid.isdigit():
-                return self.generate_help_error(500, 'parameter programid must be numbers!')
+            #if not programid.isdigit():
+            #    return self.generate_help_error(500, 'parameter programid must be numbers!')
 
             proxy_data = self.qs_get('proxy_data', 'False').lower() == 'true'
             format = self.qs_get('format', 'rss') 
@@ -127,7 +127,7 @@ Sample test URL: {app_url_html}
             if source == 'feed' or source == 'rss':
                 prog_url = 'https://api.sr.se/api/rss/program/' + str(programid)
             elif source == 'html':
-                prog_url = 'https://sverigesradio.se/sida/avsnitt?programid=' + str(programid)
+                prog_url = 'https://sverigesradio.se/' + str(programid)
             else:
                 return self.generate_help_error(500, 'unsupported source. Must be feed/html!')            
 
@@ -144,8 +144,7 @@ Sample test URL: {app_url_html}
 
         except Exception as ex:
             self.trace(1, "Exception handling call: ", ex)
-            self.trace(1, 'yada yada')
             self.trace(1, traceback.format_exception(None, # <- type(e) by docs, but ignored 
                                      ex, ex.__traceback__),)
-            return self.generate_help_error(500, 'Exception handling call, please review logs.')
+            return self.generate_help_error(500, 'Exception handling call, please review logs. ' + str(ex))
      
