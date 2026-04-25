@@ -30,8 +30,7 @@
   <ItemGroup>
     <Content Include="atom2rss.xsl" />
     <Content Include="Dockerfile" />
-    <Content Include="p2hemvag.html" />
-    <Content Include="prog4426_20230129.html" />
+    <Content Include="p2hemvag_260423.html" />
     <Content Include="requirements.txt" />
     <Content Include="sample.atom.xml" />
   </ItemGroup>

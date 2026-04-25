@@ -14,7 +14,7 @@ import sr_prog_page
 div___episode_list__item__title =  ET.fromstring("""
         <div class="episode-list__item__title">
                                                     
-            <a href="/sida/avsnitt/1024121?programid=4426" data-clickable-content="link" class="heading heading--small">Fort gick det inte!</a>
+            <a href="/avsnitt/1024121?programid=4426" data-clickable-content="link" class="heading heading--small">Fort gick det inte!</a>
             <span class="tiny-text"><span class="date"><abbr title="Onsdag 14 februari klockan 17:06">Ons 14 feb kl 17:06</abbr></span>
                 <span class="duration"><abbr title="114 minuter">(114 min)</abbr></span>
             </span>
