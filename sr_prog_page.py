@@ -226,7 +226,7 @@ def parse_find_desc(div: ET.ElementTree) -> str:
 
 
 def parse_find_episode_url(el: ET.ElementTree) -> (str, str) :
-    a_ep = XmlHandler.find_element_attribute(el, 'a', 'href', '/sida/avsnitt/*')
+    a_ep = XmlHandler.find_element_attribute(el, 'a', 'href', '/avsnitt/*')
     if a_ep is None:
         return (None, None)
     return ( a_ep.attrib['href'], a_ep.text_content() )
@@ -304,8 +304,8 @@ class SrProgramPageParser(object):
     def parse_page(self):
 
         # good links are 
-        # <a href="/sida/avsnitt/587231?programid=2480&amp;playepisode=587231" aria-label="Lyssna(161 min)" class="btn btn-solid play-symbol play-symbol-wide play" data-require="modules/play-on-click">&#13;
-        # <a href="/sida/avsnitt/587242?programid=2480" class="btn2 btn2-image btn2-image-foldable" data-require="modules/play-on-click">
+        # <a href="/avsnitt/587231?programid=2480&amp;playepisode=587231" aria-label="Lyssna(161 min)" class="btn btn-solid play-symbol play-symbol-wide play" data-require="modules/play-on-click">&#13;
+        # <a href="/avsnitt/587242?programid=2480" class="btn2 btn2-image btn2-image-foldable" data-require="modules/play-on-click">
 
         self.episodes_ = []
 
@@ -409,7 +409,7 @@ class SrProgramPageParser(object):
             #        <a  href="#" data-audio-type="episode" data-audio-id="819043" data-require="modules/play-on-click" class="play-symbol play-symbol--circle" ><span class="sr-icon" ><i class="play-arrow play-arrow--medium sr-icon__image" ></i></span></a>
             #    </div>
             #    <div class="episode-list-item__header">
-            #        <a  href="/sida/avsnitt/819043?programid=4429" class="heading__d heading--inverted line-clamp heading__d-line-clamp--2" >R&#246;ster under himlen</a>
+            #        <a  href="/avsnitt/819043?programid=4429" class="heading__d heading--inverted line-clamp heading__d-line-clamp--2" >R&#246;ster under himlen</a>
             #    </div>
             #</div>            
             (a_href, avsnitt_title) = parse_find_episode_url(div)

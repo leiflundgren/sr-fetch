@@ -78,7 +78,7 @@ This is the SR feed generator<br />
 		<td>source</td>
 		<td>feed</td>
 		<td>Source to find which episodes exists. Default is <tt>feed</tt> from https://api.sr.se/api/rss/program/1234. 
-        Alternative is <tt>html</tt> from https://sverigesradio.se/sida/avsnitt?programid=1234 </td>
+        Alternative is <tt>html</tt> from https://sverigesradio.se/avsnitt?programid=1234 </td>
 	</tr>
 	<tr>
 		<td>proxy_data</td>

@@ -416,7 +416,7 @@ if __name__ == '__main__':
     if r.feed:
         feed_url = r.feed
     elif r.source=='html' and r.progid:
-        feed_url = 'https://sverigesradio.se/sida/avsnitt?programid=' + str(r.progid)
+        feed_url = 'https://sverigesradio.se/avsnitt?programid=' + str(r.progid)
     elif r.url:
         feed_url = r.url
     elif r.progid:

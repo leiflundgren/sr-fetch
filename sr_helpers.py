@@ -1,5 +1,4 @@
-﻿
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 
 
 import common
@@ -17,8 +16,8 @@ def source_is_show_number(x):
     return x.isdigit()
 
 def source_is_sr_show(x):
-    # https://sverigesradio.se/sida/avsnitt?programid=4429
-    return not re.match(r'http\://sverigesradio.se/sida/avsnitt\?programid=\d+$', x) is None
+    # https://sverigesradio.se/avsnitt?programid=4429
+    return not re.match(r'http\://sverigesradio.se/avsnitt\?programid=\d+$', x) is None
 
 
  
@@ -223,7 +222,35 @@ def parse_sr_time_string(s: str, today: datetime) -> datetime:
     trace(8, 'parse_sr_time_string --> ' + str(t))
     return t
     
+def find_topsy_url(html: str) -> str:
+    """
+    Find the best Sveriges Radio topsy audio URL in HTML.
+
+    Preferred URL contains:
+      ://www.sverigesradio.se/topsy/ljudfil/
+      https://www.sverigesradio.se/topsy/ljudfil/10149808-hi
+    URLs ending with "-hi" are preferred.
+    """
+    if not html:
+        return None
+
+    normalized = html.replace('\\/', '/')
+    pattern = r'https?://www\.sverigesradio\.se/topsy/ljudfil/[^\s"\'<>]+'
+    hits = re.findall(pattern, normalized)
+
+    if not hits:
+        trace(6, 'find_topsy_url: no topsy url found')
+        return None
+
+    for url in hits:
+        clean = url.rstrip('/\\')
+        if clean.endswith('-hi'):
+            trace(7, 'find_topsy_url: selected hi-quality url ', url)
+            return url
+
+    trace(7, 'find_topsy_url: no "-hi" urls found, using', hits[0])
+    return hits[0]
+
 
 if __name__ == '__main__':
     sys.exit(unittest.main(argv=['-v', 'sr_helpers_tests.py']))
-    
