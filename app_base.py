@@ -27,14 +27,15 @@ class AppBase(object):
             self.log(3, 'Failed to get tracelevel from args. Using level 3', ex )
         self.log(7, 'creating ' + app_name +  ' tracelevel=' + str(common.tracelevel))
         self.tracelevel = common.tracelevel
-        self.remote_addr =  flask.request.remote_addr
-        self.log(4, 'tracelevel is ' + str(common.tracelevel) + " request from " + self.remote_addr)
-
- #       try:
-        req = flask.request.url_root
-        self.log(6, 'request.url: ' + req)
-   #     p = req.indexof('/',9)
-        self.base_url = req
+        # Azure puts the client IP at the start of this header
+        if flask.request.headers.getlist("X-Forwarded-For"):
+            self.remote_addr = flask.request.headers.getlist("X-Forwarded-For")[0].split(',')[0]
+        else:
+            self.remote_addr = flask.request.remote_addr
+         
+        self.log(4, 'tracelevel is ' + str(common.tracelevel) + " request from " + self.remote_addr )
+        self.log(6, 'request.url: ' + flask.request.url)
+        self.base_url = flask.request.url_root
         self.app_url = flask.request.url
         qmark = self.app_url.find('?')
         if qmark > 0:
