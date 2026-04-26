@@ -14,4 +14,4 @@ COPY . .
 
 # Use Gunicorn for production instead of the Flask dev server
 # This binds to the $PORT environment variable provided by Google Cloud
-CMD ["gunicorn", "--bind", ":8080", "--workers", "1", "--threads", "3", "app:app"]
+CMD "gunicorn", "--bind", :$PORT, "--workers", "1", "--threads", "3", "app:app"
