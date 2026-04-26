@@ -29,6 +29,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="atom2rss.xsl" />
+    <Content Include="compose-dev.yaml" />
     <Content Include="Dockerfile" />
     <Content Include="p2hemvag_260423.html" />
     <Content Include="requirements.txt" />
