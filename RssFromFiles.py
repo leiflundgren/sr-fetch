@@ -111,7 +111,7 @@ class RssFromFiles(object):
 
         (file_base, file_ext) = os.path.splitext(rel_file)
         if len(file_base) > 0:
-            parts = re.findall('[^_\-/\\\\]+', file_base) ## need to escape \ first from string-eval, then from re
+            parts = re.findall(r'[^_/\\-]+', file_base)
             parts = [s for s in parts if s or not s.isspace()]
             artist = parts[0]
             if len(parts) > 1: 
