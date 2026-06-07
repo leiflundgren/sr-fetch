@@ -7,6 +7,7 @@ import re
 import datetime
 import unittest
 import sys
+import socket
 
 def trace(level, *args):
     common.trace(level, 'sr_helpers: ', args)
@@ -83,7 +84,14 @@ def urllib_open_feed(url):
         "Sec-Fetch-User": "?1",
         "Sec-Fetch-Dest": "document"
         })
-    return urllib.request.urlopen( u_request )
+    orig_getaddrinfo = socket.getaddrinfo
+    def ipv4_getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
+        return orig_getaddrinfo(host, port, socket.AF_INET, type, proto, flags)
+    socket.getaddrinfo = ipv4_getaddrinfo
+    try:
+        return urllib.request.urlopen( u_request )
+    finally:
+        socket.getaddrinfo = orig_getaddrinfo
 
 def filename_from_html_content(html):
     trace(8, 'Trying to deduce filename from html-content.')
