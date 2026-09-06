@@ -17,3 +17,5 @@
 /.vscode
 /env_p310
 /.venv
+/.claude
+/.mcp.json

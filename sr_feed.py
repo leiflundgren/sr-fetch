@@ -6,8 +6,6 @@ import sys
 import subprocess
 import unittest
 import urllib.request, urllib.error, urllib.parse
-import urllib.request, urllib.parse, urllib.error
-import urllib.parse
 import argparse
 import datetime
 
@@ -62,21 +60,18 @@ class SrFeed(object):
 
     def build_episode_url(self, avsnitt='', artikel=''):
         
+        params = { 'programid': self.progid, 'tracelevel': str(self.tracelevel) }
         if avsnitt:
-            a_or_a = 'avsnitt=' + avsnitt
+            params['avsnitt'] = avsnitt
         elif artikel:
-            a_or_a = 'artikel=' + artikel
+            params['artikel='] = artikel
         else:
             raise ValueError('must specify either "avsnitt" or "artikel"')
 
-        url = "{url}?programid={programid}&{a_or_a}&tracelevel={tracelevel}&proxy_data={proxy_data}".format(
-            url = common.combine_http_path(self.base_url, 'episode'),
-            programid = self.progid,
-            a_or_a = a_or_a,
-            tracelevel = str(self.tracelevel),
-            proxy_data = str(self.do_proxy)
-            )
-        return url 
+
+        url = common.combine_http_path(self.base_url, 'episode?')
+        args = urllib.parse.urlencode(params)
+        return url + args
     
     def dnslookup(self, url):
         parsed_url = urllib.parse.urlparse(url)
