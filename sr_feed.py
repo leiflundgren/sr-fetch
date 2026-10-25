@@ -271,11 +271,7 @@ class SrFeed(object):
 
     def parse_html_feed(self):
         def text_url(x):
-            pos = self.feed_url.find('?')
-            if pos < 0:
-                y = self.feed_url[:pos] + '/' + x + self.feed_url[pos:]
-            else:
-                y = self.feed_url.rstrip('/') + '/' + x
+            y = 'https://sverigesradio.se/avsnitt/' + x
 
             self.trace(8, 'text_url(' + x + ') --> ' + y)
             return y
