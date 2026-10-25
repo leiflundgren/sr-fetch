@@ -2,6 +2,7 @@
 import common
 import sys
 import flask
+import urllib.parse
 
 class AppBase(object):
     """Base class for my python web stuff"""
@@ -50,12 +51,26 @@ class AppBase(object):
     def trace(self, level, *args):
         return self.log(level, args)
 
+    def qs_args(self):
+        """Query-string as dict. Accepts both '&' and ';' as separators and tolerates a
+        stray html-escaped '&amp;' (which turns 'a=1&amp;b=2' into keys 'a' and 'amp;b')."""
+        args = {}
+        raw = flask.request.query_string.decode('utf-8', 'replace')
+        for part in raw.replace(';', '&').split('&'):
+            if not part:
+                continue
+            if part == 'amp':
+                continue  # left over from '&amp;' after ';' became a separator
+            key, _, value = part.partition('=')
+            key = urllib.parse.unquote_plus(key)
+            args.setdefault(key, urllib.parse.unquote_plus(value))
+        return args
+
     def qs_get(self, keyname, default=None):
         try:
-            v = flask.request.args.get(keyname)
+            v = self.qs_args().get(keyname)
             return default if v is None else v
-        except AttributeError as ex:
-            # self.log(3, 'QueryString ' + keyname + ' not set. Returning default ' + str(default) + " ex: ", ex)
+        except (AttributeError, RuntimeError) as ex:
             return default
         except Exception as ex:
             self.log(1, 'Failed to get querystring arg:', ex)
