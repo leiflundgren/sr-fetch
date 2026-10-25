@@ -280,6 +280,9 @@ class SrUrlFinder(object):
         stream = sr_helpers.find_topsy_url(html)
 
         if not stream:
+            stream = sr_helpers.find_cdn_audio_url(html)
+
+        if not stream:
             stream = sr_helpers.find_html_meta_argument(html, 'twitter:player:stream')
 
         if not stream:

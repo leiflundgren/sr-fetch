@@ -260,5 +260,23 @@ def find_topsy_url(html: str) -> str:
     return hits[0]
 
 
+def find_cdn_audio_url(html: str) -> str:
+    """
+    Find the audio file linked directly in an episode page (2025+ layout), e.g.
+      https://lyssna-cdn.sr.se/ljudit/p2_musik/sondagsmorgon_i_p2/2026/10/sondagsmorgon_i_p2_20261025_0903_192.m4a
+    The page lists several bitrates (_32, _96, _192) of the episode; the highest is returned.
+    """
+    if not html:
+        return None
+    pattern = r'''(https?://lyssna-cdn\.sr\.se/[^\s"'<>\\]+?)_(\d+)(\.(?:m4a|mp3))'''
+    hits = re.findall(pattern, html.replace('\\/', '/'))
+    if not hits:
+        return None
+    # the first file found decides which recording; compare bitrates of that recording only
+    same = [h for h in hits if h[0] == hits[0][0]]
+    best = max(same, key=lambda h: int(h[1]))
+    return best[0] + '_' + best[1] + best[2]
+
+
 if __name__ == '__main__':
     sys.exit(unittest.main(argv=['-v', 'sr_helpers_tests.py']))
