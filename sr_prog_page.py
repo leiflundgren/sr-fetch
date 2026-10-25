@@ -311,7 +311,7 @@ class SrProgramPageParser(object):
 
         # for timestamp_span in self.html.find('span class="page-render-timestamp hidden" data-timestamp="2015-07-28 19:11:25" />&#13;
         html_timestamp = datetime.datetime.today()
-        timestamp_span = self.html.find('//span[@class="page-render-timestamp hidden"]')
+        timestamp_span = self.html.find('.//span[@class="page-render-timestamp hidden"]')
         if not timestamp_span is None:
             html_timestamp = common.parse_datetime(timestamp_span.attrib['data-timestamp'])
 
@@ -378,6 +378,13 @@ class SrProgramPageParser(object):
         #        divs_to_search.extend(divs)
 
         if len(divs_to_search) == 0:
+            # 2025+ redesign: each episode is an <article> containing an /avsnitt/<slug> link
+            for article in self.html.getroot().iter('article'):
+                avsnitt = self.parse_article_episode(article, html_timestamp)
+                if avsnitt is not None:
+                    self.episodes_.append(avsnitt)
+
+        if len(divs_to_search) == 0 and len(self.episodes_) == 0:
             self.trace(3, 'When searching the HTML page, nothing found')
 
 
@@ -390,6 +397,60 @@ class SrProgramPageParser(object):
         self.validate_episodes()
 
         return self.episodes_
+
+    def parse_article_episode(self, article, html_timestamp):
+        """Parse an episode from the redesigned page, e.g.
+            <article aria-label="..."><img src=...>
+              <h3><a href="/avsnitt/some-slug">Title</a></h3>
+              <span class="subheadline-s">Description</span>
+              <span class="caption-s">Idag 09:03</span> | <span class="caption-s">18 okt · kl 09:03</span>
+              <button aria-label="Spela Title, 1 timme">
+        """
+        a_ep = None
+        for a in article.iter('a'):
+            if (a.attrib.get('href') or '').split('?')[0].rstrip('/').split('/')[-2:-1] == ['avsnitt']:
+                a_ep = a
+                break
+        if a_ep is None:
+            return None
+
+        if self.only_episode_with_attachments:
+            if not any((b.attrib.get('aria-label') or '').startswith('Spela') for b in article.iter('button')):
+                self.trace(3, 'Episode has no media content, ignoring ' + a_ep.attrib['href'])
+                return None
+
+        avsnitt_id = urlparse(a_ep.attrib['href']).path.rstrip('/').split('/')[-1]
+        title = a_ep.text_content().strip()
+
+        timestamp = None
+        description = ''
+        for span in article.iter('span'):
+            cls = span.attrib.get('class', '')
+            txt = span.text_content().strip()
+            if 'caption-s' in cls.split() and timestamp is None:
+                try:
+                    t = txt.replace('·', ' ').replace('Idag', '').strip()
+                    if ' kl ' not in ' ' + t and 'klockan' not in t:
+                        t = t.replace(' ', ' kl ') if t[:1].isdigit() is False and ' ' in t else 'kl ' + t
+                    timestamp = sr_helpers.parse_sr_time_string(' '.join(t.split()), html_timestamp)
+                except (ValueError, IndexError):
+                    pass
+            elif 'subheadline-s' in cls.split() and not description:
+                description = txt
+        if timestamp is None:
+            raise ValueError('Failed to find transmit time for ' + avsnitt_id)
+
+        avsnitt = next((e for e in self.episodes_ if e['avsnitt'] == avsnitt_id), None)
+        if avsnitt is not None:
+            return None # page repeats content for mobile/desktop
+
+        avsnitt = {'avsnitt': avsnitt_id, 'title': title or description, 'timestamp': timestamp}
+        if description:
+            avsnitt['description'] = description
+        img = article.find('.//img')
+        avsnitt['logo'] = '' if img is None else img.attrib.get('src', '')
+        self.validate_one_episode(avsnitt)
+        return avsnitt
 
     def parse_episode(self, div, html_timestamp):
         if div is None or len(div)==0:
