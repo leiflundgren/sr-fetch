@@ -260,6 +260,43 @@ def find_topsy_url(html: str) -> str:
     return hits[0]
 
 
+def find_player_audio_url(html: str, episode_id: str = None) -> str:
+    """
+    Find the audio file of the episode the page is about, from the player data embedded in the
+    page (2025+ layout):
+      "audio":{"id":"2891702","src":"https://static-cdn.sr.se/laddahem/podradio/2026/10/x_20261023_1600036796.mp3",...}
+    The page also embeds players for related episodes, so the entry must match episode_id.
+    If episode_id is not given it is taken from the <meta property="al:android:url"> tag.
+    For lyssna-cdn m4a files the highest bitrate listed in the page is preferred.
+    """
+    if not html:
+        return None
+    text = html.replace('\\"', '"').replace('\\/', '/')
+
+    if not episode_id:
+        android_url = find_html_meta_argument(html, 'al:android:url') or ''
+        m = re.search(r'/episode/(\d+)', android_url)
+        episode_id = m.group(1) if m else None
+    if not episode_id:
+        trace(6, 'find_player_audio_url: could not determine episode id')
+        return None
+
+    m = re.search(r'"audio":\{"id":"' + re.escape(str(episode_id)) + r'","src":"([^"]+)"', text)
+    if not m:
+        trace(6, 'find_player_audio_url: no player data for episode ' + str(episode_id))
+        return None
+    src = m.group(1)
+
+    m = re.match(r'(.*)_(\d+)(\.m4a|\.mp3)$', src)
+    if m and 'lyssna-cdn.sr.se' in src:
+        base, ext = m.group(1), m.group(3)
+        rates = [int(r) for r in re.findall(re.escape(base) + r'_(\d+)' + re.escape(ext), text)]
+        if rates:
+            src = base + '_' + str(max(rates)) + ext
+    trace(7, 'find_player_audio_url: episode ' + str(episode_id) + ' -> ' + src)
+    return src
+
+
 def find_cdn_audio_url(html: str) -> str:
     """
     Find the audio file linked directly in an episode page (2025+ layout), e.g.

@@ -277,7 +277,10 @@ class SrUrlFinder(object):
         
         self.trace(7, 'response ' + content_type + ' len=' + str(len(html)))
 
-        stream = sr_helpers.find_topsy_url(html)
+        stream = sr_helpers.find_player_audio_url(html)
+
+        if not stream:
+            stream = sr_helpers.find_topsy_url(html)
 
         if not stream:
             stream = sr_helpers.find_cdn_audio_url(html)
@@ -305,7 +308,7 @@ class SrUrlFinder(object):
                 if episode:
                     last_slash = episode.rfind('/')
                     if last_slash > 0:
-                        episode = episode[last_slash+1:]
+                        episode = episode[last_slash+1:].split('?')[0]
                         self.trace(4, 'found that episode ' + str_episode + " had id " + episode)
 
             stream = self.handle_playerajax_getaudiourl(episode, url)
