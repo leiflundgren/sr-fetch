@@ -87,6 +87,13 @@ class SrFeed(object):
         (format, feed_et) = self.handle_feed_url(self.feed_url)
 
         conv_et = self.translate_format(format, feed_et)
+        if conv_et.tag == 'rss':
+            channel = conv_et.find('channel')
+            if channel is not None:
+                generator = channel.find('generator')
+                if generator is None:
+                    generator = ET.SubElement(channel, 'generator')
+                generator.text = 'sr-fetch ' + common.git_sha
         xmlstr = ET.tostring(conv_et, xml_declaration=True, encoding='utf-8', method='xml').decode('utf-8').lstrip()
         if format == 'rss':
             self.content_type = 'application/rss+xml'

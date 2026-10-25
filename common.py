@@ -263,6 +263,22 @@ def get_el(root, name, ns=None):
 def is_none_or_empty(s):
     return s is None or isinstance(s, str) and s == ""
 
+def _find_git_sha() -> str:
+    """SHA-1 of the checked-out commit, or $GIT_SHA (e.g. set at docker build), else 'unknown'."""
+    try:
+        out = subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=os.path.dirname(os.path.abspath(__file__)),
+                             capture_output=True, text=True, timeout=5)
+        sha = out.stdout.strip()
+        if out.returncode == 0 and sha:
+            return sha
+    except (OSError, subprocess.SubprocessError):
+        pass
+    return os.environ.get('GIT_SHA', 'unknown')
+
+# Evaluated once at import, so it identifies the code this process actually loaded.
+git_sha = _find_git_sha()
+
+
 if __name__ == '__main__':
     print(sys.argv)
     print('hello world')
