@@ -19,7 +19,7 @@ import sr_helpers
 class SrUrlFinder(object):
     
     def __init__(self, progid=None, avsnitt=None, artikel=None):
-        if artikel is None and (progid is None or avsnitt is None):
+        if artikel is None and ( avsnitt is None):
             raise Exception('artikel or progid+avsnitt must be specified')
 
         self.progid = progid
@@ -30,8 +30,11 @@ class SrUrlFinder(object):
         common.trace(level, 'SrFinder: ', args)
 
     def find(self):
-        if self.progid and self.avsnitt :
-            url = "https://sverigesradio.se/avsnitt/" + str(self.avsnitt) + '?programid=' + str(self.progid)
+        if self.avsnitt :
+            url = "https://sverigesradio.se/avsnitt/" + str(self.avsnitt) 
+            # no longer append the prog-id
+            # if self.progid:
+            #    url += '?programid=' + str(self.progid)
         elif self.progid:
             url = "http://sverigesradio.se/sida/default.aspx?programid=" + str(self.progid)
         else:
@@ -254,9 +257,9 @@ class SrUrlFinder(object):
             episode = m.group(1)
         else:
             # https://sverigesradio.se/avsnitt/blankettpoesi-med-musik-av-melissa-dunphy?programid=p2pahemvag
-            m = re.match(r'https://sverigesradio.se/avsnitt/([^&=]+)\?programid=[^&=]+', url)
+            m = re.search(r'/avsnitt/([^/?]+)(?:\?(?:[^#]*&)?programid=([^&]+))?', url)
             if not m:
-                assert("The URL seems to be missing the avsnitt-i: " + url)
+                raise AssertionError("The URL seems to be missing the avsnitt-i: " + url)
             
                 
             episode = m.group(1)

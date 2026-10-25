@@ -103,10 +103,6 @@ class Page2RSS(object):
 
 
             try:
-                if episode_dict['avsnitt'].find('&amp') >= 0:
-                    bp = 17
-                if episode_dict['avsnitt'].find('koloniala-feberdrommar-i-ve') >= 0:
-                    bp = 17
                 media_url : str = self.media_url_formater(episode_dict['avsnitt'])
                 media_url = media_url.replace('&amp;', '&')
                 filename, file_ext = os.path.splitext(os.path.basename(urllib.parse.urlparse(media_url).path))

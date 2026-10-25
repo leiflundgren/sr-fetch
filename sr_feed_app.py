@@ -127,7 +127,7 @@ Sample test URL: {app_url_html}
             if source == 'feed' or source == 'rss':
                 prog_url = 'https://api.sr.se/api/rss/program/' + str(programid)
             elif source == 'html':
-                prog_url = 'https://sverigesradio.se/' + str(programid)
+                prog_url = 'https://sverigesradio.se/poddar/' + str(programid)
             else:
                 return self.generate_help_error(500, 'unsupported source. Must be feed/html!')            
 
@@ -135,7 +135,7 @@ Sample test URL: {app_url_html}
                                                         self.qs_get('only_episode_with_attachments', 
                                                                     self.qs_get('only_content', 'true'))).lower() == 'true'
 
-            self.log(4, 'Attempt to find prog=' + str(programid)  + ', proxy_data = ' + str(proxy_data) + ' from ' + prog_url + " only_episode_with_attachments=" + str(only_episode_with_attachments))
+            self.log(4, 'feed: Attempt to find prog=' + str(programid)  + ', proxy_data = ' + str(proxy_data) + ' from ' + prog_url + " only_episode_with_attachments=" + str(only_episode_with_attachments))
             feeder = sr_feed.SrFeed(self.base_url, prog_url, str(programid), self.tracelevel, format, proxy_data, only_episode_with_attachments, program_prefix)
             feed_data = feeder.get_feed().encode()
             self.log(9, 'feed_data is ' + str(type(feed_data)) + " len=" + str(len(feed_data)))

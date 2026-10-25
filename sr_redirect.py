@@ -41,7 +41,7 @@ class SrRedirect(AppBase):
         #if artikel and not artikel.isdigit():
         #    return self.make_response(500, 'parameters artikel must be digit!', "text/plain")
         
-        self.log(4, 'Attempt to find prog='+ programid + ', avsnitt=' + str(avsnitt) + ' artikel=' + str(artikel) + ', proxy_data=' + str(proxy_data))
+        self.log(4, 'redirect: Attempt to find prog='+ programid + ', avsnitt=' + str(avsnitt) + ' artikel=' + str(artikel) + ', proxy_data=' + str(proxy_data))
         url_finder=SrUrlFinder(programid, avsnitt, artikel)
 
         try:
