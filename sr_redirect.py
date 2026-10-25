@@ -1,6 +1,7 @@
 from app_base import AppBase
 from sr_url_finder import SrUrlFinder
 import urllib.request, urllib.error, urllib.parse
+import common
 
 class SrRedirect(AppBase):
     """A class that takes a request un query-string, finds the appropriate SR episode and redirects to the download URL"""
@@ -60,6 +61,8 @@ class SrRedirect(AppBase):
             self.log(4, 'Proxy mode is one, start proxying...')
             return self.make_response(501, "Not implemented proxying")
         else:
-            return self.make_response(301, m4a_url)
+            response = self.make_response(301, m4a_url)
+            response.set_data(response.get_data() + ('<!-- sr-fetch ' + common.git_sha + ' -->\n').encode('utf-8'))
+            return response
 
      
